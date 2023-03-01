@@ -62,7 +62,7 @@
               <Height>127 px</Height>
             </Size>
             <DbOid>
-              <Path>recept.etel</Path>
+              <Path>recept.food</Path>
               <TypeName>Table</TypeName>
             </DbOid>
             <Compartments>
@@ -85,7 +85,7 @@
               <Height>127 px</Height>
             </Size>
             <DbOid>
-              <Path>recept.hasznalt</Path>
+              <Path>recept.used</Path>
               <TypeName>Table</TypeName>
             </DbOid>
             <Compartments>
@@ -108,7 +108,7 @@
               <Height>90 px</Height>
             </Size>
             <DbOid>
-              <Path>recept.hozzavalo</Path>
+              <Path>recept.ingredient</Path>
               <TypeName>Table</TypeName>
             </DbOid>
             <Compartments>
@@ -131,7 +131,7 @@
               <Height>90 px</Height>
             </Size>
             <DbOid>
-              <Path>recept.kategoria</Path>
+              <Path>recept.category</Path>
               <TypeName>Table</TypeName>
             </DbOid>
             <Compartments>
@@ -178,7 +178,7 @@
             </PortAnchors>
             <IsManuallyRouted>false</IsManuallyRouted>
             <DbOid>
-              <Path>recept.etel.FK_etel_kategoria_id</Path>
+              <Path>recept.food.FK_etel_kategoria_id</Path>
               <TypeName>ForeignKey</TypeName>
             </DbOid>
           </Model>
@@ -253,7 +253,7 @@
             </BendPoints>
             <IsManuallyRouted>false</IsManuallyRouted>
             <DbOid>
-              <Path>recept.hasznalt.FK_hasznalt_etel_id</Path>
+              <Path>recept.used.FK_hasznalt_etel_id</Path>
               <TypeName>ForeignKey</TypeName>
             </DbOid>
           </Model>
@@ -322,7 +322,7 @@
             </PortAnchors>
             <IsManuallyRouted>false</IsManuallyRouted>
             <DbOid>
-              <Path>recept.hasznalt.FK_hasznalt_hozzavalo_id</Path>
+              <Path>recept.used.FK_hasznalt_hozzavalo_id</Path>
               <TypeName>ForeignKey</TypeName>
             </DbOid>
           </Model>
@@ -359,7 +359,7 @@
           <Scale>1</Scale>
           <Location>
             <X>-587 px</X>
-            <Y>-314 px</Y>
+            <Y>-331.5 px</Y>
           </Location>
         </ViewPort>
       </Model>
