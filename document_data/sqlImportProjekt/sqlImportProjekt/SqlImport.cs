@@ -7,33 +7,53 @@ namespace sqlImportProjekt
 {
     internal class SqlImport
     {
-        private string fajlVizsga;
-        private string fajlHallgato;
-        private string fajlJelentkezes;
-        private string fajlKollokviumImport;
+        private string categoryFile;
+        private string ingredientFile;
+        private string usedFile;
+        private string foodFile;
+        private string fileReceptImport;
 
-        List<Vizsga> vizsgak = new List<Vizsga>();
-        List<Hallgato> hallgatok = new List<Hallgato>();
-        List<Jelentkezes> jelentkezesek = new List<Jelentkezes>();
-        Dictionary<string, int> idSzotar = new Dictionary<string, int>();
+        List<Kategoria> kategoriak = new List<Kategoria>();
+        List<Hozzavalo> hozzavalok = new List<Hozzavalo>();
+        List<Hasznalt> hasznaltLista = new List<Hasznalt>();
+        List<Etel> etelek = new List<Etel>();
 
-        public SqlImport(string fajlVizsga, string fajlHallgato, string fajlJelentkezes, string fajlKollokviumImport)
+        public SqlImport(string categoryFile, string ingredientFile, string usedFile, string foodFile, string fileReceptImport)
         {
-            this.fajlVizsga = fajlVizsga;
-            this.fajlHallgato = fajlHallgato;
-            this.fajlJelentkezes = fajlJelentkezes;
-            this.fajlKollokviumImport = fajlKollokviumImport;
-            BeolvasVizsga();
-            BeolvasHallgato();
-            BeolvasJelentkezes();
+            this.categoryFile = categoryFile;
+            this.ingredientFile = ingredientFile;
+            this.usedFile = usedFile;
+            this.foodFile = foodFile;
+            this.fileReceptImport = fileReceptImport;
+            BeolvasKategoria();
+            BeolvasHozzavalo();
+            BeolvasHasznalt();
+            BeolvasEtel();
             ImportGenerátor();
+        }
+
+        private void BeolvasEtel()
+        {
+            string[] sorok = File.ReadAllLines(foodFile);
+            foreach (var sor in sorok.Skip(1))
+            {
+                string[] oszlopok = sor.Split(';');
+                string foodName = oszlopok[0];
+                int id = int.Parse(oszlopok[1]);
+                int categoryID = int.Parse(oszlopok[2]);
+                string descriptionDate = oszlopok[3];
+                string firstDate = oszlopok[4];
+
+                etelek.Add(new Etel(foodName, id, categoryID, descriptionDate, firstDate));
+            }
         }
 
         private void ImportGenerátor()
         {
             delteGenerátor();
-            hallgatóGenerátor();
-            vizsgaGenerátor();
+            etelGenerátor();
+            hozzavaloGenerátor();
+            jelentkezésGenerátor();
             jelentkezésGenerátor();
             selectGenerátor();
         }
@@ -42,10 +62,11 @@ namespace sqlImportProjekt
         {
             List<string> fsorok = new List<string>();
             fsorok.Add("");
-            fsorok.Add("SELECT * FROM hallgato;");
-            fsorok.Add("SELECT * FROM jelentkezes;");
-            fsorok.Add("SELECT * FROM vizsga;");
-            File.AppendAllLines(fajlKollokviumImport, fsorok);
+            fsorok.Add("SELECT * FROM ingredient;");
+            fsorok.Add("SELECT * FROM category;");
+            fsorok.Add("SELECT * FROM food;");
+            fsorok.Add("SELECT * FROM used;");
+            File.AppendAllLines(fileReceptImport, fsorok);
         }
 
         private void jelentkezésGenerátor()
@@ -64,98 +85,92 @@ namespace sqlImportProjekt
             szoveg += String.Join("," + Environment.NewLine, fsorok);
             szoveg += ";";
 
-            File.AppendAllText(fajlKollokviumImport, szoveg);
+            File.AppendAllText(fileReceptImport, szoveg);
         }
 
-        private void vizsgaGenerátor()
+        private void hozzavaloGenerátor()
         {
             List<string> fsorok = new List<string>();
 
-            string szoveg = Environment.NewLine + "# vizsgák" + Environment.NewLine;
-            szoveg += "INSERT INTO vizsga (id, datum, targy) VALUES" + Environment.NewLine;
+            string szoveg = Environment.NewLine + "# hozzávalók" + Environment.NewLine;
+            szoveg += "INSERT INTO ingredient (id, ingredientName) VALUES" + Environment.NewLine;
 
-            foreach (var vizsga in vizsgak)
+            foreach (var hozzavalok in hozzavalok)
             {
-                string sor = $"({vizsga.id}, {vizsga.datum}, {vizsga.targy})";
+                string sor = $"({hozzavalok.id}, {hozzavalok.ingredientName})";
                 fsorok.Add(sor);
             }
 
             szoveg += String.Join("," + Environment.NewLine, fsorok);
             szoveg += ";";
 
-            File.AppendAllText(fajlKollokviumImport, szoveg);
+            File.AppendAllText(fileReceptImport, szoveg);
         }
 
-        private void hallgatóGenerátor()
+        private void etelGenerátor()
         {
             List<string> fsorok = new List<string>();
 
-            string szoveg = Environment.NewLine + "# hallgatók" + Environment.NewLine;
-            szoveg += "INSERT INTO hallgato (id, nev) VALUES" + Environment.NewLine;
+            string szoveg = Environment.NewLine + "# étel" + Environment.NewLine;
+            szoveg += "INSERT INTO food (foodName ,id, categoryID, descriptionDate, firstDate) VALUES" + Environment.NewLine;
 
-            foreach (var hallgató in hallgatok)
+            foreach (var food in etelek)
             {
-                string sor = $"({hallgató.id}, {hallgató.nev})";
+                string sor = $"({food.foodName}, {food.id}, {food.categoryID}, {food.descriptionDate}, {food.firstDate})";
                 fsorok.Add(sor);
             }
 
             szoveg += String.Join("," + Environment.NewLine, fsorok);
             szoveg += ";";
 
-            File.AppendAllText(fajlKollokviumImport, szoveg);
+            File.AppendAllText(fileReceptImport, szoveg);
         }
 
         private void delteGenerátor()
         {
             List<string> fsorok = new List<string>();
-            fsorok.Add("DELETE FROM jelentkezes;");
-            fsorok.Add("DELETE FROM hallgato;");
-            fsorok.Add("DELETE FROM vizsga;");
-            File.WriteAllLines(fajlKollokviumImport, fsorok);
+            fsorok.Add("DELETE FROM used;");
+            fsorok.Add("DELETE FROM food;");
+            fsorok.Add("DELETE FROM category;");
+            fsorok.Add("DELETE FROM ingredient;");
+            File.WriteAllLines(fileReceptImport, fsorok);
         }
 
-        private void BeolvasJelentkezes()
+        private void BeolvasHasznalt()
         {
-            string[] sorok = File.ReadAllLines(fajlJelentkezes);
+            string[] sorok = File.ReadAllLines(usedFile);
             foreach (var sor in sorok.Skip(1))
             {
-                string[] oszlopok = sor.Split('\t');
-                string hallgatoIdRegi = oszlopok[0];
-                int hallgatoid = idSzotar[hallgatoIdRegi];
-                int vizsgaid = int.Parse(oszlopok[1]);
-                string jeldatum = $"'{oszlopok[2]}'";
-                string ledatum = oszlopok[3] == "" ? "Null" : $"'{oszlopok[3]}'";
-                int igazolt = oszlopok[4] == "" ? 0 : int.Parse(oszlopok[4]);
-                string jegy = oszlopok[5] == "" ? "Null" : $"'{oszlopok[5]}'";
-                jelentkezesek.Add(new Jelentkezes(hallgatoid, vizsgaid, jeldatum, ledatum, igazolt, jegy));
+                string[] oszlopok = sor.Split(';');
+                int quantity = int.Parse(oszlopok[0]);
+                string unit = oszlopok[1];
+                int foodID = int.Parse(oszlopok[2]);
+                int ingredientID = int.Parse(oszlopok[3]);
+                hasznaltLista.Add(new Hasznalt(quantity, unit, foodID, ingredientID));
             }
         }
 
-        private void BeolvasHallgato()
+        private void BeolvasHozzavalo()
         {
-            string[] sorok = File.ReadAllLines(fajlHallgato);
-            int id = 1;
+            string[] sorok = File.ReadAllLines(ingredientFile);
             foreach (var sor in sorok.Skip(1))
             {
-                string[] oszlopok = sor.Split('\t');
-                string idRegi = oszlopok[0];
-                string nev = $"'{oszlopok[1]}'";
-                idSzotar.Add(idRegi, id);
-                hallgatok.Add(new Hallgato(id, nev));
-                id++;
-            }
-        }
-
-        private void BeolvasVizsga()
-        {
-            string[] sorok = File.ReadAllLines(fajlVizsga);
-            foreach (var sor in sorok.Skip(1))
-            {
-                string[] oszlopok = sor.Split('\t');
+                string[] oszlopok = sor.Split(';');
                 int id = int.Parse(oszlopok[0]);
-                string datum = $"'{oszlopok[1]}'";
-                string targy = $"'{oszlopok[2]}'";
-                vizsgak.Add(new Vizsga(id, datum, targy));
+                string ingredientName = $"'{oszlopok[1]}'";
+                hozzavalok.Add(new Hozzavalo(id, ingredientName));
+            }
+        }
+
+        private void BeolvasKategoria()
+        {
+            string[] sorok = File.ReadAllLines(categoryFile);
+            foreach (var sor in sorok.Skip(1))
+            {
+                string[] oszlopok = sor.Split(';');
+                int id = int.Parse(oszlopok[0]);
+                string categoryName = $"'{oszlopok[1]}'";
+                kategoriak.Add(new Kategoria(id, categoryName));
             }
         }
     }

@@ -10,10 +10,11 @@ namespace sqlImportProjekt
     {
         static void Main(string[] args)
         {
-            string fajlVizsga = "vizsga.txt", fajlHallgato = "hallgato.txt", fajlJelentkezes = "jelentkezes.txt", fajlKollokviumImport = "kollokviumimport.sql";
-            SqlImport s = new SqlImport(fajlVizsga, fajlHallgato, fajlJelentkezes, fajlKollokviumImport);
+            string categoryFile = "category.txt", ingredientFile = "ingredient.txt", usedFile = "used.txt", foodFile = "food.sql", fileReceptImport = "recept.sql";
+            SqlImport s = new SqlImport(categoryFile, ingredientFile, usedFile, foodFile, fileReceptImport);
 
-            Console.WriteLine("forrás -> {0}", fajlKollokviumImport);
+
+            Console.WriteLine("forrás -> {0}", fileReceptImport);
             Console.ReadLine();
 
 
