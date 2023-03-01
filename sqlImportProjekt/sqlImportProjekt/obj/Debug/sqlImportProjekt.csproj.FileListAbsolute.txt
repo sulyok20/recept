@@ -1,0 +1,8 @@
+D:\Dropbox\Public\Iskola\Tanmenetek\2022-2023\13sz\Vizsgaremek\Feladatkiosztás\_sources\Kollokvium\sqlImportProjekt\sqlImportProjekt\bin\Debug\sqlImportProjekt.exe.config
+D:\Dropbox\Public\Iskola\Tanmenetek\2022-2023\13sz\Vizsgaremek\Feladatkiosztás\_sources\Kollokvium\sqlImportProjekt\sqlImportProjekt\bin\Debug\sqlImportProjekt.exe
+D:\Dropbox\Public\Iskola\Tanmenetek\2022-2023\13sz\Vizsgaremek\Feladatkiosztás\_sources\Kollokvium\sqlImportProjekt\sqlImportProjekt\bin\Debug\sqlImportProjekt.pdb
+D:\Dropbox\Public\Iskola\Tanmenetek\2022-2023\13sz\Vizsgaremek\Feladatkiosztás\_sources\Kollokvium\sqlImportProjekt\sqlImportProjekt\obj\Debug\sqlImportProjekt.csproj.AssemblyReference.cache
+D:\Dropbox\Public\Iskola\Tanmenetek\2022-2023\13sz\Vizsgaremek\Feladatkiosztás\_sources\Kollokvium\sqlImportProjekt\sqlImportProjekt\obj\Debug\sqlImportProjekt.csproj.SuggestedBindingRedirects.cache
+D:\Dropbox\Public\Iskola\Tanmenetek\2022-2023\13sz\Vizsgaremek\Feladatkiosztás\_sources\Kollokvium\sqlImportProjekt\sqlImportProjekt\obj\Debug\sqlImportProjekt.csproj.CoreCompileInputs.cache
+D:\Dropbox\Public\Iskola\Tanmenetek\2022-2023\13sz\Vizsgaremek\Feladatkiosztás\_sources\Kollokvium\sqlImportProjekt\sqlImportProjekt\obj\Debug\sqlImportProjekt.exe
+D:\Dropbox\Public\Iskola\Tanmenetek\2022-2023\13sz\Vizsgaremek\Feladatkiosztás\_sources\Kollokvium\sqlImportProjekt\sqlImportProjekt\obj\Debug\sqlImportProjekt.pdb
