@@ -38,11 +38,11 @@ namespace sqlImportProjekt
             foreach (var sor in sorok.Skip(1))
             {
                 string[] oszlopok = sor.Split(';');
-                string foodName = oszlopok[0];
+                string foodName = $"'{oszlopok[0]}'";
                 int id = int.Parse(oszlopok[1]);
                 int categoryID = int.Parse(oszlopok[2]);
-                string descriptionDate = oszlopok[3];
-                string firstDate = oszlopok[4];
+                string descriptionDate = $"'{oszlopok[3]}'";
+                string firstDate = $"'{oszlopok[4]}'";
 
                 etelek.Add(new Etel(foodName, id, categoryID, descriptionDate, firstDate));
             }
@@ -51,11 +51,30 @@ namespace sqlImportProjekt
         private void ImportGenerátor()
         {
             delteGenerátor();
-            etelGenerátor();
+            kategoriaGenerátor();
             hozzavaloGenerátor();
-            jelentkezésGenerátor();
-            jelentkezésGenerátor();
+            etelGenerátor();
+            hasznaltGenerátor();
             selectGenerátor();
+        }
+
+        private void hasznaltGenerátor()
+        {
+            List<string> fsorok = new List<string>();
+
+            string szoveg = Environment.NewLine + "# használt" + Environment.NewLine;
+            szoveg += "INSERT INTO used (quantity, unit, foodID, ingredientID) VALUES" + Environment.NewLine;
+
+            foreach (var hasznalt in hasznaltLista)
+            {
+                string sor = $"({hasznalt.quantity}, {hasznalt.unit}, {hasznalt.foodID}, {hasznalt.ingredientID})";
+                fsorok.Add(sor);
+            }
+
+            szoveg += String.Join("," + Environment.NewLine, fsorok);
+            szoveg += ";";
+
+            File.AppendAllText(fileReceptImport, szoveg);
         }
 
         private void selectGenerátor()
@@ -69,16 +88,16 @@ namespace sqlImportProjekt
             File.AppendAllLines(fileReceptImport, fsorok);
         }
 
-        private void jelentkezésGenerátor()
+        private void kategoriaGenerátor()
         {
             List<string> fsorok = new List<string>();
 
-            string szoveg = Environment.NewLine + "# jelentkezések" + Environment.NewLine;
-            szoveg += "INSERT INTO jelentkezes (hallgatoid, vizsgaid, jeldatum, ledatum, igazolt, jegy) VALUES" + Environment.NewLine;
+            string szoveg = Environment.NewLine + "# kategóriák" + Environment.NewLine;
+            szoveg += "INSERT INTO category (id, categoryName) VALUES" + Environment.NewLine;
 
-            foreach (var jelenkezes in jelentkezesek)
+            foreach (var kategoria in kategoriak)
             {
-                string sor = $"({jelenkezes.hallgatoid},{jelenkezes.vizsgaid},{jelenkezes.jeldatum},{jelenkezes.ledatum},{jelenkezes.igazolt},{jelenkezes.jegy})";
+                string sor = $"({kategoria.id}, {kategoria.categoryName})";
                 fsorok.Add(sor);
             }
 
@@ -142,8 +161,10 @@ namespace sqlImportProjekt
             foreach (var sor in sorok.Skip(1))
             {
                 string[] oszlopok = sor.Split(';');
-                int quantity = int.Parse(oszlopok[0]);
-                string unit = oszlopok[1];
+                string quantity = oszlopok[0] == "" ? "NULL": oszlopok[0];
+                quantity = quantity.Replace(",",".");
+
+                string unit = oszlopok[1] == "" ? "NULL" : $"'{oszlopok[1]}'";
                 int foodID = int.Parse(oszlopok[2]);
                 int ingredientID = int.Parse(oszlopok[3]);
                 hasznaltLista.Add(new Hasznalt(quantity, unit, foodID, ingredientID));

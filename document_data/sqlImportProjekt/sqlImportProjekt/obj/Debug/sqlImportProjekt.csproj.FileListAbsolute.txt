@@ -6,3 +6,10 @@ D:\Dropbox\Public\Iskola\Tanmenetek\2022-2023\13sz\Vizsgaremek\Feladatkiosztás\
 D:\Dropbox\Public\Iskola\Tanmenetek\2022-2023\13sz\Vizsgaremek\Feladatkiosztás\_sources\Kollokvium\sqlImportProjekt\sqlImportProjekt\obj\Debug\sqlImportProjekt.csproj.CoreCompileInputs.cache
 D:\Dropbox\Public\Iskola\Tanmenetek\2022-2023\13sz\Vizsgaremek\Feladatkiosztás\_sources\Kollokvium\sqlImportProjekt\sqlImportProjekt\obj\Debug\sqlImportProjekt.exe
 D:\Dropbox\Public\Iskola\Tanmenetek\2022-2023\13sz\Vizsgaremek\Feladatkiosztás\_sources\Kollokvium\sqlImportProjekt\sqlImportProjekt\obj\Debug\sqlImportProjekt.pdb
+C:\tanulók\szoftverfejlesztő 2022-2023\Sulyok István\VizsgaRemek\recept\document_data\sqlImportProjekt\sqlImportProjekt\obj\Debug\sqlImportProjekt.csprojAssemblyReference.cache
+C:\tanulók\szoftverfejlesztő 2022-2023\Sulyok István\VizsgaRemek\recept\document_data\sqlImportProjekt\sqlImportProjekt\obj\Debug\sqlImportProjekt.csproj.CoreCompileInputs.cache
+C:\tanulók\szoftverfejlesztő 2022-2023\Sulyok István\VizsgaRemek\recept\document_data\sqlImportProjekt\sqlImportProjekt\obj\Debug\sqlImportProjekt.exe
+C:\tanulók\szoftverfejlesztő 2022-2023\Sulyok István\VizsgaRemek\recept\document_data\sqlImportProjekt\sqlImportProjekt\obj\Debug\sqlImportProjekt.pdb
+C:\tanulók\szoftverfejlesztő 2022-2023\Sulyok István\VizsgaRemek\recept\document_data\sqlImportProjekt\sqlImportProjekt\bin\Debug\sqlImportProjekt.exe.config
+C:\tanulók\szoftverfejlesztő 2022-2023\Sulyok István\VizsgaRemek\recept\document_data\sqlImportProjekt\sqlImportProjekt\bin\Debug\sqlImportProjekt.exe
+C:\tanulók\szoftverfejlesztő 2022-2023\Sulyok István\VizsgaRemek\recept\document_data\sqlImportProjekt\sqlImportProjekt\bin\Debug\sqlImportProjekt.pdb

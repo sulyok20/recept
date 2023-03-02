@@ -10,7 +10,7 @@ namespace sqlImportProjekt
     {
         static void Main(string[] args)
         {
-            string categoryFile = "category.txt", ingredientFile = "ingredient.txt", usedFile = "used.txt", foodFile = "food.sql", fileReceptImport = "recept.sql";
+            string categoryFile = "category.txt", ingredientFile = "ingredient.txt", usedFile = "used.txt", foodFile = "food.txt", fileReceptImport = "recept.sql";
             SqlImport s = new SqlImport(categoryFile, ingredientFile, usedFile, foodFile, fileReceptImport);
 
 

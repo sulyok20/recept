@@ -144,8 +144,8 @@
             <CustomProperties>
               <OID>5</OID>
               <Comment>6</Comment>
-              <OutModel>4</OutModel>
-              <InModel>1</InModel>
+              <OutModel>2</OutModel>
+              <InModel>3</InModel>
               <OutPort>7</OutPort>
               <InPort>8</InPort>
               <Parent>0</Parent>
@@ -153,8 +153,8 @@
             <PortAnchors>
               <Port>
                 <Location>
-                  <X>127 px</X>
-                  <Y>35 px</Y>
+                  <X>217 px</X>
+                  <Y>110 px</Y>
                 </Location>
                 <Anchors>None</Anchors>
                 <Align>Right</Align>
@@ -165,30 +165,30 @@
               </Port>
               <Port>
                 <Location>
-                  <X>1 px</X>
-                  <Y>74 px</Y>
+                  <X>0 px</X>
+                  <Y>55 px</Y>
                 </Location>
-                <Anchors>None</Anchors>
+                <Anchors>Top Bottom</Anchors>
                 <Align>Left</Align>
                 <CustomProperties>
                   <OID>8</OID>
-                  <PortType>FixedAnchor</PortType>
+                  <PortType>FloatAnchor</PortType>
                 </CustomProperties>
               </Port>
             </PortAnchors>
             <BendPoints>
               <PointD>
-                <X>-198 px</X>
-                <Y>-45 px</Y>
+                <X>480 px</X>
+                <Y>180 px</Y>
               </PointD>
               <PointD>
-                <X>-198 px</X>
-                <Y>4 px</Y>
+                <X>480 px</X>
+                <Y>95 px</Y>
               </PointD>
             </BendPoints>
-            <IsManuallyRouted>false</IsManuallyRouted>
+            <IsManuallyRouted>true</IsManuallyRouted>
             <DbOid>
-              <Path>recept.category.FK_category_food_categoryID</Path>
+              <Path>recept.used.FK_used_ingredient_id</Path>
               <TypeName>ForeignKey</TypeName>
             </DbOid>
           </Model>
@@ -202,8 +202,8 @@
             <PortAnchors>
               <Port xsi:type="LinkPort">
                 <Location>
-                  <X>-84 px</X>
-                  <Y>-49 px</Y>
+                  <X>-89 px</X>
+                  <Y>42.5 px</Y>
                 </Location>
                 <Anchors>None</Anchors>
                 <Align>Right</Align>
@@ -224,88 +224,9 @@
               <OID>10</OID>
               <Comment>11</Comment>
               <OutModel>2</OutModel>
-              <InModel>3</InModel>
+              <InModel>1</InModel>
               <OutPort>12</OutPort>
               <InPort>13</InPort>
-              <Parent>0</Parent>
-            </CustomProperties>
-            <PortAnchors>
-              <Port>
-                <Location>
-                  <X>0 px</X>
-                  <Y>35 px</Y>
-                </Location>
-                <Anchors>Top Bottom</Anchors>
-                <Align>Right</Align>
-                <CustomProperties>
-                  <OID>12</OID>
-                  <PortType>FloatAnchor</PortType>
-                </CustomProperties>
-              </Port>
-              <Port>
-                <Location>
-                  <X>0 px</X>
-                  <Y>55 px</Y>
-                </Location>
-                <Anchors>Top Bottom</Anchors>
-                <Align>Left</Align>
-                <CustomProperties>
-                  <OID>13</OID>
-                  <PortType>FloatAnchor</PortType>
-                </CustomProperties>
-              </Port>
-            </PortAnchors>
-            <BendPoints>
-              <PointD>
-                <X>411 px</X>
-                <Y>105 px</Y>
-              </PointD>
-              <PointD>
-                <X>411 px</X>
-                <Y>95 px</Y>
-              </PointD>
-            </BendPoints>
-            <IsManuallyRouted>false</IsManuallyRouted>
-            <DbOid>
-              <Path>recept.used.FK_used_ingredient_id</Path>
-              <TypeName>ForeignKey</TypeName>
-            </DbOid>
-          </Model>
-          <Model xsi:type="RelationCommentModel">
-            <CustomProperties>
-              <OID>11</OID>
-              <HolderModel>10</HolderModel>
-              <Port>14</Port>
-              <Parent>0</Parent>
-            </CustomProperties>
-            <PortAnchors>
-              <Port xsi:type="LinkPort">
-                <Location>
-                  <X>-104.5 px</X>
-                  <Y>10 px</Y>
-                </Location>
-                <Anchors>None</Anchors>
-                <Align>Right</Align>
-                <CustomProperties>
-                  <OID>14</OID>
-                  <PortType>FixedAnchor</PortType>
-                </CustomProperties>
-                <LinkPortAnchor>OutPoint</LinkPortAnchor>
-              </Port>
-            </PortAnchors>
-            <CommentOffset>
-              <X>22 px</X>
-              <Y>2 px</Y>
-            </CommentOffset>
-          </Model>
-          <Model xsi:type="RelationLinkModel">
-            <CustomProperties>
-              <OID>15</OID>
-              <Comment>16</Comment>
-              <OutModel>2</OutModel>
-              <InModel>1</InModel>
-              <OutPort>17</OutPort>
-              <InPort>18</InPort>
               <Parent>0</Parent>
             </CustomProperties>
             <PortAnchors>
@@ -317,7 +238,7 @@
                 <Anchors>None</Anchors>
                 <Align>Left</Align>
                 <CustomProperties>
-                  <OID>17</OID>
+                  <OID>12</OID>
                   <PortType>FixedAnchor</PortType>
                 </CustomProperties>
               </Port>
@@ -329,7 +250,7 @@
                 <Anchors>None</Anchors>
                 <Align>Right</Align>
                 <CustomProperties>
-                  <OID>18</OID>
+                  <OID>13</OID>
                   <PortType>FixedAnchor</PortType>
                 </CustomProperties>
               </Port>
@@ -352,9 +273,9 @@
           </Model>
           <Model xsi:type="RelationCommentModel">
             <CustomProperties>
-              <OID>16</OID>
-              <HolderModel>15</HolderModel>
-              <Port>19</Port>
+              <OID>11</OID>
+              <HolderModel>10</HolderModel>
+              <Port>14</Port>
               <Parent>0</Parent>
             </CustomProperties>
             <PortAnchors>
@@ -366,7 +287,109 @@
                 <Anchors>None</Anchors>
                 <Align>Left</Align>
                 <CustomProperties>
+                  <OID>14</OID>
+                  <PortType>FixedAnchor</PortType>
+                </CustomProperties>
+                <LinkPortAnchor>OutPoint</LinkPortAnchor>
+              </Port>
+            </PortAnchors>
+            <CommentOffset>
+              <X>22 px</X>
+              <Y>2 px</Y>
+            </CommentOffset>
+          </Model>
+          <Model xsi:type="TableModel">
+            <CustomProperties>
+              <OID>15</OID>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <Location>
+              <X>210 px</X>
+              <Y>-300 px</Y>
+            </Location>
+            <Size>
+              <Width>170 px</Width>
+              <Height>178 px</Height>
+            </Size>
+            <DbOid>
+              <Path>recept.users</Path>
+              <TypeName>Table</TypeName>
+            </DbOid>
+            <Compartments>
+              <ConstraintsCollapsed>True</ConstraintsCollapsed>
+              <IndexesCollapsed>True</IndexesCollapsed>
+              <TriggersCollapsed>True</TriggersCollapsed>
+            </Compartments>
+          </Model>
+          <Model xsi:type="RelationLinkModel">
+            <CustomProperties>
+              <OID>16</OID>
+              <Comment>17</Comment>
+              <OutModel>1</OutModel>
+              <InModel>4</InModel>
+              <OutPort>18</OutPort>
+              <InPort>19</InPort>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <PortAnchors>
+              <Port>
+                <Location>
+                  <X>5 px</X>
+                  <Y>75 px</Y>
+                </Location>
+                <Anchors>None</Anchors>
+                <Align>Left</Align>
+                <CustomProperties>
+                  <OID>18</OID>
+                  <PortType>FixedAnchor</PortType>
+                </CustomProperties>
+              </Port>
+              <Port>
+                <Location>
+                  <X>125 px</X>
+                  <Y>37 px</Y>
+                </Location>
+                <Anchors>None</Anchors>
+                <Align>Right</Align>
+                <CustomProperties>
                   <OID>19</OID>
+                  <PortType>FixedAnchor</PortType>
+                </CustomProperties>
+              </Port>
+            </PortAnchors>
+            <BendPoints>
+              <PointD>
+                <X>-130 px</X>
+                <Y>5 px</Y>
+              </PointD>
+              <PointD>
+                <X>-130 px</X>
+                <Y>-43 px</Y>
+              </PointD>
+            </BendPoints>
+            <IsManuallyRouted>true</IsManuallyRouted>
+            <DbOid>
+              <Path>recept.food.FK_food_category_id</Path>
+              <TypeName>ForeignKey</TypeName>
+            </DbOid>
+          </Model>
+          <Model xsi:type="RelationCommentModel">
+            <CustomProperties>
+              <OID>17</OID>
+              <HolderModel>16</HolderModel>
+              <Port>20</Port>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <PortAnchors>
+              <Port xsi:type="LinkPort">
+                <Location>
+                  <X>60 px</X>
+                  <Y>24 px</Y>
+                </Location>
+                <Anchors>None</Anchors>
+                <Align>Left</Align>
+                <CustomProperties>
+                  <OID>20</OID>
                   <PortType>FixedAnchor</PortType>
                 </CustomProperties>
                 <LinkPortAnchor>OutPoint</LinkPortAnchor>
@@ -382,8 +405,8 @@
           <ScaleMode>Free</ScaleMode>
           <Scale>1</Scale>
           <Location>
-            <X>-381 px</X>
-            <Y>-268 px</Y>
+            <X>-374 px</X>
+            <Y>-318 px</Y>
           </Location>
         </ViewPort>
       </Model>
