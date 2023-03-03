@@ -48,6 +48,80 @@ app.get("/users", (req, res) => {
   });
 });
 
+//#region food ---
+app.get("/food", (req, res) => {
+  let sql = `SELECT * FROM food`;
+
+  pool.getConnection(function (error, connection) {
+    if (error) {
+      sendingGetError(res, "Server connecting error!");
+      return;
+    }
+    connection.query(sql, async function (error, results, fields) {
+      sendingGet(res, error, results);
+    });
+    connection.release();
+  });
+});
+
+//#endregion food
+
+
+//#region category ---
+app.get("/category", (req, res) => {
+  let sql = `SELECT * FROM category`;
+
+  pool.getConnection(function (error, connection) {
+    if (error) {
+      sendingGetError(res, "Server connecting error!");
+      return;
+    }
+    connection.query(sql, async function (error, results, fields) {
+      sendingGet(res, error, results);
+    });
+    connection.release();
+  });
+});
+
+//#endregion category
+
+//#region ingredient ---
+app.get("/ingredient", (req, res) => {
+  let sql = `SELECT * FROM ingredient`;
+
+  pool.getConnection(function (error, connection) {
+    if (error) {
+      sendingGetError(res, "Server connecting error!");
+      return;
+    }
+    connection.query(sql, async function (error, results, fields) {
+      sendingGet(res, error, results);
+    });
+    connection.release();
+  });
+});
+
+//#endregion ingredient
+
+//#region used ---
+app.get("/used", (req, res) => {
+  let sql = `SELECT * FROM used`;
+
+  pool.getConnection(function (error, connection) {
+    if (error) {
+      sendingGetError(res, "Server connecting error!");
+      return;
+    }
+    connection.query(sql, async function (error, results, fields) {
+      sendingGet(res, error, results);
+    });
+    connection.release();
+  });
+});
+
+//#endregion used
+
+
 app.get("/users/:id", (req, res) => {
   const id = req.params.id;
   let sql = `
