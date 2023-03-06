@@ -188,3 +188,15 @@ get http://localhost:3000/ingredient
 
 ### get used
 get http://localhost:3000/used
+
+### get food by id
+get http://localhost:3000/food/23
+
+### get ingredient by id
+get http://localhost:3000/ingredient/1
+
+### get category by id
+get http://localhost:3000/category/1
+
+### get used by id
+get http://localhost:3000/used/4463

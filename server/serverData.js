@@ -48,78 +48,7 @@ app.get("/users", (req, res) => {
   });
 });
 
-//#region food ---
-app.get("/food", (req, res) => {
-  let sql = `SELECT * FROM food`;
 
-  pool.getConnection(function (error, connection) {
-    if (error) {
-      sendingGetError(res, "Server connecting error!");
-      return;
-    }
-    connection.query(sql, async function (error, results, fields) {
-      sendingGet(res, error, results);
-    });
-    connection.release();
-  });
-});
-
-//#endregion food
-
-
-//#region category ---
-app.get("/category", (req, res) => {
-  let sql = `SELECT * FROM category`;
-
-  pool.getConnection(function (error, connection) {
-    if (error) {
-      sendingGetError(res, "Server connecting error!");
-      return;
-    }
-    connection.query(sql, async function (error, results, fields) {
-      sendingGet(res, error, results);
-    });
-    connection.release();
-  });
-});
-
-//#endregion category
-
-//#region ingredient ---
-app.get("/ingredient", (req, res) => {
-  let sql = `SELECT * FROM ingredient`;
-
-  pool.getConnection(function (error, connection) {
-    if (error) {
-      sendingGetError(res, "Server connecting error!");
-      return;
-    }
-    connection.query(sql, async function (error, results, fields) {
-      sendingGet(res, error, results);
-    });
-    connection.release();
-  });
-});
-
-//#endregion ingredient
-
-//#region used ---
-app.get("/used", (req, res) => {
-  let sql = `SELECT * FROM used`;
-
-  pool.getConnection(function (error, connection) {
-    if (error) {
-      sendingGetError(res, "Server connecting error!");
-      return;
-    }
-    connection.query(sql, async function (error, results, fields) {
-      sendingGet(res, error, results);
-    });
-    connection.release();
-  });
-});
-
-//#endregion used
 
 
 app.get("/users/:id", (req, res) => {
@@ -284,7 +213,6 @@ app.put("/users/:id", (req, res) => {
     connection.release();
   });
 });
-
 //#endregion Users
 
 //#region cars ---
@@ -667,6 +595,209 @@ app.put("/trips/:id", (req, res) => {
   });
 });
 //#endregion trips
+
+//#region recept
+//#region food ---
+
+//ooszes food
+app.get("/food", (req, res) => {
+  let sql = `SELECT * FROM food`;
+
+  pool.getConnection(function (error, connection) {
+    if (error) {
+      sendingGetError(res, "Server connecting error!");
+      return;
+    }
+    connection.query(sql, async function (error, results, fields) {
+      sendingGet(res, error, results);
+    });
+    connection.release();
+  });
+});
+
+//Egy food rekord
+app.get("/food/:id", (req, res) => {
+  const id = req.params.id;
+  let sql = `
+    SELECT * FROM food
+    WHERE id = ?`;
+
+  pool.getConnection(function (error, connection) {
+    if (error) {
+      sendingGetError(res, "Server connecting error!");
+      return;
+    }
+    connection.query(sql, [id], async function (error, results, fields) {
+      if (error) {
+        const message = "food sql error";
+        sendingGetError(res, message);
+        return;
+      }
+      if (results.length == 0) {
+        const message = `Not found id: ${id}`;
+        sendingGetError(res, message);
+        return;
+      }
+      sendingGetById(res, null, results[0], id);
+    });
+    connection.release();
+  });
+});
+
+
+
+//#endregion food
+
+
+//#region category ---
+app.get("/category", (req, res) => {
+  let sql = `SELECT * FROM category`;
+
+  pool.getConnection(function (error, connection) {
+    if (error) {
+      sendingGetError(res, "Server connecting error!");
+      return;
+    }
+    connection.query(sql, async function (error, results, fields) {
+      sendingGet(res, error, results);
+    });
+    connection.release();
+  });
+});
+
+//Egy category rekord
+app.get("/category/:id", (req, res) => {
+  const id = req.params.id;
+  let sql = `
+    SELECT * FROM category
+    WHERE id = ?`;
+
+  pool.getConnection(function (error, connection) {
+    if (error) {
+      sendingGetError(res, "Server connecting error!");
+      return;
+    }
+    connection.query(sql, [id], async function (error, results, fields) {
+      if (error) {
+        const message = "category sql error";
+        sendingGetError(res, message);
+        return;
+      }
+      if (results.length == 0) {
+        const message = `Not found id: ${id}`;
+        sendingGetError(res, message);
+        return;
+      }
+      sendingGetById(res, null, results[0], id);
+    });
+    connection.release();
+  });
+});
+
+
+
+//#endregion category
+
+//#region ingredient ---
+app.get("/ingredient", (req, res) => {
+  let sql = `SELECT * FROM ingredient`;
+
+  pool.getConnection(function (error, connection) {
+    if (error) {
+      sendingGetError(res, "Server connecting error!");
+      return;
+    }
+    connection.query(sql, async function (error, results, fields) {
+      sendingGet(res, error, results);
+    });
+    connection.release();
+  });
+});
+
+
+//Egy ingredient rekord
+app.get("/ingredient/:id", (req, res) => {
+  const id = req.params.id;
+  let sql = `
+    SELECT * FROM ingredient
+    WHERE id = ?`;
+
+  pool.getConnection(function (error, connection) {
+    if (error) {
+      sendingGetError(res, "Server connecting error!");
+      return;
+    }
+    connection.query(sql, [id], async function (error, results, fields) {
+      if (error) {
+        const message = "ingredient sql error";
+        sendingGetError(res, message);
+        return;
+      }
+      if (results.length == 0) {
+        const message = `Not found id: ${id}`;
+        sendingGetError(res, message);
+        return;
+      }
+      sendingGetById(res, null, results[0], id);
+    });
+    connection.release();
+  });
+});
+
+
+//#endregion ingredient
+
+//#region used ---
+app.get("/used", (req, res) => {
+  let sql = `SELECT * FROM used`;
+
+  pool.getConnection(function (error, connection) {
+    if (error) {
+      sendingGetError(res, "Server connecting error!");
+      return;
+    }
+    connection.query(sql, async function (error, results, fields) {
+      sendingGet(res, error, results);
+    });
+    connection.release();
+  });
+});
+
+
+//Egy used rekord
+app.get("/used/:id", (req, res) => {
+  const id = req.params.id;
+  let sql = `
+    SELECT * FROM used
+    WHERE id = ?`;
+
+  pool.getConnection(function (error, connection) {
+    if (error) {
+      sendingGetError(res, "Server connecting error!");
+      return;
+    }
+    connection.query(sql, [id], async function (error, results, fields) {
+      if (error) {
+        const message = "used sql error";
+        sendingGetError(res, message);
+        return;
+      }
+      if (results.length == 0) {
+        const message = `Not found id: ${id}`;
+        sendingGetError(res, message);
+        return;
+      }
+      sendingGetById(res, null, results[0], id);
+    });
+    connection.release();
+  });
+});
+
+
+//#endregion used
+
+//#endregion recept
+
 
 function mySanitizeHtml(data) {
   return sanitizeHtml(data, {

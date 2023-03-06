@@ -13,7 +13,9 @@ get http://localhost:3000/ingredient
 
 SELECT * from ingredient;
 
-### get food
-get http://localhost:3000/food
+### get used
+get http://localhost:3000/used
 
-SELECT * from ;
+SELECT * from used;
+
+
