@@ -644,6 +644,37 @@ app.get("/food/:id", (req, res) => {
   });
 });
 
+//poszt
+app.post("/food", (req, res) => {
+  const newR = {
+    foodName: sanitizeHtml(req.body.foodName),
+    categoryID: sanitizeHtml(req.body.categoryID),
+    descriptionDate: sanitizeHtml(req.body.descriptionDate),
+    firstDate: sanitizeHtml(req.body.firstDate),
+  };
+  let sql = `
+    INSERT food 
+    (foodName, categoryID, descriptionDate, firstDate)
+    VALUES
+    (?, ?, ?)
+    `;
+  pool.getConnection(function (error, connection) {
+    if (error) {
+      sendingGetError(res, "Server connecting error!");
+      return;
+    }
+    connection.query(
+      sql,
+      [newR.foodName, newR.categoryID, newR.descriptionDate,
+        newR.firstDate],
+      function (error, result, fields) {
+        sendingPost(res, error, result, newR);
+      }
+    );
+    connection.release();
+  });
+});
+
 
 
 //#endregion food

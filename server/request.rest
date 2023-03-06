@@ -3,7 +3,7 @@ post http://localhost:4000/login
 Content-Type: application/json
 
 {
-    "userName": "feri",
+    "userName": "h1",
     "password": "jozsi123"
 }
 
@@ -177,6 +177,9 @@ Content-Type: application/json
 
 
 ###--------Saját adatbázis--------
+
+###--------Egész tábla------------
+
 ### get food
 get http://localhost:3000/food
 
@@ -189,8 +192,10 @@ get http://localhost:3000/ingredient
 ### get used
 get http://localhost:3000/used
 
+###--------Adat id alapján------------
+
 ### get food by id
-get http://localhost:3000/food/23
+get http://localhost:3000/food/51
 
 ### get ingredient by id
 get http://localhost:3000/ingredient/1
@@ -200,3 +205,17 @@ get http://localhost:3000/category/1
 
 ### get used by id
 get http://localhost:3000/used/4463
+
+
+###--------Új adat felvétele------------
+
+### post food
+post http://localhost:3000/food
+Content-Type: application/json
+
+{
+    "foodName": "sajtos szendvics",
+    "categoryID": 3,
+    "descriptionDate": "1992-03-20",
+    "firstDate": "1992-04-04"
+}
