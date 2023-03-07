@@ -644,7 +644,7 @@ app.get("/food/:id", (req, res) => {
   });
 });
 
-//poszt
+//post food 
 app.post("/food", (req, res) => {
   const newR = {
     foodName: sanitizeHtml(req.body.foodName),
@@ -656,7 +656,7 @@ app.post("/food", (req, res) => {
     INSERT food 
     (foodName, categoryID, descriptionDate, firstDate)
     VALUES
-    (?, ?, ?)
+    (?, ?, ?,?)
     `;
   pool.getConnection(function (error, connection) {
     if (error) {
@@ -725,6 +725,33 @@ app.get("/category/:id", (req, res) => {
   });
 });
 
+//post category
+app.post("/category", (req, res) => {
+  const newR = {
+    categoryName: sanitizeHtml(req.body.categoryName),
+
+  };
+  let sql = `
+    INSERT category 
+    (categoryName)
+    VALUES
+    (?)
+    `;
+  pool.getConnection(function (error, connection) {
+    if (error) {
+      sendingGetError(res, "Server connecting error!");
+      return;
+    }
+    connection.query(
+      sql,
+      [newR.categoryName],
+      function (error, result, fields) {
+        sendingPost(res, error, result, newR);
+      }
+    );
+    connection.release();
+  });
+});
 
 
 //#endregion category
@@ -775,6 +802,36 @@ app.get("/ingredient/:id", (req, res) => {
   });
 });
 
+//post ingredient 
+app.post("/ingredient", (req, res) => {
+  const newR = {
+    ingredientName: sanitizeHtml(req.body.ingredientName),
+
+  };
+  let sql = `
+    INSERT ingredient 
+    (ingredientName)
+    VALUES
+    (?)
+    `;
+  pool.getConnection(function (error, connection) {
+    if (error) {
+      sendingGetError(res, "Server connecting error!");
+      return;
+    }
+    connection.query(
+      sql,
+      [newR.ingredientName],
+      function (error, result, fields) {
+        sendingPost(res, error, result, newR);
+      }
+    );
+    connection.release();
+  });
+});
+
+
+
 
 //#endregion ingredient
 
@@ -823,6 +880,40 @@ app.get("/used/:id", (req, res) => {
     connection.release();
   });
 });
+
+
+//post ingredient 
+app.post("/used", (req, res) => {
+  const newR = {
+    quantity: sanitizeHtml(req.body.quantity),
+    unit: sanitizeHtml(req.body.unit),
+    foodID: sanitizeHtml(req.body.foodID),
+    ingredientID: sanitizeHtml(req.body.ingredientID),
+
+  };
+  let sql = `
+    INSERT used 
+    (quantity,unit ,foodID , ingredientID)
+    VALUES
+    (?,?,?,?)
+    `;
+  pool.getConnection(function (error, connection) {
+    if (error) {
+      sendingGetError(res, "Server connecting error!");
+      return;
+    }
+    connection.query(
+      sql,
+      [newR.quantity, newR.unit, newR.foodID, newR.ingredientID],
+      function (error, result, fields) {
+        sendingPost(res, error, result, newR);
+      }
+    );
+    connection.release();
+  });
+});
+
+
 
 
 //#endregion used

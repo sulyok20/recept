@@ -195,16 +195,16 @@ get http://localhost:3000/used
 ###--------Adat id alapján------------
 
 ### get food by id
-get http://localhost:3000/food/51
+get http://localhost:3000/food/117
 
 ### get ingredient by id
-get http://localhost:3000/ingredient/1
+get http://localhost:3000/ingredient/32
 
 ### get category by id
-get http://localhost:3000/category/1
+get http://localhost:3000/category/4
 
 ### get used by id
-get http://localhost:3000/used/4463
+get http://localhost:3000/used/5541
 
 
 ###--------Új adat felvétele------------
@@ -218,4 +218,32 @@ Content-Type: application/json
     "categoryID": 3,
     "descriptionDate": "1992-03-20",
     "firstDate": "1992-04-04"
+}
+
+
+### post category
+post http://localhost:3000/category
+Content-Type: application/json
+
+{
+    "categoryName": "szendvics"
+}
+
+### post ingredient
+post http://localhost:3000/ingredient
+Content-Type: application/json
+
+{
+    "ingredientName": "egész fahéj"
+}
+
+### post used
+post http://localhost:3000/used
+Content-Type: application/json
+
+{
+    "quantity": "2",
+    "unit": "szelet",
+    "foodID": 117,
+    "ingredientID": 75
 }
