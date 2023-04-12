@@ -599,9 +599,66 @@ app.put("/trips/:id", (req, res) => {
 //#region recept
 //#region food ---
 
+function getCategory(res, categoryID) {
+  return new Promise((resolve, reject) => {
+    let sql = `
+    SELECT id, categoryName from category
+    WHERE id = ?`;
+
+    pool.getConnection(function (error, connection) {
+      if (error) {
+        sendingGetError(res, "Server connecting error!");
+        return;
+      }
+      connection.query(sql, [categoryID], async function (error, results, fields) {
+        if (error) {
+          const message = "Category sql error";
+          sendingGetError(res, message);
+        }
+        //Az await miatt a car.trips a results-ot kapja értékül
+        resolve(results);
+      });
+      connection.release();
+    });
+  });
+}
+app.get("/foodWithCategrory", (req, res) => {
+  let sql = `
+  select id, foodName, categoryID, 
+  DATE_FORMAT(descriptionDate, '%Y.%m.%d') descriptionDate,
+  DATE_FORMAT(firstDate, '%Y.%m.%d') firstDate from food
+  `;
+
+  pool.getConnection(function (error, connection) {
+    if (error) {
+      sendingGetError(res, "Server connecting error!");
+      return;
+    }
+    connection.query(sql, async function (error, results, fields) {
+      if (error) {
+        message = "Food sql error";
+        sendingGetError(res, message);
+        return;
+      }
+
+      //Végigmegyünk a kocsikon, és berakjuk a trips-eket
+      for (const food of results) {
+        //A promise a results-ot ada vissza
+        food.category = await getCategory(res, food.categoryID);
+      }
+      sendingGet(res, null, results);
+    });
+    connection.release();
+  });
+});
+
+
 //ooszes food
 app.get("/food", (req, res) => {
-  let sql = `SELECT * FROM food`;
+  let sql = 
+  `select id, foodName, categoryID, 
+  DATE_FORMAT(descriptionDate, '%Y.%m.%d') descriptionDate,
+  DATE_FORMAT(firstDate, '%Y.%m.%d') firstDate from food`;
 
   pool.getConnection(function (error, connection) {
     if (error) {
@@ -619,7 +676,9 @@ app.get("/food", (req, res) => {
 app.get("/food/:id", (req, res) => {
   const id = req.params.id;
   let sql = `
-    SELECT * FROM food
+  select id, foodName, categoryID, 
+  DATE_FORMAT(descriptionDate, '%Y.%m.%d') descriptionDate,
+  DATE_FORMAT(firstDate, '%Y.%m.%d') firstDate from food
     WHERE id = ?`;
 
   pool.getConnection(function (error, connection) {

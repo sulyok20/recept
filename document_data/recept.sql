@@ -101,3 +101,6 @@ Content-Type: application/json
   (quantity,unit ,foodID , ingredientID)
   VALUES
   ('2',szelet ,117 ,75);
+
+
+  select id, foodName, categoryID, DATE_FORMAT(descriptionDate, '%Y.%m.%d') descriptionDate,DATE_FORMAT(firstDate, '%Y.%m.%d') firstDate from food;

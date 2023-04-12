@@ -247,3 +247,8 @@ Content-Type: application/json
     "foodID": 117,
     "ingredientID": 75
 }
+
+#-------------------#
+
+### get cars with Trips (nosql)
+get http://localhost:3000/foodWithCategrory

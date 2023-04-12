@@ -26,9 +26,9 @@ const router = createRouter({
       },
     },
     {
-      path: "/taxiFuvarjai",
-      name: "taxiFuvarjai",
-      component: () => import("../views/TaxiFuvarjaiView.vue"),
+      path: "/receptek",
+      name: "receptek",
+      component: () => import("../views/ReceptekView.vue"),
       meta: {
         requiresAuth: false,
         title: "Taxi fuvarjai / Taxi",
@@ -39,7 +39,7 @@ const router = createRouter({
       name: "taxiKezeles",
       component: () => import("../views/TaxiKezelesView.vue"),
       meta: {
-        requiresAuth: true,
+        requiresAuth: false,
         title: "Taxi Kezelés / Taxi",
       },
     },
@@ -48,7 +48,7 @@ const router = createRouter({
       name: "fuvarBevitel",
       component: () => import("../views/FuvarBevitel.vue"),
       meta: {
-        requiresAuth: true,
+        requiresAuth: false,
         title: "Fuvar bevitel / Taxi",
       },
     },
