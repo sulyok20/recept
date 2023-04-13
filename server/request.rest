@@ -250,5 +250,5 @@ Content-Type: application/json
 
 #-------------------#
 
-### get cars with Trips (nosql)
+### get food with category (nosql)
 get http://localhost:3000/foodWithCategrory

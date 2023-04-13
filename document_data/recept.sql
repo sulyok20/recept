@@ -9,12 +9,12 @@ get http://localhost:3000/category
 select * FROM category;
 
 ### get ingredient
-get http://localhost:3000/ingredient
+##get http://localhost:3000/ingredient
 
 SELECT * from ingredient;
 
 ### get used
-get http://localhost:3000/used
+#get http://localhost:3000/used
 
 SELECT * from used;
 
@@ -103,6 +103,27 @@ Content-Type: application/json
   ('2',szelet ,117 ,75);
 
 
+
+#get food correct data (YYYY.MM.dd)
   select id, foodName, categoryID, 
   DATE_FORMAT(descriptionDate, '%Y.%m.%d') descriptionDate,
   DATE_FORMAT(firstDate, '%Y.%m.%d') firstDate from food;
+
+
+  #get foodWithCategrory
+     select f.id, f.foodName, f.categoryID, 
+  DATE_FORMAT(f.descriptionDate, '%Y.%m.%d') descriptionDate,
+  DATE_FORMAT(f.firstDate, '%Y.%m.%d') firstDate, c.categoryName from food f
+    INNER JOIN category c on c.id = f.categoryID
+    ;
+
+  #get foodWithCategroryById
+
+     select f.id, f.foodName, f.categoryID, 
+  DATE_FORMAT(f.descriptionDate, '%Y.%m.%d') descriptionDate,
+  DATE_FORMAT(f.firstDate, '%Y.%m.%d') firstDate, c.categoryName, i.ingredientName from food f
+    INNER JOIN category c on c.id = f.categoryID
+    INNER JOIN used u on u.foodID = f.id 
+      INNER join ingredient i on i.id = u.ingredientID
+    WHERE f.id = 1
+    ;

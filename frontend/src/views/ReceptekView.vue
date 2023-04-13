@@ -44,8 +44,11 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalLabel">
-             foodname
+            <h1 class="modal-title fs-5" id="exampleModalLabel"
+            v-for="(food, index) in foodWithCategrory"
+          :key="`food${index}`"
+            >
+             {{food.foodName}}
             </h1>
             <button
               type="button"
@@ -57,65 +60,7 @@
 
           <!--#region Modal body -->
           <div class="modal-body">
-            <!--#region Form -->
-
-            <form class="row g-3 needs-validation" novalidate>
-              <!-- Autó név -->
-              <div class="col-md-12">
-                <label for="name" class="form-label">Autó név</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="name"
-                  required
-                />
-                <div class="invalid-feedback">A név kitöltése kötelező</div>
-              </div>
-
-              <!-- Rendszám -->
-              <div class="col-md-6">
-                <label for="licenceNumber" class="form-label">Rendszám</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="licenceNumber"
-                  required
-                />
-                <div class="invalid-feedback">
-                  A rendszám kitöltése kötelező
-                </div>
-              </div>
-
-              <!-- Rendszám -->
-              <div class="col-md-6">
-                <label for="hourlyRate" class="form-label"
-                  >Tarifa (Ft/óra)</label
-                >
-                <input
-                  type="number"
-                  class="form-control"
-                  id="hourlyRate"
-                  required
-                />
-                <div class="invalid-feedback">A tarifa kitöltése kötelező</div>
-              </div>
-
-              <!-- out of traffic -->
-              <div class="col-md-6">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  value=""
-                  id="outOfTraffic"
-                />
-                <label class="form-check-label ms-2" for="flexCheckDefault">
-                  Forgalmon kívül
-                </label>
-              </div>
-
-              
-            </form>
-            <!--#endregion Form -->
+            
           </div>
           <!--#endregion Modal body -->
 
