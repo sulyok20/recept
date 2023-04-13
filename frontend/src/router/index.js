@@ -10,7 +10,7 @@ const router = createRouter({
       component: HomeView,
       meta: {
         requiresAuth: false,
-        title: "Home / Taxi",
+        title: "Home / Szakácskönyv",
       },
     },
     {
@@ -22,7 +22,7 @@ const router = createRouter({
       component: () => import("../views/AboutView.vue"),
       meta: {
         requiresAuth: false,
-        title: "About / Taxi",
+        title: "About / Szakácskönyv",
       },
     },
     {
@@ -31,7 +31,7 @@ const router = createRouter({
       component: () => import("../views/ReceptekView.vue"),
       meta: {
         requiresAuth: false,
-        title: "Taxi fuvarjai / Taxi",
+        title: "Receptek / Szakácskönyv",
       },
     },
     {
@@ -40,7 +40,7 @@ const router = createRouter({
       component: () => import("../views/TaxiKezelesView.vue"),
       meta: {
         requiresAuth: false,
-        title: "Taxi Kezelés / Taxi",
+        title: "Taxi Kezelés / Szakácskönyv",
       },
     },
     {
@@ -49,7 +49,7 @@ const router = createRouter({
       component: () => import("../views/FuvarBevitel.vue"),
       meta: {
         requiresAuth: false,
-        title: "Fuvar bevitel / Taxi",
+        title: "Fuvar bevitel / Szakácskönyv",
       },
     },
     {
@@ -58,7 +58,7 @@ const router = createRouter({
       component: () => import("../views/Count1View.vue"),
       meta: {
         requiresAuth: false,
-        title: "Counter 1 / Taxi",
+        title: "Counter 1 / Szakácskönyv",
       },
     },
     {
@@ -67,7 +67,7 @@ const router = createRouter({
       component: () => import("../views/Count2View.vue"),
       meta: {
         requiresAuth: false,
-        title: "Counter 2 / Taxi",
+        title: "Counter 2 / Szakácskönyv",
       },
     },
     {
@@ -76,7 +76,7 @@ const router = createRouter({
       component: () => import("../views/LoginView.vue"),
       meta: {
         requiresAuth: false,
-        title: "Login / Taxi",
+        title: "Login / Szakácskönyv",
       },
     },
     {
@@ -85,7 +85,7 @@ const router = createRouter({
       component: () => import("../views/404View.vue"),
       meta: {
         requiresAuth: false,
-        title: "404 / Taxi",
+        title: "404 / Szakácskönyv",
       },
     },
   ],

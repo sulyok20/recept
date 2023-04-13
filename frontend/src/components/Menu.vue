@@ -3,7 +3,7 @@
     <div class="container-fluid">
       <router-link class="navbar-brand" to="/"
         @click="onClickMenu(1)"
-      >Taxi</router-link>
+      >Szakácskönyv</router-link>
       <button
         class="navbar-toggler"
         type="button"
@@ -51,7 +51,7 @@
               <li><hr class="dropdown-divider" /></li>
               <li>
                 <router-link class="dropdown-item" to="/taxiKezeles"
-                  >Taxik kezelése</router-link
+                  >Kategóriák</router-link
                 >
               </li>
               <li>
