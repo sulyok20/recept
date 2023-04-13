@@ -40,7 +40,7 @@
               :class="{active: menuState === 4}"
               @click="onClickMenu(4)"
             >
-              Taxiállomás
+              Recept kezelés
             </a>
             <ul class="dropdown-menu">
               <li>
@@ -51,7 +51,6 @@
               <li><hr class="dropdown-divider" /></li>
               <li>
                 <router-link class="dropdown-item" to="/taxiKezeles"
-                  :class="{ disabled: !storeLogin.loginSuccess }"
                   >Taxik kezelése</router-link
                 >
               </li>
