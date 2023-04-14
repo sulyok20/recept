@@ -11,20 +11,17 @@
           class="card"
          
         >
-          <img :src="kep" class="card-img-top" alt="..." />
+          <img :src=kep class="card-img-top" alt="" />
           <div class="card-body">
-            <h5 class="card-title">{{ food.foodName }}</h5>
+            <h5 class="card-title bigLEtter">{{ food.foodName }}</h5>
             <p class="card-text">
               <strong>Az étel feljegyzésének a dátuma:</strong>
               {{ food.descriptionDate }} <br />
               <strong>Az étel első készítésének dátuma:</strong>
               {{ food.firstDate }} <br />
               <strong>Kategória: </strong>
-              <span
-                v-for="(category, index) in food.category"
-                :key="`category${index}`"
-              >
-                {{ category.categoryName }}
+              <span>
+                {{ food.categoryName }}
               </span>
             </p>
             <button @click="onClickShowIngredient(food.id)" class="btn btn-primary">Alapanyagok</button>
@@ -44,8 +41,8 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalLabel"
-            v-for="(food, index) in foodWithCategrory"
+            <h1 class="modal-title fs-5 bigLEtter" id="exampleModalLabel"
+            v-for="(food, index) in foodWithCategroryById"
           :key="`food${index}`"
             >
              {{food.foodName}}
@@ -94,17 +91,22 @@ export default {
       storeUrl,
       storeLogin,
       foodWithCategrory: [],
-      kep: "../../public/káposztás tészta.jpg",
+      foodWithCategroryById: [],
+      kep: `../../public/káposztás tészta.jpg`,
       form: null,
       modal: null,
+      currentId: null,
+
     };
   },
   mounted() {
     this.getfoodWithCategrory();
+    
     this.modal = new bootstrap.Modal(document.getElementById("modalFood"), {
      keyboard: false,
     });
     this.form = document.querySelector(".needs-validation");
+
 
   },
   methods: {
@@ -120,8 +122,24 @@ export default {
       const data = await response.json();
       this.foodWithCategrory = data.data;
     },
+    async getfoodWithCategroryById(id) {
+      let url = `${this.storeUrl.urlfoodWithCategroryById}/${id}`;
+      
+      const config = {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${this.storeLogin.accessToken}`,
+        },
+      };
+      const response = await fetch(url, config);
+      const data = await response.json();
+      this.foodWithCategroryById = data.data;
+    },
     onClickShowIngredient(id){
-      this.modal.show();
+      this.modal.show(); 
+      this.currentId = null;
+      this.getfoodWithCategroryById(id);
+
     },
     onClickCancel() {
       this.modal.hide();
@@ -130,4 +148,7 @@ export default {
 };
 </script>
 <style>
+.bigLEtter::first-letter {
+    text-transform:capitalize;
+}
 </style>

@@ -117,7 +117,7 @@ Content-Type: application/json
     INNER JOIN category c on c.id = f.categoryID
     ;
 
-  #get foodWithCategroryById
+  #get osszes tabla ById
 
      select f.id, f.foodName, f.categoryID, 
   DATE_FORMAT(f.descriptionDate, '%Y.%m.%d') descriptionDate,
@@ -127,3 +127,12 @@ Content-Type: application/json
       INNER join ingredient i on i.id = u.ingredientID
     WHERE f.id = 1
     ;
+
+  #get foodWithCategroryById
+
+     select f.id, f.foodName, f.categoryID, 
+  DATE_FORMAT(f.descriptionDate, '%Y.%m.%d') descriptionDate,
+  DATE_FORMAT(f.firstDate, '%Y.%m.%d') firstDate, c.categoryName from food f
+    INNER JOIN category c on c.id = f.categoryID
+    where f.id   = 1 
+    order by f.foodName;

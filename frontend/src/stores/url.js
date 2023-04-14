@@ -45,6 +45,9 @@ export const useUrlStore = defineStore({
     },
     urlfoodWithCategrory(){
       return `${this.urlData}/foodWithCategrory`
-    }
+    },
+    urlfoodWithCategroryById(){
+      return `${this.urlData}/foodWithCategroryById`
+    },
   },
 });

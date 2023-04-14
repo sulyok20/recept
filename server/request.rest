@@ -252,3 +252,7 @@ Content-Type: application/json
 
 ### get food with category (nosql)
 get http://localhost:3000/foodWithCategrory
+
+### get food with category iiner join by id
+get http://localhost:3000/foodWithCategroryById/5
+

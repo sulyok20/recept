@@ -597,38 +597,17 @@ app.put("/trips/:id", (req, res) => {
 //#endregion trips
 
 //#region recept
+
 //#region food ---
 
-function getCategory(res, categoryID) {
-  return new Promise((resolve, reject) => {
-    let sql = `
-    SELECT id, categoryName from category
-    WHERE id = ?`;
-
-    pool.getConnection(function (error, connection) {
-      if (error) {
-        sendingGetError(res, "Server connecting error!");
-        return;
-      }
-      connection.query(sql, [categoryID], async function (error, results, fields) {
-        if (error) {
-          const message = "Category sql error";
-          sendingGetError(res, message);
-        }
-        //Az await miatt a car.trips a results-ot kapja értékül
-        resolve(results);
-      });
-      connection.release();
-    });
-  });
-}
+//Food és Category táblák inner join
 app.get("/foodWithCategrory", (req, res) => {
-  let sql = `
-  select id, foodName, categoryID, 
-  DATE_FORMAT(descriptionDate, '%Y.%m.%d') descriptionDate,
-  DATE_FORMAT(firstDate, '%Y.%m.%d') firstDate from food
-  `;
-
+  let sql = ` select f.id, f.foodName, f.categoryID, 
+  DATE_FORMAT(f.descriptionDate, '%Y.%m.%d') descriptionDate,
+  DATE_FORMAT(f.firstDate, '%Y.%m.%d') firstDate, c.categoryName from food f
+    INNER JOIN category c on c.id = f.categoryID
+    order by f.foodName
+`
   pool.getConnection(function (error, connection) {
     if (error) {
       sendingGetError(res, "Server connecting error!");
@@ -636,15 +615,9 @@ app.get("/foodWithCategrory", (req, res) => {
     }
     connection.query(sql, async function (error, results, fields) {
       if (error) {
-        message = "Food sql error";
+        message = "Cars sql error";
         sendingGetError(res, message);
         return;
-      }
-
-      //Végigmegyünk a kocsikon, és berakjuk a trips-eket
-      for (const food of results) {
-        //A promise a results-ot ada vissza
-        food.category = await getCategory(res, food.categoryID);
       }
       sendingGet(res, null, results);
     });
@@ -652,11 +625,40 @@ app.get("/foodWithCategrory", (req, res) => {
   });
 });
 
-
+//Food és Category táblák inner join by id
+app.get("/foodWithCategroryById/:id", (req, res) => {
+  const id = req.params.id;
+  let sql = ` select f.id, f.foodName, f.categoryID, 
+  DATE_FORMAT(f.descriptionDate, '%Y.%m.%d') descriptionDate,
+  DATE_FORMAT(f.firstDate, '%Y.%m.%d') firstDate, c.categoryName, c.id from food f
+    INNER JOIN category c on c.id = f.categoryID
+    where f.id = ?
+    order by f.foodName`;
+  pool.getConnection(function (error, connection) {
+    if (error) {
+      sendingGetError(res, "Server connecting error!");
+      return;
+    }
+    connection.query(sql, [id], async function (error, results, fields) {
+      if (error) {
+        const message = "Food sql error";
+        sendingGetError(res, message);
+        return;
+      }
+      if (results.length == 0) {
+        const message = `Not found id: ${id}`;
+        sendingGetError(res, message);
+        return;
+      }
+      sendingGetById(res, null, results, id);
+    });
+    connection.release();
+  });
+});
 //ooszes food
 app.get("/food", (req, res) => {
-  let sql = 
-  `select id, foodName, categoryID, 
+  let sql =
+    `select id, foodName, categoryID, 
   DATE_FORMAT(descriptionDate, '%Y.%m.%d') descriptionDate,
   DATE_FORMAT(firstDate, '%Y.%m.%d') firstDate from food`;
 
@@ -725,7 +727,7 @@ app.post("/food", (req, res) => {
     connection.query(
       sql,
       [newR.foodName, newR.categoryID, newR.descriptionDate,
-        newR.firstDate],
+      newR.firstDate],
       function (error, result, fields) {
         sendingPost(res, error, result, newR);
       }
@@ -989,8 +991,7 @@ function mySanitizeHtml(data) {
 
 app.listen(process.env.APP_PORT, () => {
   console.log(
-    `Data server, listen port: ${process.env.APP_PORT} (Auth: ${
-      process.env.AUTH_ON == 1 ? "on" : "off"
+    `Data server, listen port: ${process.env.APP_PORT} (Auth: ${process.env.AUTH_ON == 1 ? "on" : "off"
     })`
   );
 });
