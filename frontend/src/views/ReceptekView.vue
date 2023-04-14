@@ -4,14 +4,18 @@
     <h1>Receptek</h1>
 
     <div class="row row-cols-1 row-cols-md-2 g-4">
-      <div class="col"
-      v-for="(food, index) in foodWithCategrory"
-          :key="`food${index}`">
-        <div
-          class="card"
-         
-        >
-          <img :src=kep class="card-img-top" alt="" />
+      <div
+        class="col"
+        v-for="(food, index) in foodWithCategrory"
+        :key="`food${index}`"
+      >
+      
+        <div class="card">
+          <img
+            :src="'../../public/' + food.foodName + '.jpg'"
+            class="card-img-top"
+            alt=""
+          />
           <div class="card-body">
             <h5 class="card-title bigLEtter">{{ food.foodName }}</h5>
             <p class="card-text">
@@ -24,14 +28,19 @@
                 {{ food.categoryName }}
               </span>
             </p>
-            <button @click="onClickShowIngredient(food.id)" class="btn btn-primary">Alapanyagok</button>
+            <button
+              @click="onClickShowIngredient(food.id)"
+              class="btn btn-primary"
+            >
+              Alapanyagok
+            </button>
           </div>
         </div>
       </div>
     </div>
 
-      <!--#region Modal -->
-      <div
+    <!--#region Modal -->
+    <div
       class="modal fade"
       id="modalFood"
       tabindex="-1"
@@ -41,11 +50,13 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h1 class="modal-title fs-5 bigLEtter" id="exampleModalLabel"
-            v-for="(food, index) in foodWithCategroryById"
-          :key="`food${index}`"
+            <h1
+              class="modal-title fs-5 bigLEtter"
+              id="exampleModalLabel"
+              v-for="(food, index) in foodWithCategroryById"
+              :key="`food${index}`"
             >
-             {{food.foodName}}
+              {{ food.foodName }}
             </h1>
             <button
               type="button"
@@ -56,9 +67,7 @@
           </div>
 
           <!--#region Modal body -->
-          <div class="modal-body">
-            
-          </div>
+          <div class="modal-body"></div>
           <!--#endregion Modal body -->
 
           <div class="modal-footer">
@@ -74,8 +83,6 @@
       </div>
     </div>
     <!--#endregion Modal -->
- 
-
   </div>
 </template>
 
@@ -96,18 +103,15 @@ export default {
       form: null,
       modal: null,
       currentId: null,
-
     };
   },
   mounted() {
     this.getfoodWithCategrory();
-    
+
     this.modal = new bootstrap.Modal(document.getElementById("modalFood"), {
-     keyboard: false,
+      keyboard: false,
     });
     this.form = document.querySelector(".needs-validation");
-
-
   },
   methods: {
     async getfoodWithCategrory() {
@@ -124,7 +128,7 @@ export default {
     },
     async getfoodWithCategroryById(id) {
       let url = `${this.storeUrl.urlfoodWithCategroryById}/${id}`;
-      
+
       const config = {
         method: "GET",
         headers: {
@@ -135,20 +139,22 @@ export default {
       const data = await response.json();
       this.foodWithCategroryById = data.data;
     },
-    onClickShowIngredient(id){
-      this.modal.show(); 
+    onClickShowIngredient(id) {
+      this.modal.show();
       this.currentId = null;
       this.getfoodWithCategroryById(id);
-
     },
     onClickCancel() {
       this.modal.hide();
+    },
+    getImgUrl(pic) {
+      return require(`../../public/${pic}.jpg`);
     },
   },
 };
 </script>
 <style>
 .bigLEtter::first-letter {
-    text-transform:capitalize;
+  text-transform: capitalize;
 }
 </style>
