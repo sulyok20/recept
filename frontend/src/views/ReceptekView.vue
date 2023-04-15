@@ -14,7 +14,8 @@
           <img
             :src="'../../public/' + food.foodName + '.jpg'"
             class="card-img-top"
-            alt=""
+            :alt="`${food.foodName}`"
+            :title="`${food.foodName}`"
           />
           <div class="card-body">
             <h5 class="card-title bigLEtter">{{ food.foodName }}</h5>
@@ -156,5 +157,10 @@ export default {
 <style>
 .bigLEtter::first-letter {
   text-transform: capitalize;
+}
+img{
+  max-width: 600px;
+  max-height: 350px;
+
 }
 </style>

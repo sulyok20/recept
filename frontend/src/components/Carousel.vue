@@ -31,7 +31,7 @@
     </button>
 
     <div class="position-absolute top-50 start-50 translate-middle">
-      <h1 class="my-fs-cim"><span class="p-2 ps-4 pe-4 my-bg-cim">Címszöveg</span> </h1>
+      <h1 class="my-fs-cim"><span class="p-2 ps-4 pe-4 my-bg-cim">Szakácskönyv</span> </h1>
     </div>
 
   </div>
