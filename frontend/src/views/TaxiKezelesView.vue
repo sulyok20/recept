@@ -1,69 +1,63 @@
 
 <template>
   <div>
-    <h1>Taxi kezelés</h1>
+    <h1>Kategóriák</h1>
 
     <!--#region táblázat -->
     <table class="table table-bordered table-hover w-auto">
       <thead>
         <tr>
           <th>
-            <!-- New car -->
             <button
               type="button"
-              class="btn btn-outline-success btn-sm"
-              @click="onClickNew()"
+              class="btn btn-success btn-sm"
             >
-              Új autó
+              leves
             </button>
           </th>
-          <th>Autó márka</th>
-          <th>Rendszám</th>
-          <th>Tarifa (Ft/óra)</th>
-          <th>Vezető</th>
-          <th>Forgalmon kívül</th>
+          <th><button
+              type="button"
+              class="btn btn-primary btn-sm"
+            >
+            köret
+            </button>
+          </th>
+          <th><button
+              type="button"
+              class="btn btn-dark btn-sm"
+            >
+            egytálétel
+            </button>
+          </th>
+          <th>
+            <button
+              type="button"
+              class="btn btn-danger btn-sm"
+            >
+            húsétel
+            </button>
+          </th>
+          <th>
+            <button
+              type="button"
+              class="btn btn-secondary btn-sm"
+            >
+            főzelék
+            </button>
+          </th>
+          <th>
+            <button
+              type="button"
+              class="btn btn-warning btn-sm"
+            >
+            tészta
+            </button>
+          </th>
         </tr>
       </thead>
       <tbody>
-        <tr
-          v-for="(car, index) in cars"
-          :key="`car${index}`"
-          :class="currentRowBackground(car.id)"
-          @click="onClikRow(car.id)"
-        >
-          <td class="text-nowrap">
-            <!-- törlés -->
-            <button
-              type="button"
-              class="btn btn-outline-danger btn-sm"
-              @click="onClickDelete(car.id)"
-            >
-              <i class="bi bi-trash3-fill"></i>
-            </button>
-
-            <!-- módosítás -->
-            <button
-              type="button"
-              class="btn btn-outline-primary btn-sm ms-2"
-              @click="onClickEdit(car.id)"
-            >
-              <i class="bi bi-pencil-fill"></i>
-            </button>
-          </td>
-          <td>{{ car.name }}</td>
-          <td>{{ car.licenceNumber }}</td>
-          <td>{{ car.hourlyRate }}</td>
-          <td>{{ car.driverName }}</td>
-          <td>
-            <input
-              class="form-check-input"
-              disabled
-              type="checkbox"
-              :id="`cb${index}`"
-              v-model="car.outOfTraffic"
-            />
-          </td>
-        </tr>
+        
+         
       </tbody>
     </table>
     <!--#endregion táblázat -->
