@@ -625,14 +625,47 @@ app.get("/foodWithCategrory", (req, res) => {
   });
 });
 
+
+//Food és Category táblák inner join by id
+app.get("/foodWithEverithingById/:id", (req, res) => {
+  const id = req.params.id;
+  let sql = `  select f.id, f.foodName, f.categoryID, 
+  DATE_FORMAT(f.descriptionDate, '%Y.%m.%d') descriptionDate,
+  DATE_FORMAT(f.firstDate, '%Y.%m.%d') firstDate, c.categoryName, i.ingredientName, u.quantity, u.unit from food f
+    INNER JOIN category c on c.id = f.categoryID
+    INNER JOIN used u on u.foodID = f.id 
+      INNER join ingredient i on i.id = u.ingredientID
+    WHERE f.id = ?`
+  pool.getConnection(function (error, connection) {
+    if (error) {
+      sendingGetError(res, "Server connecting error!");
+      return;
+    }
+    connection.query(sql, [id], async function (error, results, fields) {
+      if (error) {
+        const message = "Food sql error";
+        sendingGetError(res, message);
+        return;
+      }
+      if (results.length == 0) {
+        const message = `Not found id: ${id}`;
+        sendingGetError(res, message);
+        return;
+      }
+      sendingGetById(res, null, results, id);
+    });
+    connection.release();
+  });
+});
+
 //Food és Category táblák inner join by id
 app.get("/foodWithCategroryById/:id", (req, res) => {
   const id = req.params.id;
-  let sql = ` select f.id, f.foodName, f.categoryID, 
+  let sql = `  select f.id, f.foodName, f.categoryID, 
   DATE_FORMAT(f.descriptionDate, '%Y.%m.%d') descriptionDate,
-  DATE_FORMAT(f.firstDate, '%Y.%m.%d') firstDate, c.categoryName, c.id from food f
+  DATE_FORMAT(f.firstDate, '%Y.%m.%d') firstDate, c.categoryName from food f
     INNER JOIN category c on c.id = f.categoryID
-    where f.id = ?
+    WHERE f.id = ?
     order by f.foodName`;
   pool.getConnection(function (error, connection) {
     if (error) {

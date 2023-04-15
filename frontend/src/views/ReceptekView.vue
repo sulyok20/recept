@@ -68,7 +68,29 @@
           </div>
 
           <!--#region Modal body -->
-          <div class="modal-body"></div>
+          <div class="modal-body">
+            <table class="table table-bordered table-hover w-auto">
+      <thead>
+        <tr>
+          <th>Alapanyag</th>
+          <th>Mennyiség</th>
+          <th>Egység</th>
+
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          v-for="(food, index) in foodWithEverithingById"
+          :key="`food${index}`"
+        >
+          <td>{{ food.ingredientName }}</td>
+          <td>{{ food.quantity }}</td>
+          <td>{{ food.unit }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+          </div>
           <!--#endregion Modal body -->
 
           <div class="modal-footer">
@@ -100,7 +122,7 @@ export default {
       storeLogin,
       foodWithCategrory: [],
       foodWithCategroryById: [],
-      kep: `../../public/káposztás tészta.jpg`,
+      foodWithEverithingById: [],
       form: null,
       modal: null,
       currentId: null,
@@ -140,9 +162,23 @@ export default {
       const data = await response.json();
       this.foodWithCategroryById = data.data;
     },
+    async getfoodWithEverithingById(id) {
+      let url = `${this.storeUrl.urlfoodWithEverithingById}/${id}`;
+
+      const config = {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${this.storeLogin.accessToken}`,
+        },
+      };
+      const response = await fetch(url, config);
+      const data = await response.json();
+      this.foodWithEverithingById = data.data;
+    },
     onClickShowIngredient(id) {
       this.modal.show();
       this.currentId = null;
+      this.getfoodWithEverithingById(id);
       this.getfoodWithCategroryById(id);
     },
     onClickCancel() {
@@ -161,6 +197,9 @@ export default {
 img{
   max-width: 600px;
   max-height: 350px;
-
+}
+table{
+  margin-left:auto;
+  margin-right:auto;
 }
 </style>
