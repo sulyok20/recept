@@ -9,48 +9,67 @@
         <tr>
           <th>
             <button
-              type="button"
-              class="btn btn-success btn-sm"
+            type="button"
+            class="btn btn-primary btn-sm"
+            id="1"
+            @click="onClickFilterCategory(id)"
             >
-              leves
-            </button>
-          </th>
-          <th><button
-              type="button"
-              class="btn btn-primary btn-sm"
-            >
-            köret
-            </button>
-          </th>
-          <th><button
+            Köret
+          </button>
+        </th>
+        <th>
+          <button
+            type="button"
+            class="btn btn-success btn-sm"
+            id="2"
+            @click="onClickFilterCategory(id)"
+
+          >
+            Leves
+          </button>
+        </th>
+          <th>
+            <button
               type="button"
               class="btn btn-dark btn-sm"
+            id="3"
+            @click="onClickFilterCategory(id)"
+
             >
-            egytálétel
+            Egytálétel
             </button>
           </th>
           <th>
             <button
               type="button"
               class="btn btn-danger btn-sm"
+              id="4"
+              @click="onClickFilterCategory(id)"
+
             >
-            húsétel
+            Húsétel
             </button>
           </th>
           <th>
             <button
               type="button"
               class="btn btn-secondary btn-sm"
+            id="5"
+            @click="onClickFilterCategory(id)"
+
             >
-            főzelék
+            Főzelék
             </button>
           </th>
           <th>
             <button
               type="button"
               class="btn btn-warning btn-sm"
+            id="6"
+            @click="onClickFilterCategory(id)"
+
             >
-            tészta
+            Tészta
             </button>
           </th>
         </tr>
@@ -147,15 +166,7 @@
               </div>
 
               <div class="col-md-6">
-                <select class="form-select" aria-label="Default select example"
-                  v-model="editableCar.driverId"
-                >
-                <option :value="null">Nincs sofőr</option>
-                <option v-for="(driver, index) in driversAbc" :key="`op${index}`"
-                  :value="driver.id">
-                  {{ driver.driverName }}
-                </option>
-                </select>
+                
               </div>
             </form>
             <!--#endregion Form -->
@@ -222,12 +233,12 @@ export default {
       form: null,
       state: "view",
       currentId: null,
-      driversAbc: [],
+      filterCategory: [],
     };
   },
   mounted() {
-    this.getCars();
-    this.getFreeDriversAbc();
+    // this.getCars();
+    // this.getFreeDriversAbc();
     this.modal = new bootstrap.Modal(document.getElementById("modalCar"), {
       keyboard: false,
     });
@@ -262,6 +273,20 @@ export default {
       const response = await fetch(url, config);
       const data = await response.json();
       this.editableCar = data.data;
+    },
+
+    async getCategoryFilter(id){
+      let url = `${this.storeUrl.urlCategory}/${id}`;
+      const config = {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${this.storeLogin.accessToken}`,
+        },
+      };
+      const response = await fetch(url, config);
+      const data = await response.json();
+      this.filterCategory = data.data;
+      console.log("categoria filter id:", this.id);
     },
 
     async getFreeDriversAbc() {
@@ -318,6 +343,11 @@ export default {
       const response = await fetch(url, config);
       this.getCars();
     },
+    
+    onClickFilterCategory(id){
+      this.getCategoryFilter(id)
+    },
+
     onClikRow(id) {
       this.currentId = id;
     },

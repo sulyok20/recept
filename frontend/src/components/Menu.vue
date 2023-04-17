@@ -50,7 +50,7 @@
               </li>
               <li><hr class="dropdown-divider" /></li>
               <li>
-                <router-link class="dropdown-item" to="/taxiKezeles"
+                <router-link class="dropdown-item" to="/kategoriak"
                   >Kategóriák</router-link
                 >
               </li>
@@ -104,7 +104,7 @@
             placeholder="Search"
             aria-label="Search"
           />
-          <button class="btn btn-outline-success" type="submit">Search</button>
+          <button class="btn btn-outline-success" type="button">Search</button>
         </form>
       </div>
     </div>

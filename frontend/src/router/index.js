@@ -35,12 +35,12 @@ const router = createRouter({
       },
     },
     {
-      path: "/taxiKezeles",
-      name: "taxiKezeles",
-      component: () => import("../views/TaxiKezelesView.vue"),
+      path: "/kategoriak",
+      name: "kategoriak",
+      component: () => import("../views/KategoriakView.vue"),
       meta: {
         requiresAuth: false,
-        title: "Taxi Kezelés / Szakácskönyv",
+        title: "Kategóriák / Szakácskönyv",
       },
     },
     {
