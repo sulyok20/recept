@@ -3,7 +3,7 @@
   <div>
     <h1>Receptek</h1>
 
-    <div class="row row-cols-1 row-cols-md-2 g-4">
+    <div class="row row-cols-1 row-cols-md-3 g-4">
       <div
         class="col"
         v-for="(food, index) in foodWithCategrory"
@@ -12,11 +12,12 @@
       
         <div class="card">
           <img
-            :src="'../../public/' + food.foodName + '.jpg'"
+           :src="'../../public/' + food.foodName + '.jpg'"
             class="card-img-top"
             :alt="`${food.foodName}`"
             :title="`${food.foodName}`"
           />
+          
           <div class="card-body">
             <h5 class="card-title bigLEtter">{{ food.foodName }}</h5>
             <p class="card-text">

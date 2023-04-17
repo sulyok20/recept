@@ -75,11 +75,46 @@
         </tr>
       </thead>
       <tbody>
-        
-         
       </tbody>
     </table>
     <!--#endregion táblázat -->
+
+    <div class="row row-cols-1 row-cols-md-2 g-4" id="kartya">
+      <div
+        class="col"
+        v-for="(food, index) in foodWithCategrory"
+        :key="`food${index}`"
+      >
+      
+        <div class="card">
+          <img
+            :src="'../../public/' + food.foodName + '.jpg'"
+            class="card-img-top"
+            :alt="`${food.foodName}`"
+            :title="`${food.foodName}`"
+          />
+          <div class="card-body">
+            <h5 class="card-title bigLEtter">{{ food.foodName }}</h5>
+            <p class="card-text">
+              <strong>Az étel feljegyzésének a dátuma:</strong>
+              {{ food.descriptionDate }} <br />
+              <strong>Az étel első készítésének dátuma:</strong>
+              {{ food.firstDate }} <br />
+              <strong>Kategória: </strong>
+              <span>
+                {{ food.categoryName }}
+              </span>
+            </p>
+            <button
+             
+              class="btn btn-primary"
+            >
+              Alapanyagok
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!--#region Modal -->
     <div
@@ -234,11 +269,13 @@ export default {
       state: "view",
       currentId: null,
       filterCategory: [],
+      foodWithCategrory: [],
     };
   },
   mounted() {
     // this.getCars();
     // this.getFreeDriversAbc();
+    this.getfoodWithCategrory();
     this.modal = new bootstrap.Modal(document.getElementById("modalCar"), {
       keyboard: false,
     });
@@ -287,6 +324,18 @@ export default {
       const data = await response.json();
       this.filterCategory = data.data;
       console.log("categoria filter id:", this.id);
+    },
+    async getfoodWithCategrory() {
+      let url = this.storeUrl.urlfoodWithCategrory;
+      const config = {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${this.storeLogin.accessToken}`,
+        },
+      };
+      const response = await fetch(url, config);
+      const data = await response.json();
+      this.foodWithCategrory = data.data;
     },
 
     async getFreeDriversAbc() {
@@ -412,5 +461,9 @@ export default {
 <style>
 .my-bg-current-row {
   background-color: lightgrey;
+}
+
+.invisible {
+  visibility: hidden;
 }
 </style>
