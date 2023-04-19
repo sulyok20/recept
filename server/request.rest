@@ -259,3 +259,12 @@ get http://localhost:3000/foodWithCategroryById/5
 ### get food with category iiner join by id
 get http://localhost:3000/foodWithEverithingById/11
 
+
+### get food with category iiner join 
+get http://localhost:3000/categoryWithFood
+
+
+### get food with category iiner join by id
+get http://localhost:3000/categoryWithFood/1
+
+

@@ -774,6 +774,52 @@ app.post("/food", (req, res) => {
 //#endregion food
 
 
+
+app.get("/categoryWithFood", (req, res) => {
+  let sql =
+    ` select c.id "kategoria id", c.categoryName, f.id "kaja id", f.foodName, f.descriptionDate, f.firstDate from category c 
+          INNER JOIN food f on c.id = f.categoryID;`;
+
+  pool.getConnection(function (error, connection) {
+    if (error) {
+      sendingGetError(res, "Server connecting error!");
+      return;
+    }
+    connection.query(sql, async function (error, results, fields) {
+      sendingGet(res, error, results);
+    });
+    connection.release();
+  });
+});
+
+app.get("/categoryWithFood/:id", (req, res) => {
+  const id = req.params.id;
+  let sql = 
+  `select c.id "kategoria id", c.categoryName, f.id, f.foodName, f.descriptionDate, f.firstDate from category c 
+  INNER JOIN food f on c.id = f.categoryID
+  where f.categoryID = ?`;
+  pool.getConnection(function (error, connection) {
+    if (error) {
+      sendingGetError(res, "Server connecting error!");
+      return;
+    }
+    connection.query(sql, [id], async function (error, results, fields) {
+      if (error) {
+        const message = "categoryWithFood sql error";
+        sendingGetError(res, message);
+        return;
+      }
+      if (results.length == 0) {
+        const message = `Not found id: ${id}`;
+        sendingGetError(res, message);
+        return;
+      }
+      sendingGetById(res, null, results, id);
+    });
+    connection.release();
+  });
+});
+
 //#region category ---
 app.get("/category", (req, res) => {
   let sql = `SELECT * FROM category`;

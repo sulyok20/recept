@@ -1,7 +1,31 @@
 
 <template>
   <div>
-    <h1>Receptek</h1>
+    <div class="d-flex p-3">
+
+      <h1>Receptek</h1>
+      
+      <div class="btn-group d-flex" id="kategoriak">
+        <button
+        class="btn btn-dark btn-lg dropdown-toggle"
+        type="button"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+        >
+        Kategóriák
+      </button>
+      <ul class="dropdown-menu">
+        <li v-for="(category, index) in category" :key="`category${index}`">
+          <a
+          class="dropdown-item"
+            href="#"
+            @click="onClickFilterCategory(category.id)"
+            >{{ category.categoryName }}</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
 
     <div class="row row-cols-1 row-cols-md-3 g-4">
       <div
@@ -127,11 +151,13 @@ export default {
       form: null,
       modal: null,
       currentId: null,
+      category: [],
+      categoryWithFood:[],
     };
   },
   mounted() {
     this.getfoodWithCategrory();
-
+    this.getCategory();
     this.modal = new bootstrap.Modal(document.getElementById("modalFood"), {
       keyboard: false,
     });
@@ -149,6 +175,18 @@ export default {
       const response = await fetch(url, config);
       const data = await response.json();
       this.foodWithCategrory = data.data;
+    },
+    async getCategory() {
+      let url = `${this.storeUrl.urlCategory}`;
+      const config = {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${this.storeLogin.accessToken}`,
+        },
+      };
+      const response = await fetch(url, config);
+      const data = await response.json();
+      this.category = data.data;
     },
     async getfoodWithCategroryById(id) {
       let url = `${this.storeUrl.urlfoodWithCategroryById}/${id}`;
@@ -176,11 +214,28 @@ export default {
       const data = await response.json();
       this.foodWithEverithingById = data.data;
     },
+    async getCategoryFilter(id) {
+      let url = `${this.storeUrl.urlcategoryWithFood}/${id}`;
+      const config = {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${this.storeLogin.accessToken}`,
+        },
+      };
+      const response = await fetch(url, config);
+      const data = await response.json();
+      this.categoryWithFood = data.data;
+      console.log("filter", id);
+    },
     onClickShowIngredient(id) {
       this.modal.show();
       this.currentId = null;
       this.getfoodWithEverithingById(id);
       this.getfoodWithCategroryById(id);
+    },
+    onClickFilterCategory(id) {
+      this.getCategoryFilter(id);
+      console.log("id", id);
     },
     onClickCancel() {
       this.modal.hide();
@@ -202,5 +257,9 @@ img{
 table{
   margin-left:auto;
   margin-right:auto;
+}
+#kategoriak{
+  float: right;
+  margin-left: auto ;
 }
 </style>

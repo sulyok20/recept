@@ -121,7 +121,7 @@ Content-Type: application/json
 
      select f.id, f.foodName, f.categoryID, 
   DATE_FORMAT(f.descriptionDate, '%Y.%m.%d') descriptionDate,
-  DATE_FORMAT(f.firstDate, '%Y.%m.%d') firstDate, c.categoryName, i.ingredientName, u.quantity, u.unit from food f
+  DATE_FORMAT(f.firstDate, '%Y.%m.%d') firstDate, c.categoryName, i.ingredientName from food f
     INNER JOIN category c on c.id = f.categoryID
     INNER JOIN used u on u.foodID = f.id 
       INNER join ingredient i on i.id = u.ingredientID
@@ -132,7 +132,15 @@ Content-Type: application/json
 
      select f.id, f.foodName, f.categoryID, 
   DATE_FORMAT(f.descriptionDate, '%Y.%m.%d') descriptionDate,
-  DATE_FORMAT(f.firstDate, '%Y.%m.%d') firstDate, c.categoryName from food f
+  DATE_FORMAT(f.firstDate, '%Y.%m.%d') firstDate, c.categoryName, c.id from food f
     INNER JOIN category c on c.id = f.categoryID
     where f.id   = 1 
     order by f.foodName;
+
+
+    select c.id "kategoria id", c.categoryName, f.id, f.foodName, f.descriptionDate, f.firstDate from category c 
+      INNER JOIN food f on c.id = f.categoryID;
+
+      select c.id "kategoria id", c.categoryName, f.id, f.foodName, f.descriptionDate, f.firstDate from category c 
+      INNER JOIN food f on c.id = f.categoryID
+      where f.categoryID = 1;

@@ -4,117 +4,31 @@
     <h1>Kategóriák</h1>
 
     <!--#region táblázat -->
+
+   
+
     <table class="table table-bordered table-hover w-auto">
       <thead>
         <tr>
-          <th>
-            <button
-            type="button"
-            class="btn btn-primary btn-sm"
-            id="1"
-            @click="onClickFilterCategory(id)"
-            >
-            Köret
-          </button>
-        </th>
-        <th>
-          <button
-            type="button"
-            class="btn btn-success btn-sm"
-            id="2"
-            @click="onClickFilterCategory(id)"
+          <th>kategoria</th>
+        </tr>
+      </thead>
 
-          >
-            Leves
-          </button>
-        </th>
-          <th>
+      <tbody v-for="(category, index) in category" :key="`category${index}`">
+        <tr>
+          <td>
             <button
               type="button"
               class="btn btn-dark btn-sm"
-            id="3"
-            @click="onClickFilterCategory(id)"
-
+              @click="onClickFilterCategory(category.id)"
             >
-            Egytálétel
+              {{ category.categoryName }}
             </button>
-          </th>
-          <th>
-            <button
-              type="button"
-              class="btn btn-danger btn-sm"
-              id="4"
-              @click="onClickFilterCategory(id)"
-
-            >
-            Húsétel
-            </button>
-          </th>
-          <th>
-            <button
-              type="button"
-              class="btn btn-secondary btn-sm"
-            id="5"
-            @click="onClickFilterCategory(id)"
-
-            >
-            Főzelék
-            </button>
-          </th>
-          <th>
-            <button
-              type="button"
-              class="btn btn-warning btn-sm"
-            id="6"
-            @click="onClickFilterCategory(id)"
-
-            >
-            Tészta
-            </button>
-          </th>
+          </td>
         </tr>
-      </thead>
-      <tbody>
       </tbody>
     </table>
     <!--#endregion táblázat -->
-
-    <div class="row row-cols-1 row-cols-md-2 g-4" id="kartya">
-      <div
-        class="col"
-        v-for="(food, index) in foodWithCategrory"
-        :key="`food${index}`"
-      >
-      
-        <div class="card">
-          <img
-            :src="'../../public/' + food.foodName + '.jpg'"
-            class="card-img-top"
-            :alt="`${food.foodName}`"
-            :title="`${food.foodName}`"
-          />
-          <div class="card-body">
-            <h5 class="card-title bigLEtter">{{ food.foodName }}</h5>
-            <p class="card-text">
-              <strong>Az étel feljegyzésének a dátuma:</strong>
-              {{ food.descriptionDate }} <br />
-              <strong>Az étel első készítésének dátuma:</strong>
-              {{ food.firstDate }} <br />
-              <strong>Kategória: </strong>
-              <span>
-                {{ food.categoryName }}
-              </span>
-            </p>
-            <button
-             
-              class="btn btn-primary"
-            >
-              Alapanyagok
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
 
     <!--#region Modal -->
     <div
@@ -200,9 +114,7 @@
                 </label>
               </div>
 
-              <div class="col-md-6">
-                
-              </div>
+              <div class="col-md-6"></div>
             </form>
             <!--#endregion Form -->
           </div>
@@ -219,7 +131,6 @@
             <button
               type="button"
               class="btn btn-primary"
-              
               @click="onClickSave()"
             >
               Save changes
@@ -270,12 +181,14 @@ export default {
       currentId: null,
       filterCategory: [],
       foodWithCategrory: [],
+      category: [],
     };
   },
   mounted() {
     // this.getCars();
     // this.getFreeDriversAbc();
-    this.getfoodWithCategrory();
+    this.getCategory();
+
     this.modal = new bootstrap.Modal(document.getElementById("modalCar"), {
       keyboard: false,
     });
@@ -312,8 +225,21 @@ export default {
       this.editableCar = data.data;
     },
 
-    async getCategoryFilter(id){
-      let url = `${this.storeUrl.urlCategory}/${id}`;
+    async getCategory() {
+      let url = `${this.storeUrl.urlCategory}`;
+      const config = {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${this.storeLogin.accessToken}`,
+        },
+      };
+      const response = await fetch(url, config);
+      const data = await response.json();
+      this.category = data.data;
+    },
+
+    async getCategoryFilter(id) {
+      let url = `${this.storeUrl.urlCategory}`;
       const config = {
         method: "GET",
         headers: {
@@ -323,8 +249,9 @@ export default {
       const response = await fetch(url, config);
       const data = await response.json();
       this.filterCategory = data.data;
-      console.log("categoria filter id:", this.id);
+      console.log("filter", id);
     },
+
     async getfoodWithCategrory() {
       let url = this.storeUrl.urlfoodWithCategrory;
       const config = {
@@ -392,9 +319,10 @@ export default {
       const response = await fetch(url, config);
       this.getCars();
     },
-    
-    onClickFilterCategory(id){
-      this.getCategoryFilter(id)
+
+    onClickFilterCategory(id) {
+      this.getCategoryFilter(id);
+      console.log("id", id);
     },
 
     onClikRow(id) {
@@ -435,7 +363,7 @@ export default {
         }
         this.modal.hide();
         //frissíti a taxisok listáját
-        this.getFreeDriversAbc()
+        this.getFreeDriversAbc();
       }
     },
     currentRowBackground(id) {
