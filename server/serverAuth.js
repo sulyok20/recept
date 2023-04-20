@@ -5,6 +5,7 @@ const app = express();
 const jwt = require("jsonwebtoken");
 const pool = require("./config/database.js");
 const { genSaltSync, hashSync, compareSync } = require("bcrypt");
+const cors = require("cors");
 
 const {
   sendingInfo
@@ -14,6 +15,13 @@ const {
 app.use(express.json());
 //itt tároljuk a refrest tokeneket
 refreshTokens = [];
+
+app.use(
+  cors({
+    origin: "*", //http://localhost:8080
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  })
+);
 
 // A bejelenkezés
 app.post("/login", (req, res) => {
@@ -91,7 +99,7 @@ app.post("/token", (req, res) => {
   jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (error, user) => {
     if (error) {
       sendingInfo(res, 0, "Invalid Token", [], 403);
-    return;
+      return;
     }
     let accessToken = generateAccessToken({ name: user.name });
 

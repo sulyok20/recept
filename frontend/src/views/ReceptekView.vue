@@ -2,22 +2,39 @@
 <template>
   <div>
     <div class="d-flex p-3">
-
       <h1>Receptek</h1>
-      
+      <!-- kereso -->
+      <form class="d-flex" role="search" id="kereso">
+          <input
+            class="form-control me-2"
+            type="search"
+            placeholder="Search"
+            aria-label="Search"
+            id="keresoSzo"
+          />
+          <button class="btn btn-outline-success" 
+          @click="onClickSearch(keresoSzo)"
+          type="button">Search</button>
+        </form>
+        <!-- dropdown -->
       <div class="btn-group d-flex" id="kategoriak">
         <button
-        class="btn btn-dark btn-lg dropdown-toggle"
-        type="button"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
+          class="btn btn-dark btn-lg dropdown-toggle"
+          type="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
         >
-        Kategóriák
-      </button>
-      <ul class="dropdown-menu">
-        <li v-for="(category, index) in category" :key="`category${index}`">
-          <a
-          class="dropdown-item"
+          Kategóriák
+        </button>
+        <ul class="dropdown-menu">
+          <li><a
+            class="dropdown-item"
+            id="0"
+            @click="getfoodWithCategrory()"
+            href="#">Összes</a></li>
+          <li v-for="(category, index) in category" :key="`category${index}`">
+            <a
+            class="dropdown-item"
             href="#"
             @click="onClickFilterCategory(category.id)"
             >{{ category.categoryName }}</a
@@ -33,15 +50,14 @@
         v-for="(food, index) in foodWithCategrory"
         :key="`food${index}`"
       >
-      
         <div class="card">
           <img
-           :src="'../../public/' + food.foodName + '.jpg'"
+            :src="'../../public/' + food.foodName + '.jpg'"
             class="card-img-top"
             :alt="`${food.foodName}`"
             :title="`${food.foodName}`"
           />
-          
+
           <div class="card-body">
             <h5 class="card-title bigLEtter">{{ food.foodName }}</h5>
             <p class="card-text">
@@ -95,26 +111,24 @@
           <!--#region Modal body -->
           <div class="modal-body">
             <table class="table table-bordered table-hover w-auto">
-      <thead>
-        <tr>
-          <th>Alapanyag</th>
-          <th>Mennyiség</th>
-          <th>Egység</th>
-
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          v-for="(food, index) in foodWithEverithingById"
-          :key="`food${index}`"
-        >
-          <td>{{ food.ingredientName }}</td>
-          <td>{{ food.quantity }}</td>
-          <td>{{ food.unit }}</td>
-        </tr>
-      </tbody>
-    </table>
-
+              <thead>
+                <tr>
+                  <th>Alapanyag</th>
+                  <th>Mennyiség</th>
+                  <th>Egység</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  v-for="(food, index) in foodWithEverithingById"
+                  :key="`food${index}`"
+                >
+                  <td>{{ food.ingredientName }}</td>
+                  <td>{{ food.quantity }}</td>
+                  <td>{{ food.unit }}</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
           <!--#endregion Modal body -->
 
@@ -152,7 +166,9 @@ export default {
       modal: null,
       currentId: null,
       category: [],
-      categoryWithFood:[],
+      categoryWithFood: [],
+      keresoSzo: null,
+      foodWithCategroryFilter: []
     };
   },
   mounted() {
@@ -162,6 +178,15 @@ export default {
       keyboard: false,
     });
     this.form = document.querySelector(".needs-validation");
+  },
+  watch: {
+    keresoSzo(){
+      if (this.keresoSzo.trim()) {
+        this.getfoodWithCategroryFilter();
+      } else {
+        this.getfoodWithCategrory();
+      }
+    }
   },
   methods: {
     async getfoodWithCategrory() {
@@ -214,6 +239,7 @@ export default {
       const data = await response.json();
       this.foodWithEverithingById = data.data;
     },
+    
     async getCategoryFilter(id) {
       let url = `${this.storeUrl.urlcategoryWithFood}/${id}`;
       const config = {
@@ -227,6 +253,20 @@ export default {
       this.categoryWithFood = data.data;
       console.log("filter", id);
     },
+    async getfoodWithCategroryFilter() {
+      const url = `${this.urlfoodWithCategroryBySearch}/${this.keresoSzo}`;
+      const response = await fetch(url);
+      const data = await response.json();
+      this.foodWithCategroryFilter = data.data;
+      
+    },
+
+    onClickSearch(keresoSzo){
+      this.keresoSzo =  document.getElementById("keresoSzo").value;
+      console.log(keresoSzo);
+      this.getfoodWithCategroryFilter(keresoSzo);
+    },
+
     onClickShowIngredient(id) {
       this.modal.show();
       this.currentId = null;
@@ -250,16 +290,19 @@ export default {
 .bigLEtter::first-letter {
   text-transform: capitalize;
 }
-img{
+img {
   max-width: 600px;
   max-height: 350px;
 }
-table{
-  margin-left:auto;
-  margin-right:auto;
+table {
+  margin-left: auto;
+  margin-right: auto;
 }
-#kategoriak{
+#kategoriak {
   float: right;
-  margin-left: auto ;
+  margin-left: auto;
+}
+#kereso{
+  margin-left: auto;
 }
 </style>

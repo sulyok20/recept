@@ -44,9 +44,9 @@ Content-Type: application/json
     "firstName": "h",
     "lastName": "Fehér",
     "gender": "férfi",
-    "userName": "h1",
-    "email": "feher.h1@gmail.com",
-    "password": "jozsi123",
+    "userName": "123",
+    "email": "feher@gmail.com",
+    "password": "123",
     "number": 33333333
 }
 
@@ -250,8 +250,11 @@ Content-Type: application/json
 
 #-------------------#
 
-### get food with category (nosql)
+### get food with category 
 get http://localhost:3000/foodWithCategrory
+
+### get food with category by search 
+get http://localhost:3000/foodWithCategroryBySearch/bab
 
 ### get food with category iiner join by id
 get http://localhost:3000/foodWithCategroryById/5

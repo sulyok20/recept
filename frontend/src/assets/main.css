@@ -6,3 +6,8 @@
 .my-width-100 {
   width: 100px;
 }
+body{
+  /* background-image: url(../../public/template.jpg); */
+  background-repeat: no-repeat;
+  background-size: cover;
+}

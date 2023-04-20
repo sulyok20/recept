@@ -658,6 +658,40 @@ app.get("/foodWithEverithingById/:id", (req, res) => {
   });
 });
 
+
+//Food és Category táblák inner join by id
+app.get("/foodWithCategroryBySearch/:search", (req, res) => {
+  const search = `%${req.params.search}%`;
+  let sql = `  select DISTINCT f.foodName, c.categoryName,
+  DATE_FORMAT(f.descriptionDate, '%Y.%m.%d') descriptionDate,
+  DATE_FORMAT(f.firstDate, '%Y.%m.%d') firstDate from food f
+  inner join category c on c.id = f.categoryID
+  inner join used u on u.foodID = f.id
+  INNER join ingredient i on u.ingredientID = i.id
+where f.foodName like ? or i.ingredientName LIKE ?
+`
+  pool.getConnection(function (error, connection) {
+    if (error) {
+      sendingGetError(res, "Server connecting error!");
+      return;
+    }
+    connection.query(sql, [search, search], async function (error, results, fields) {
+      if (error) {
+        const message = "Food sql error";
+        sendingGetError(res, message);
+        return;
+      }
+      if (results.length == 0) {
+        const message = `Not found id: ${search}`;
+        sendingGetError(res, message);
+        return;
+      }
+      sendingGetById(res, null, results, search);
+    });
+    connection.release();
+  });
+});
+
 //Food és Category táblák inner join by id
 app.get("/foodWithCategroryById/:id", (req, res) => {
   const id = req.params.id;

@@ -137,10 +137,23 @@ Content-Type: application/json
     where f.id   = 1 
     order by f.foodName;
 
-
-    select c.id "kategoria id", c.categoryName, f.id, f.foodName, f.descriptionDate, f.firstDate from category c 
+#kategoriankent kajak
+    select c.id "kategoria id", c.categoryName, f.id, f.foodName, DATE_FORMAT(f.descriptionDate, '%Y.%m.%d') descriptionDate, DATE_FORMAT(f.firstDate, '%Y.%m.%d') firstDate from category c 
       INNER JOIN food f on c.id = f.categoryID;
 
-      select c.id "kategoria id", c.categoryName, f.id, f.foodName, f.descriptionDate, f.firstDate from category c 
+    #kategoriankent kajak id alapjan
+      select c.id "kategoria id", c.categoryName, f.id, f.foodName, DATE_FORMAT(f.descriptionDate, '%Y.%m.%d') descriptionDate,
+        DATE_FORMAT(f.firstDate, '%Y.%m.%d') firstDate from category c 
       INNER JOIN food f on c.id = f.categoryID
       where f.categoryID = 1;
+
+
+#kereses
+
+  select DISTINCT f.foodName, c.categoryName,  DATE_FORMAT(f.descriptionDate, '%Y.%m.%d') descriptionDate,
+    DATE_FORMAT(f.firstDate, '%Y.%m.%d') firstDate from food f
+    inner join category c on c.id = f.categoryID
+    inner join used u on u.foodID = f.id
+    INNER join ingredient i on u.ingredientID = i.id
+  where f.foodName like '%bab%' or i.ingredientName LIKE '%bab%'
+  ;
