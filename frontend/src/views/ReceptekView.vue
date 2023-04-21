@@ -11,6 +11,7 @@
             placeholder="Search"
             aria-label="Search"
             id="keresoSzo"
+            v-model="keresoSzo"
           />
           <button class="btn btn-outline-success" 
           @click="onClickSearch(keresoSzo)"
@@ -258,7 +259,6 @@ export default {
       const response = await fetch(url);
       const data = await response.json();
       this.foodWithCategroryFilter = data.data;
-      
     },
 
     onClickSearch(keresoSzo){
