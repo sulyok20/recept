@@ -10,11 +10,10 @@
             type="search"
             placeholder="Search"
             aria-label="Search"
-            id="keresoSzo"
             v-model="keresoSzo"
           />
           <button class="btn btn-outline-success" 
-          @click="onClickSearch(keresoSzo)"
+          @click="onClickSearch()"
           type="button">Search</button>
         </form>
         <!-- dropdown -->
@@ -151,10 +150,14 @@
 
 <script>
 import * as bootstrap from "bootstrap";
+import { storeToRefs } from "pinia";
+import { useKeresStore } from "@/stores/keres";
 import { useUrlStore } from "@/stores/url";
 import { useLoginStore } from "@/stores/login";
 const storeUrl = useUrlStore();
 const storeLogin = useLoginStore();
+const storeKeres = useKeresStore();
+const { keresoSzo } = storeToRefs(storeKeres);
 export default {
   data() {
     return {
@@ -169,7 +172,8 @@ export default {
       category: [],
       categoryWithFood: [],
       keresoSzo: null,
-      foodWithCategroryFilter: []
+      foodWithCategroryFilter: [],
+      urlfoodWithCategroryBySearch: [],
     };
   },
   mounted() {
@@ -183,7 +187,7 @@ export default {
   watch: {
     keresoSzo(){
       if (this.keresoSzo.trim()) {
-        this.getfoodWithCategroryFilter();
+        this.getfoodWithCategroryBySearch();
       } else {
         this.getfoodWithCategrory();
       }
@@ -254,20 +258,25 @@ export default {
       this.categoryWithFood = data.data;
       console.log("filter", id);
     },
-    async getfoodWithCategroryFilter() {
+    async getfoodWithCategroryBySearch() {
       const url = `${this.urlfoodWithCategroryBySearch}/${this.keresoSzo}`;
       const response = await fetch(url);
       const data = await response.json();
-      this.foodWithCategroryFilter = data.data;
+      this.food = data.data;
     },
 
-    onClickSearch(keresoSzo){
-      this.keresoSzo =  document.getElementById("keresoSzo").value;
-      console.log(keresoSzo);
-      this.getfoodWithCategroryFilter(keresoSzo);
+    onClickSearch(){
+      console.log("kurva anyjat ennek a szarnak");
+      if (this.keresoSzo.trim()) {
+        this.getfoodWithCategroryBySearch()
+      } else {
+        this.getfoodWithCategrory()
+      }
+     
     },
 
     onClickShowIngredient(id) {
+      console.log("kurva anyad");
       this.modal.show();
       this.currentId = null;
       this.getfoodWithEverithingById(id);
@@ -282,6 +291,17 @@ export default {
     },
     getImgUrl(pic) {
       return require(`../../public/${pic}.jpg`);
+    },
+    keresJelol(text) {
+      if (this.keresoszo) {
+        let what = new RegExp(this.keresoszo, "gi");
+        text = text.replace(what, (match) => {
+          return `<span class="mark">${match}</span>`;
+        });
+        return text;
+      } else {
+        return text;
+      }
     },
   },
 };

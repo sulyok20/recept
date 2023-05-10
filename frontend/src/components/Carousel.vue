@@ -2,13 +2,13 @@
   <div id="carouselExample" class="carousel slide position-relative" data-bs-ride="carousel">
     <div class="carousel-inner">
       <div class="carousel-item active">
-        <img src="https://picsum.photos/id/237/1400/300" class="d-block w-100" alt="..." />
+        <img src="../../public/cover1.jpg" class="d-block w-100 covers" alt="..." />
       </div>
       <div class="carousel-item">
-        <img src="https://picsum.photos/id/238/1400/300" class="d-block w-100" alt="..." />
+        <img src="../../public/cover2.jpg" class="d-block w-100 covers" alt="..." />
       </div>
       <div class="carousel-item">
-        <img src="https://picsum.photos/id/239/1400/300" class="d-block w-100" alt="..." />
+        <img src="../../public/cover3.jpg" class="d-block w-100 covers" alt="..." />
       </div>
     </div>
     <button
@@ -48,6 +48,11 @@ export default {};
 .my-fs-cim {
   font-size: 5rem;
   font-weight: normal;
+}
+
+.covers{
+  max-height: 200px;
+  min-height: 200px;
 }
 
 </style>
