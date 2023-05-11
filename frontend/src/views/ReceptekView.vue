@@ -1,7 +1,7 @@
 
 <template>
   <div>
-    <div class="d-flex p-3">
+    <div class="d-flex  align-items-center p-3">
       <h1>Receptek</h1>
       <!-- kereso -->
       <form class="d-flex" role="search" id="kereso">
@@ -17,7 +17,12 @@
           type="button">Search</button>
         </form>
         <!-- dropdown -->
-      <div class="btn-group d-flex" id="kategoriak">
+
+      <div class="ms-3">
+        Kategória: {{categoryNameTitle}}
+      </div>
+
+      <div class="btn-group" id="kategoriak">
         <button
           class="btn btn-dark btn-lg dropdown-toggle"
           type="button"
@@ -36,7 +41,7 @@
             <a
             class="dropdown-item"
             href="#"
-            @click="onClickFilterCategory(category.id)"
+            @click="onClickFilterCategory(category.id, category.categoryName)"
             >{{ category.categoryName }}</a
             >
           </li>
@@ -174,6 +179,7 @@ export default {
       keresoSzo: null,
       foodWithCategroryFilter: [],
       urlfoodWithCategroryBySearch: [],
+      categoryNameTitle: "Összes",
     };
   },
   mounted() {
@@ -185,16 +191,18 @@ export default {
     this.form = document.querySelector(".needs-validation");
   },
   watch: {
-    keresoSzo(){
-      if (this.keresoSzo.trim()) {
-        this.getfoodWithCategroryBySearch();
-      } else {
-        this.getfoodWithCategrory();
-      }
-    }
+    // keresoSzo(){
+    //   if (this.keresoSzo.trim()) {
+    //     this.getfoodWithCategroryBySearch();
+    //   } else {
+    //     this.getfoodWithCategrory();
+    //   }
+    // }
   },
   methods: {
     async getfoodWithCategrory() {
+      this.categoryNameTitle = "Összes";
+      this.keresoSzo = null;
       let url = this.storeUrl.urlfoodWithCategrory;
       const config = {
         method: "GET",
@@ -220,7 +228,6 @@ export default {
     },
     async getfoodWithCategroryById(id) {
       let url = `${this.storeUrl.urlfoodWithCategroryById}/${id}`;
-
       const config = {
         method: "GET",
         headers: {
@@ -233,7 +240,6 @@ export default {
     },
     async getfoodWithEverithingById(id) {
       let url = `${this.storeUrl.urlfoodWithEverithingById}/${id}`;
-
       const config = {
         method: "GET",
         headers: {
@@ -245,46 +251,42 @@ export default {
       this.foodWithEverithingById = data.data;
     },
     
-    async getCategoryFilter(id) {
-      let url = `${this.storeUrl.urlcategoryWithFood}/${id}`;
-      const config = {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${this.storeLogin.accessToken}`,
-        },
-      };
-      const response = await fetch(url, config);
-      const data = await response.json();
-      this.categoryWithFood = data.data;
-      console.log("filter", id);
-    },
-    async getfoodWithCategroryBySearch() {
-      const url = `${this.urlfoodWithCategroryBySearch}/${this.keresoSzo}`;
+    async getCategoryFilter(categoryName) {
+      console.log("123123123123", categoryName);
+      const url = `${this.storeUrl.urlfoodSearchByCategory}/${categoryName}`;
+      console.log(url);
       const response = await fetch(url);
       const data = await response.json();
-      this.food = data.data;
+      this.foodWithCategrory = data.data;
+    },
+    async getfoodWithCategroryBySearch() {
+      const url = `${this.storeUrl.urlfoodWithCategroryBySearch}/${this.keresoSzo}`;
+      console.log(url);
+      const response = await fetch(url);
+      const data = await response.json();
+      this.foodWithCategrory = data.data;
     },
 
     onClickSearch(){
-      console.log("kurva anyjat ennek a szarnak");
       if (this.keresoSzo.trim()) {
         this.getfoodWithCategroryBySearch()
       } else {
         this.getfoodWithCategrory()
       }
-     
+
     },
 
     onClickShowIngredient(id) {
-      console.log("kurva anyad");
       this.modal.show();
       this.currentId = null;
       this.getfoodWithEverithingById(id);
       this.getfoodWithCategroryById(id);
     },
-    onClickFilterCategory(id) {
-      this.getCategoryFilter(id);
+      onClickFilterCategory(id, categoryName) {
+      this.getCategoryFilter(categoryName);
+      this.categoryNameTitle = categoryName;
       console.log("id", id);
+      console.log("categoryName", categoryName);
     },
     onClickCancel() {
       this.modal.hide();

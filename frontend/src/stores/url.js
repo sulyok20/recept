@@ -61,5 +61,8 @@ export const useUrlStore = defineStore({
     urlfoodWithCategroryBySearch(){ 
       return `${this.urlData}/foodWithCategroryBySearch`
     },
+    urlfoodSearchByCategory(){
+      return `${this.urlData}/foodSearchByCategory`
+    }
   },
 });

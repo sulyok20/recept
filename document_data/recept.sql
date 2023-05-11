@@ -157,3 +157,15 @@ Content-Type: application/json
     INNER join ingredient i on u.ingredientID = i.id
   where f.foodName like '%bab%' or i.ingredientName LIKE '%bab%'
   ;
+
+
+  #kategoriak
+
+    select DISTINCT f.foodName, c.categoryName,  DATE_FORMAT(f.descriptionDate, '%Y.%m.%d') descriptionDate,
+    DATE_FORMAT(f.firstDate, '%Y.%m.%d') firstDate from food f
+    inner join category c on c.id = f.categoryID
+    inner join used u on u.foodID = f.id
+    INNER join ingredient i on u.ingredientID = i.id
+  where c.categoryName = 'leves'
+  ;
+
