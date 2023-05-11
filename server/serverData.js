@@ -662,7 +662,7 @@ app.get("/foodWithEverithingById/:id", (req, res) => {
 //Food és Category táblák inner join by id
 app.get("/foodWithCategroryBySearch/:search", (req, res) => {
   const search = `%${req.params.search}%`;
-  let sql = `  select DISTINCT f.foodName, c.categoryName,
+  let sql = `  select DISTINCT f.id, f.foodName, c.categoryName,
   DATE_FORMAT(f.descriptionDate, '%Y.%m.%d') descriptionDate,
   DATE_FORMAT(f.firstDate, '%Y.%m.%d') firstDate from food f
   inner join category c on c.id = f.categoryID
@@ -695,7 +695,7 @@ where f.foodName like ? or i.ingredientName LIKE ?
 
 app.get("/foodSearchByCategory/:category", (req, res) => {
   const category = `${req.params.category}`;
-  let sql = `select DISTINCT f.foodName, c.categoryName,  DATE_FORMAT(f.descriptionDate, '%Y.%m.%d') descriptionDate,
+  let sql = `select DISTINCT f.id, f.foodName, c.categoryName,  DATE_FORMAT(f.descriptionDate, '%Y.%m.%d') descriptionDate,
   DATE_FORMAT(f.firstDate, '%Y.%m.%d') firstDate from food f
   inner join category c on c.id = f.categoryID
   inner join used u on u.foodID = f.id

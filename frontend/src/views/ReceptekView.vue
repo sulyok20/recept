@@ -1,25 +1,29 @@
 
 <template>
   <div>
-    <div class="d-flex  align-items-center p-3">
+    <div class="d-flex align-items-center p-3">
       <h1>Receptek</h1>
       <!-- kereso -->
       <form class="d-flex" role="search" id="kereso">
-          <input
-            class="form-control me-2"
-            type="search"
-            placeholder="Search"
-            aria-label="Search"
-            v-model="keresoSzo"
-          />
-          <button class="btn btn-outline-success" 
+        <input
+          class="form-control me-2"
+          type="search"
+          placeholder="Search"
+          aria-label="Search"
+          v-model="keresoSzo"
+        />
+        <button
+          class="btn btn-outline-success"
           @click="onClickSearch()"
-          type="button">Search</button>
-        </form>
-        <!-- dropdown -->
+          type="button"
+        >
+          Search
+        </button>
+      </form>
+      <!-- dropdown -->
 
       <div class="ms-3">
-        <strong>Kategória</strong>: {{categoryNameTitle}}
+        <strong>Kategória</strong>: {{ categoryNameTitle }}
       </div>
 
       <div class="btn-group" id="kategoriak">
@@ -32,24 +36,28 @@
           Kategóriák
         </button>
         <ul class="dropdown-menu">
-          <li><a
-            class="dropdown-item"
-            id="0"
-            @click="getfoodWithCategrory()"
-            href="#">Összes</a></li>
+          <li>
+            <a
+              class="dropdown-item"
+              id="0"
+              @click="getfoodWithCategrory()"
+              href="#"
+              >Összes</a
+            >
+          </li>
           <li v-for="(category, index) in category" :key="`category${index}`">
             <a
-            class="dropdown-item"
-            href="#"
-            @click="onClickFilterCategory(category.id, category.categoryName)"
-            >{{ category.categoryName }}</a
+              class="dropdown-item"
+              href="#"
+              @click="onClickFilterCategory(category.id, category.categoryName)"
+              >{{ category.categoryName }}</a
             >
           </li>
         </ul>
       </div>
     </div>
 
-    <div class="row row-cols-1 row-cols-md-3 g-4">
+    <div class="row row-cols-1 row-cols-md-3 g-4 my-cards">
       <div
         class="col"
         v-for="(food, index) in foodWithCategrory"
@@ -84,6 +92,10 @@
           </div>
         </div>
       </div>
+
+      <!-- <div class="my-up">
+        <button>Fel</button>
+      </div> -->
     </div>
 
     <!--#region Modal -->
@@ -250,7 +262,7 @@ export default {
       const data = await response.json();
       this.foodWithEverithingById = data.data;
     },
-    
+
     async getCategoryFilter(id, categoryName) {
       const url = `${this.storeUrl.urlfoodSearchByCategory}/${categoryName}`;
       const response = await fetch(url);
@@ -264,28 +276,23 @@ export default {
       this.foodWithCategrory = data.data;
     },
 
-    onClickSearch(){
+    onClickSearch() {
       if (this.keresoSzo.trim()) {
-        this.getfoodWithCategroryBySearch()
-      } else{
-        this.getfoodWithCategrory()
+        this.getfoodWithCategroryBySearch();
+      } else {
+        this.getfoodWithCategrory();
       }
-      
-
     },
 
     onClickShowIngredient(id) {
-      console.log("id", id);
       this.modal.show();
       this.currentId = null;
       this.getfoodWithEverithingById(id);
       this.getfoodWithCategroryById(id);
     },
-      onClickFilterCategory(id, categoryName) {
+    onClickFilterCategory(id, categoryName) {
       this.getCategoryFilter(id, categoryName);
       this.categoryNameTitle = categoryName;
-      console.log("id", id);
-      console.log("categoryName", categoryName);
     },
     onClickCancel() {
       this.modal.hide();
@@ -323,7 +330,15 @@ table {
   float: right;
   margin-left: auto;
 }
-#kereso{
+#kereso {
   margin-left: auto;
+}
+.my-up {
+  position: absolute;
+  bottom: 50%;
+  right: 0px;
+}
+.my-cards{
+  position: relative;
 }
 </style>
