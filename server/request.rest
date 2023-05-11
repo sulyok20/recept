@@ -254,7 +254,7 @@ Content-Type: application/json
 get http://localhost:3000/foodWithCategrory
 
 ### get food with category 
-get http://localhost:3000/foodSearchByCategory/köret
+get http://localhost:3000/foodSearchByCategory/leves
 
 ### get food with category by search 
 get http://localhost:3000/foodWithCategroryBySearch/bab

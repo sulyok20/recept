@@ -1,145 +1,110 @@
 
 <template>
   <div>
-    <h1>Kategóriák</h1>
-
-    <!--#region táblázat -->
-
-   
-
-    <table class="table table-bordered table-hover w-auto">
-      <thead>
-        <tr>
-          <th>kategoria</th>
-        </tr>
-      </thead>
-
-      <tbody v-for="(category, index) in category" :key="`category${index}`">
-        <tr>
-          <td>
-            <button
-              type="button"
-              class="btn btn-dark btn-sm"
-              @click="onClickFilterCategory(category.id)"
+    <h1>Recept kezelés</h1>
+    <hr />
+    <div class="row p-3">
+      <!-- taxi táblázat -->
+      <div class="col-md-5">
+        <h2>Receptek</h2>
+        <!--#region táblázat -->
+        <table class="table table-bordered table-hover w-auto">
+          <thead>
+            <tr>
+              <th>Parancsok</th>
+              <th>Étel neve</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="(food, index) in foodWithCategrory"
+              :key="`car${index}`"
             >
-              {{ category.categoryName }}
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <!--#endregion táblázat -->
+            <td>
+              <button type="button" class="btn btn-danger me-2">
+                <i class="bi bi-trash"></i>
+              </button>
+              <button type="button" class="btn btn-success">
+                <i class="bi bi-gear"></i>
+              </button>
+            </td>
+            <td>{{ food.foodName }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <!--#endregion táblázat -->
+      </div>
 
-    <!--#region Modal -->
-    <div
-      class="modal fade"
-      id="modalCar"
-      tabindex="-1"
-      aria-labelledby="modalCarModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalLabel">
-              {{ stateTitle }}
-            </h1>
-            <button
-              type="button"
-              class="btn-close"
-              @click="onClickCancel()"
-              aria-label="Close"
-            ></button>
-          </div>
+      <!-- taxi fuvarjai -->
+      <div class="col-md-7">
+        <h2>Taxi fuvarkezelése</h2>
+        <hr />
+        <div v-if="currentCarId">
+          <h3>Új fuvar</h3>
+          <form class="row g-3 needs-validation" novalidate>
+            <!-- A fuvar dátumideje -->
+            <div class="col-md-6 d-flex align-items-center">
+              <label for="date" class="form-label">Mikor</label>
+              <input
+                type="datetime-local"
+                class="form-control ms-2"
+                id="date"
+                required
+                v-model="newTrip.date"
+                ref="date"
+              />
+              <div class="invalid-feedback">A dátum kitöltése kötelező</div>
+            </div>
+            <!-- Menetidő (perc) -->
+            <div class="col-md-6 d-flex align-items-center">
+              <label for="numberOfMinits" class="form-label">Menetidő:</label>
+              <input
+                type="number"
+                class="form-control ms-2"
+                id="numberOfMinits"
+                required
+                v-model="newTrip.numberOfMinits"
+                ref="numberOfMinits"
+              />
+              <div class="invalid-feedback">A menetidő kitöltése kötelező</div>
+              <button
+                type="button"
+                class="btn btn-outline-success ms-2"
+                @click="onClickSave()"
+                ref="save"
+                @keyup.enter="onClickSave()"
+              >
+                <i class="bi bi-save2"></i>
+              </button>
+            </div>
+          </form>
+          <hr />
 
-          <!--#region Modal body -->
-          <div class="modal-body">
-            <!--#region Form -->
-
-            <form class="row g-3 needs-validation" novalidate>
-              <!-- Autó név -->
-              <div class="col-md-12">
-                <label for="name" class="form-label">Autó név</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="name"
-                  required
-                  v-model="editableCar.name"
-                />
-                <div class="invalid-feedback">A név kitöltése kötelező</div>
-              </div>
-
-              <!-- Rendszám -->
-              <div class="col-md-6">
-                <label for="licenceNumber" class="form-label">Rendszám</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="licenceNumber"
-                  required
-                  v-model="editableCar.licenceNumber"
-                />
-                <div class="invalid-feedback">
-                  A rendszám kitöltése kötelező
-                </div>
-              </div>
-
-              <!-- Rendszám -->
-              <div class="col-md-6">
-                <label for="hourlyRate" class="form-label"
-                  >Tarifa (Ft/óra)</label
-                >
-                <input
-                  type="number"
-                  class="form-control"
-                  id="hourlyRate"
-                  required
-                  v-model="editableCar.hourlyRate"
-                />
-                <div class="invalid-feedback">A tarifa kitöltése kötelező</div>
-              </div>
-
-              <!-- out of traffic -->
-              <div class="col-md-6">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  value=""
-                  id="outOfTraffic"
-                  v-model="editableCar.outOfTraffic"
-                />
-                <label class="form-check-label ms-2" for="flexCheckDefault">
-                  Forgalmon kívül
-                </label>
-              </div>
-
-              <div class="col-md-6"></div>
-            </form>
-            <!--#endregion Form -->
-          </div>
-          <!--#endregion Modal body -->
-
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              @click="onClickCancel()"
-            >
-              Close
-            </button>
-            <button
-              type="button"
-              class="btn btn-primary"
-              @click="onClickSave()"
-            >
-              Save changes
-            </button>
-          </div>
+          <h3>Eddigi fuvarok</h3>
+          <ul>
+            <li v-for="(trip, index) in tripsByCarId" :key="`trip${index}`">
+              {{ trip.date }}: {{ trip.numberOfMinits }} perc
+              <span
+                class="ms-2 my-delete-hover"
+                @click="onClickDeleteTrip(trip.id)"
+                ><i class="bi bi-trash3-fill"></i
+              ></span>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
-    <!--#endregion Modal -->
+
+    <!-- delete modal component -->
+    <Menu></Menu>
+    <YesNo
+      v-if="yesNoShow"
+      yesNoTitle="Fuvar törlés"
+      yesNoMessage="Valóban törölni akarja a fuvart?"
+      @yes="onClickDeleteOK()"
+      @no="onClickDeleteCancel()"
+    ></YesNo>
+    
   </div>
 </template>
 
@@ -147,24 +112,16 @@
 import * as bootstrap from "bootstrap";
 import { useUrlStore } from "@/stores/url";
 import { useLoginStore } from "@/stores/login";
+import YesNo from "../components/YesNo.vue";
+import Menu from "../components/Menu.vue";
 const storeUrl = useUrlStore();
 const storeLogin = useLoginStore();
 
-class Car {
-  constructor(
-    id = 0,
-    name = null,
-    licenceNumber = null,
-    hourlyRate = null,
-    outOfTraffic = false,
-    driverId = null
-  ) {
-    this.id = id;
-    this.name = name;
-    this.licenceNumber = licenceNumber;
-    this.hourlyRate = hourlyRate;
-    this.outOfTraffic = outOfTraffic;
-    this.driverId = driverId;
+class Trip {
+  constructor(numberOfMinits = null, date = null, carId = null) {
+    this.numberOfMinits = numberOfMinits;
+    this.date = date;
+    this.carId = carId;
   }
 }
 
@@ -174,85 +131,25 @@ export default {
       storeUrl,
       storeLogin,
       cars: [],
-      editableCar: new Car(),
-      modal: null,
-      form: null,
-      state: "view",
-      currentId: null,
-      filterCategory: [],
+      currentCarId: null,
+      currentTripId: null,
+      tripsByCarId: [],
+      newTrip: new Trip(),
+      yesNoShow: false,
       foodWithCategrory: [],
-      category: [],
+
     };
   },
   mounted() {
-    // this.getCars();
-    // this.getFreeDriversAbc();
-    this.getCategory();
-
-    this.modal = new bootstrap.Modal(document.getElementById("modalCar"), {
-      keyboard: false,
-    });
-
+    this.getfoodWithCategrory();
+    // this.getCarsWithDriversReal();
     this.form = document.querySelector(".needs-validation");
+
   },
   methods: {
-    async getCars() {
-      let url = this.storeUrl.urlCarsWithDrivers;
-      const config = {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${this.storeLogin.accessToken}`,
-        },
-      };
-      const response = await fetch(url, config);
-      const data = await response.json();
-      this.cars = data.data;
-      // this.cars = data.data.map((car) => {
-      //   car.outOfTraffic = car.outOfTraffic === 1;
-      //   return car;
-      // });
-    },
-    async getCarById(id) {
-      let url = `${this.storeUrl.urlCars}/${id}`;
-      const config = {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${this.storeLogin.accessToken}`,
-        },
-      };
-      const response = await fetch(url, config);
-      const data = await response.json();
-      this.editableCar = data.data;
-    },
-
-    async getCategory() {
-      let url = `${this.storeUrl.urlCategory}`;
-      const config = {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${this.storeLogin.accessToken}`,
-        },
-      };
-      const response = await fetch(url, config);
-      const data = await response.json();
-      this.category = data.data;
-    },
-
-    async getCategoryFilter(id) {
-      let url = `${this.storeUrl.urlCategory}`;
-      const config = {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${this.storeLogin.accessToken}`,
-        },
-      };
-      const response = await fetch(url, config);
-      const data = await response.json();
-      this.filterCategory = data.data;
-      console.log("filter", id);
-    },
 
     async getfoodWithCategrory() {
+      this.keresoSzo = null;
       let url = this.storeUrl.urlfoodWithCategrory;
       const config = {
         method: "GET",
@@ -265,8 +162,8 @@ export default {
       this.foodWithCategrory = data.data;
     },
 
-    async getFreeDriversAbc() {
-      let url = this.storeUrl.urlFreeDriversAbc;
+    async getCarsWithDriversReal() {
+      let url = this.storeUrl.urlCarsWithDriversReal;
       const config = {
         method: "GET",
         headers: {
@@ -275,12 +172,25 @@ export default {
       };
       const response = await fetch(url, config);
       const data = await response.json();
-      this.driversAbc = data.data;
+      this.cars = data.data;
     },
-
-    async postCar() {
-      let url = this.storeUrl.urlCars;
-      const body = JSON.stringify(this.editableCar);
+    async getTripsByCarId() {
+      let url = `${this.storeUrl.urlTripsByCarId}/${this.currentCarId}`;
+      const config = {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${this.storeLogin.accessToken}`,
+        },
+      };
+      const response = await fetch(url, config);
+      const data = await response.json();
+      this.tripsByCarId = data.data;
+      this.newTrip = new Trip();
+    },
+    async postTrip() {
+      let url = this.storeUrl.urlTrips;
+      this.newTrip.carId = this.currentCarId;
+      const body = JSON.stringify(this.newTrip);
       const config = {
         method: "POST",
         headers: {
@@ -290,14 +200,14 @@ export default {
         body: body,
       };
       const response = await fetch(url, config);
-      this.getCars();
+      this.getTripsByCarId();
     },
-    async putCar() {
-      const id = this.editableCar.id;
-      let url = `${this.storeUrl.urlCars}/${id}`;
-      const body = JSON.stringify(this.editableCar);
+    async deleteTrip(id) {
+      let url = `${this.storeUrl.urlTrips}/${id}`;
+      this.newTrip.carId = this.currentCarId;
+      const body = JSON.stringify(this.newTrip);
       const config = {
-        method: "PUT",
+        method: "DELETE",
         headers: {
           "content-type": "application/json",
           Authorization: `Bearer ${this.storeLogin.accessToken}`,
@@ -305,83 +215,33 @@ export default {
         body: body,
       };
       const response = await fetch(url, config);
-      this.getCars();
-    },
-    async deleteCar(id) {
-      let url = `${this.storeUrl.urlCars}/${id}`;
-      const config = {
-        method: "DELETE",
-        headers: {
-          "content-type": "application/json",
-          Authorization: `Bearer ${this.storeLogin.accessToken}`,
-        },
-      };
-      const response = await fetch(url, config);
-      this.getCars();
-    },
-
-    onClickFilterCategory(id) {
-      this.getCategoryFilter(id);
-      console.log("id", id);
-    },
-
-    onClikRow(id) {
-      this.currentId = id;
-    },
-    onClickNew() {
-      this.state = "new";
-      this.currentId = null;
-      this.editableCar = new Car();
-      this.modal.show();
-    },
-    onClickDelete(id) {
-      this.state = "delete";
-      this.deleteCar(id);
-      this.currentId = null;
-    },
-    onClickEdit(id) {
-      this.state = "edit";
-      this.getCarById(id);
-      this.getFreeDriversAbc();
-      this.modal.show();
-    },
-    onClickCancel() {
-      this.editableCar = new Car();
-      this.modal.hide();
-    },
-    onClickSave() {
-      this.form.classList.add("was-validated");
-      if (this.form.checkValidity()) {
-        if (this.state == "edit") {
-          //put
-          this.putCar();
-          // this.modal.hide();
-        } else if (this.state == "new") {
-          //post
-          this.postCar();
-          // this.modal.hide();
-        }
-        this.modal.hide();
-        //frissíti a taxisok listáját
-        this.getFreeDriversAbc();
-      }
+      this.getTripsByCarId();
     },
     currentRowBackground(id) {
-      return this.currentId == id ? "my-bg-current-row" : "";
+      return this.currentCarId == id ? "my-bg-current-row" : "";
     },
-    outOfTrafficName(outOfTraffic) {
-      return outOfTraffic ? "igen" : "nem";
+    onClikRow(id) {
+      this.currentCarId = id;
+      this.getTripsByCarId();
+      // this.$refs.date.focus();
+      // this.$refs.date.showPicker();
+    },
+    onClickSave() {
+      this.postTrip();
+    },
+    onClickDeleteTrip(id) {
+      this.yesNoShow = true;
+      this.currentTripId = id;
+    },
+    onClickDeleteOK() {
+      this.deleteTrip(this.currentTripId);
+      this.yesNoShow = false;
+    },
+    onClickDeleteCancel() {
+      this.yesNoShow = false;
     },
   },
-  computed: {
-    stateTitle() {
-      if (this.state === "new") {
-        return "Új autó bevitele";
-      } else if (this.state === "edit") {
-        return "Autó módosítása";
-      }
-    },
-  },
+  components: { YesNo, Menu },
 };
 </script>
 
@@ -390,8 +250,10 @@ export default {
 .my-bg-current-row {
   background-color: lightgrey;
 }
-
-.invisible {
-  visibility: hidden;
+tr:hover {
+  cursor: pointer;
+}
+.my-delete-hover:hover {
+  color: red;
 }
 </style>
