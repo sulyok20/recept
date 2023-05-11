@@ -19,7 +19,7 @@
         <!-- dropdown -->
 
       <div class="ms-3">
-        Kategória: {{categoryNameTitle}}
+        <strong>Kategória</strong>: {{categoryNameTitle}}
       </div>
 
       <div class="btn-group" id="kategoriak">
@@ -251,17 +251,14 @@ export default {
       this.foodWithEverithingById = data.data;
     },
     
-    async getCategoryFilter(categoryName) {
-      console.log("123123123123", categoryName);
+    async getCategoryFilter(id, categoryName) {
       const url = `${this.storeUrl.urlfoodSearchByCategory}/${categoryName}`;
-      console.log(url);
       const response = await fetch(url);
       const data = await response.json();
       this.foodWithCategrory = data.data;
     },
     async getfoodWithCategroryBySearch() {
       const url = `${this.storeUrl.urlfoodWithCategroryBySearch}/${this.keresoSzo}`;
-      console.log(url);
       const response = await fetch(url);
       const data = await response.json();
       this.foodWithCategrory = data.data;
@@ -270,20 +267,22 @@ export default {
     onClickSearch(){
       if (this.keresoSzo.trim()) {
         this.getfoodWithCategroryBySearch()
-      } else {
+      } else{
         this.getfoodWithCategrory()
       }
+      
 
     },
 
     onClickShowIngredient(id) {
+      console.log("id", id);
       this.modal.show();
       this.currentId = null;
       this.getfoodWithEverithingById(id);
       this.getfoodWithCategroryById(id);
     },
       onClickFilterCategory(id, categoryName) {
-      this.getCategoryFilter(categoryName);
+      this.getCategoryFilter(id, categoryName);
       this.categoryNameTitle = categoryName;
       console.log("id", id);
       console.log("categoryName", categoryName);
