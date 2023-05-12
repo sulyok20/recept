@@ -7,28 +7,29 @@
       <!-- taxi táblázat -->
       <div class="col-md-5">
         <h2>Receptek</h2>
+        <button type="button" class="btn btn-primary ms-5">
+          <i class="bi bi-plus-lg"></i>
+        </button>
+
         <!--#region táblázat -->
         <table class="table table-bordered table-hover w-auto">
           <thead>
             <tr>
-              <th>Parancsok</th>
+              <th>Esesmények</th>
               <th>Étel neve</th>
             </tr>
           </thead>
           <tbody>
-            <tr
-              v-for="(food, index) in foodWithCategrory"
-              :key="`car${index}`"
-            >
-            <td>
-              <button type="button" class="btn btn-danger me-2">
-                <i class="bi bi-trash"></i>
-              </button>
-              <button type="button" class="btn btn-success">
-                <i class="bi bi-gear"></i>
-              </button>
-            </td>
-            <td>{{ food.foodName }}</td>
+            <tr v-for="(food, index) in foodWithCategrory" :key="`car${index}`">
+              <td>
+                <button type="button" class="btn btn-danger me-2">
+                  <i class="bi bi-trash"></i>
+                </button>
+                <button type="button" class="btn btn-success">
+                  <i class="bi bi-gear"></i>
+                </button>
+              </td>
+              <td>{{ food.foodName }}</td>
             </tr>
           </tbody>
         </table>
@@ -104,7 +105,6 @@
       @yes="onClickDeleteOK()"
       @no="onClickDeleteCancel()"
     ></YesNo>
-    
   </div>
 </template>
 
@@ -137,17 +137,14 @@ export default {
       newTrip: new Trip(),
       yesNoShow: false,
       foodWithCategrory: [],
-
     };
   },
   mounted() {
     this.getfoodWithCategrory();
     // this.getCarsWithDriversReal();
     this.form = document.querySelector(".needs-validation");
-
   },
   methods: {
-
     async getfoodWithCategrory() {
       this.keresoSzo = null;
       let url = this.storeUrl.urlfoodWithCategrory;

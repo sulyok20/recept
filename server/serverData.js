@@ -837,12 +837,67 @@ app.post("/food", (req, res) => {
   });
 });
 
+//delete food
+app.delete("/food/:id", (req, res) => {
+  const id = req.params.id;
+
+  let sql = `
+    DELETE FROM food
+    WHERE id = ?`;
+
+  pool.getConnection(function (error, connection) {
+    if (error) {
+      sendingGetError(res, "Server connecting error!");
+      return;
+    }
+    connection.query(sql, [id], function (error, result, fields) {
+      sendingDelete(res, error, result, id);
+    });
+    connection.release();
+  });
+});
+
+//put food
+app.put("/food/:id", (req, res) => {
+  const id = req.params.id;
+  const newR = {
+    foodName: sanitizeHtml(req.body.foodName),
+    categoryID: +sanitizeHtml(req.body.categoryID),
+    descriptionDate: sanitizeHtml(req.body.descriptionDate),
+    firstDate: sanitizeHtml(req.body.firstDate)
+  };
+  let sql = `
+    UPDATE food SET
+    foodName = ?,
+    categoryID = ?,
+    descriptionDate = ?,
+    firstDate = ?
+    WHERE id = ?
+      `;
+
+  pool.getConnection(function (error, connection) {
+    if (error) {
+      sendingGetError(res, "Server connecting error!");
+      return;
+    }
+    connection.query(
+      sql,
+      [newR.foodName, newR.categoryID, newR.descriptionDate, newR.firstDate, id],
+      function (error, result, fields) {
+        sendingPut(res, error, result, id, newR);
+      }
+    );
+    connection.release();
+  });
+});
 
 
 //#endregion food
 
 
 
+
+//#region category ---
 app.get("/categoryWithFood", (req, res) => {
   let sql =
     ` select c.id "kategoria id", c.categoryName, f.id "kaja id", f.foodName, f.descriptionDate, f.firstDate from category c 
@@ -862,8 +917,8 @@ app.get("/categoryWithFood", (req, res) => {
 
 app.get("/categoryWithFood/:id", (req, res) => {
   const id = req.params.id;
-  let sql = 
-  `select c.id "kategoria id", c.categoryName, f.id, f.foodName, f.descriptionDate, f.firstDate from category c 
+  let sql =
+    `select c.id "kategoria id", c.categoryName, f.id, f.foodName, f.descriptionDate, f.firstDate from category c 
   INNER JOIN food f on c.id = f.categoryID
   where f.categoryID = ?`;
   pool.getConnection(function (error, connection) {
@@ -887,8 +942,6 @@ app.get("/categoryWithFood/:id", (req, res) => {
     connection.release();
   });
 });
-
-//#region category ---
 app.get("/category", (req, res) => {
   let sql = `SELECT * FROM category`;
 
@@ -961,6 +1014,53 @@ app.post("/category", (req, res) => {
   });
 });
 
+//delete category
+app.delete("/category/:id", (req, res) => {
+  const id = req.params.id;
+
+  let sql = `
+    DELETE FROM category
+    WHERE id = ?`;
+
+  pool.getConnection(function (error, connection) {
+    if (error) {
+      sendingGetError(res, "Server connecting error!");
+      return;
+    }
+    connection.query(sql, [id], function (error, result, fields) {
+      sendingDelete(res, error, result, id);
+    });
+    connection.release();
+  });
+});
+
+//put category
+app.put("/category/:id", (req, res) => {
+  const id = req.params.id;
+  const newR = {
+    categoryName: sanitizeHtml(req.body.categoryName),
+  };
+  let sql = `
+    UPDATE category SET
+    categoryName = ?
+    WHERE id = ?
+      `;
+
+  pool.getConnection(function (error, connection) {
+    if (error) {
+      sendingGetError(res, "Server connecting error!");
+      return;
+    }
+    connection.query(
+      sql,
+      [newR.categoryName, id],
+      function (error, result, fields) {
+        sendingPut(res, error, result, id, newR);
+      }
+    );
+    connection.release();
+  });
+});
 
 //#endregion category
 
@@ -1038,8 +1138,52 @@ app.post("/ingredient", (req, res) => {
   });
 });
 
+//delete ingredient
+app.delete("/ingredient/:id", (req, res) => {
+  const id = req.params.id;
 
+  let sql = `
+    DELETE FROM ingredient
+    WHERE id = ?`;
 
+  pool.getConnection(function (error, connection) {
+    if (error) {
+      sendingGetError(res, "Server connecting error!");
+      return;
+    }
+    connection.query(sql, [id], function (error, result, fields) {
+      sendingDelete(res, error, result, id);
+    });
+    connection.release();
+  });
+});
+//put ingredient
+app.put("/ingredient/:id", (req, res) => {
+  const id = req.params.id;
+  const newR = {
+    ingredientName: sanitizeHtml(req.body.ingredientName),
+  };
+  let sql = `
+    UPDATE ingredient SET
+    ingredientName = ?
+    WHERE id = ?
+      `;
+
+  pool.getConnection(function (error, connection) {
+    if (error) {
+      sendingGetError(res, "Server connecting error!");
+      return;
+    }
+    connection.query(
+      sql,
+      [newR.ingredientName, id],
+      function (error, result, fields) {
+        sendingPut(res, error, result, id, newR);
+      }
+    );
+    connection.release();
+  });
+});
 
 //#endregion ingredient
 
@@ -1121,7 +1265,62 @@ app.post("/used", (req, res) => {
   });
 });
 
+//delete used
+app.delete("/used/:id", (req, res) => {
+  const id = req.params.id;
 
+  let sql = `
+    DELETE FROM used
+    WHERE id = ?`;
+
+  pool.getConnection(function (error, connection) {
+    if (error) {
+      sendingGetError(res, "Server connecting error!");
+      return;
+    }
+    connection.query(sql, [id], function (error, result, fields) {
+      sendingDelete(res, error, result, id);
+    });
+    connection.release();
+  });
+});
+
+//put used
+app.put("/used/:id", (req, res) => {
+  const id = req.params.id;
+  const newR = {
+    foodID: sanitizeHtml(req.body.foodID),
+    quantity: sanitizeHtml(req.body.quantity),
+    unit: sanitizeHtml(req.body.unit),
+    ingredientID: sanitizeHtml(req.body.ingredientID),
+  };
+  let sql = `
+  
+    UPDATE used set 
+    foodID = ?,
+    quantity = ?,
+    unit = ?,
+    ingredientID = ?
+    where id = ?
+  `
+
+    ;
+
+  pool.getConnection(function (error, connection) {
+    if (error) {
+      sendingGetError(res, "Server connecting error!");
+      return;
+    }
+    connection.query(
+      sql,
+      [newR.foodID, newR.quantity, newR.unit, newR.ingredientID, id],
+      function (error, result, fields) {
+        sendingPut(res, error, result, id, newR);
+      }
+    );
+    connection.release();
+  });
+});
 
 
 //#endregion used

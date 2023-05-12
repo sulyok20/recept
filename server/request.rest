@@ -195,7 +195,7 @@ get http://localhost:3000/used
 ###--------Adat id alapján------------
 
 ### get food by id
-get http://localhost:3000/food/117
+get http://localhost:3000/food/118
 
 ### get ingredient by id
 get http://localhost:3000/ingredient/32
@@ -248,7 +248,60 @@ Content-Type: application/json
     "ingredientID": 75
 }
 
-#-------------------#
+#---------Törlés----------#
+
+### Delete food
+delete http://localhost:3000/food/122
+
+### Delete category
+delete http://localhost:3000/category/122
+
+### Delete ingredient
+delete http://localhost:3000/ingredient/122
+
+### Delete used
+delete http://localhost:3000/used/122
+
+#---------Módosítás----------#
+
+
+### put food by id
+put http://localhost:3000/food/117
+Content-Type: application/json
+
+{
+    "foodName": "almás pite",
+    "categoryID": 7,
+    "descriptionDate": "2014-01-01",
+    "firstDate": "2014-01-09"
+}
+
+### put category by id
+put http://localhost:3000/category/2
+Content-Type: application/json
+
+{
+    "categoryName": "leves"
+}
+
+### put ingredient by id
+put http://localhost:3000/ingredient/232
+Content-Type: application/json
+
+{
+    "ingredientName": "alma"
+}
+
+### put used by id
+put http://localhost:3000/used/5542
+Content-Type: application/json
+
+{
+      "quantity": "2",
+      "unit": "liter",
+      "foodID": 117,
+      "ingredientID": 6
+}
 
 ### get food with category 
 get http://localhost:3000/foodWithCategrory
