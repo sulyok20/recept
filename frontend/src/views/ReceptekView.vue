@@ -70,6 +70,7 @@
             :alt="`${food.foodName}`"
             :title="`${food.foodName}`"
           />
+          <!-- <img :onload="getImgUrl(food.foodName)"> -->
 
           <div class="card-body">
             <h5 class="card-title bigLEtter">{{ food.foodName }}</h5>
@@ -298,7 +299,11 @@ export default {
       this.modal.hide();
     },
     getImgUrl(pic) {
-      return require(`../../public/${pic}.jpg`);
+      if (pic !== "undefined") {
+        return `../../public/${pic}.jpg`;
+      } else {
+        return `../../public/nopic.jpg`;
+      }
     },
     keresJelol(text) {
       if (this.keresoszo) {
@@ -338,7 +343,7 @@ table {
   bottom: 50%;
   right: 0px;
 }
-.my-cards{
+.my-cards {
   position: relative;
 }
 </style>

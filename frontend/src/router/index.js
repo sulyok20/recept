@@ -35,12 +35,12 @@ const router = createRouter({
       },
     },
     {
-      path: "/kategoriak",
-      name: "kategoriak",
-      component: () => import("../views/KategoriakView.vue"),
+      path: "/receptKezeles",
+      name: "receptKezeles",
+      component: () => import("../views/ReceptKezelesView.vue"),
       meta: {
         requiresAuth: false,
-        title: "Kategóriák / Szakácskönyv",
+        title: "Recept kezelés / Szakácskönyv",
       },
     },
     {

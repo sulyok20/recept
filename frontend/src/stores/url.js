@@ -43,9 +43,6 @@ export const useUrlStore = defineStore({
     urlTrips(){
       return `${this.urlData}/trips`
     },
-    // urlFood(){
-    //   return `${this.urlData}/food`
-    // },
     urlfoodWithCategrory(){
       return `${this.urlData}/foodWithCategrory`
     },

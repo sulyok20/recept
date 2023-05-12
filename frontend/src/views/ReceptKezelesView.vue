@@ -7,7 +7,7 @@
       <!-- taxi táblázat -->
       <div class="col-md-5">
         <h2>Receptek</h2>
-        <button type="button" class="btn btn-primary ms-5">
+        <button type="button" class="btn btn-primary ms-5 mb-2" title="Új étel hozzáadása">
           <i class="bi bi-plus-lg"></i>
         </button>
 
@@ -22,10 +22,10 @@
           <tbody>
             <tr v-for="(food, index) in foodWithCategrory" :key="`car${index}`">
               <td>
-                <button type="button" class="btn btn-danger me-2">
+                <button type="button" class="btn btn-danger me-2" title="Étel törlése">
                   <i class="bi bi-trash"></i>
                 </button>
-                <button type="button" class="btn btn-success">
+                <button type="button" class="btn btn-success" title="Étel módosítása">
                   <i class="bi bi-gear"></i>
                 </button>
               </td>
@@ -37,13 +37,13 @@
       </div>
 
       <!-- taxi fuvarjai -->
-      <div class="col-md-7">
+      <!-- <div class="col-md-7">
         <h2>Taxi fuvarkezelése</h2>
         <hr />
-        <div v-if="currentCarId">
+        <div>
           <h3>Új fuvar</h3>
-          <form class="row g-3 needs-validation" novalidate>
-            <!-- A fuvar dátumideje -->
+          <form class="row g-3 ">
+            A fuvar dátumideje
             <div class="col-md-6 d-flex align-items-center">
               <label for="date" class="form-label">Mikor</label>
               <input
@@ -56,7 +56,7 @@
               />
               <div class="invalid-feedback">A dátum kitöltése kötelező</div>
             </div>
-            <!-- Menetidő (perc) -->
+            Menetidő (perc)
             <div class="col-md-6 d-flex align-items-center">
               <label for="numberOfMinits" class="form-label">Menetidő:</label>
               <input
@@ -93,8 +93,8 @@
             </li>
           </ul>
         </div>
-      </div>
-    </div>
+      </div>-->
+    </div> 
 
     <!-- delete modal component -->
     <Menu></Menu>
