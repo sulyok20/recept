@@ -195,10 +195,10 @@ get http://localhost:3000/used
 ###--------Adat id alapján------------
 
 ### get food by id
-get http://localhost:3000/food/118
+get http://localhost:3000/food/117
 
 ### get ingredient by id
-get http://localhost:3000/ingredient/32
+get http://localhost:3000/ingredient/232
 
 ### get category by id
 get http://localhost:3000/category/4
@@ -310,7 +310,7 @@ get http://localhost:3000/foodWithCategrory
 get http://localhost:3000/foodSearchByCategory/leves
 
 ### get food with category by search 
-get http://localhost:3000/foodWithCategroryBySearch/bab
+get http://localhost:3000/foodWithCategroryBySearch/kör
 
 ### get food with category iiner join by id
 get http://localhost:3000/foodWithCategroryById/5

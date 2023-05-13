@@ -52,8 +52,8 @@ export default {};
 
 .covers{
   max-height: 200px;
-  min-height: 200px;
-  width: fit-content;
+  width: max-content;
+   
 }
 
 </style>

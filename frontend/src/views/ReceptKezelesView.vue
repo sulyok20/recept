@@ -12,7 +12,7 @@
         </button>
 
         <!--#region táblázat -->
-        <table class="table table-bordered table-hover w-auto">
+        <table class="table table-bordered table-hover w-auto ms-0">
           <thead>
             <tr>
               <th>Esesmények</th>
@@ -22,10 +22,12 @@
           <tbody>
             <tr v-for="(food, index) in foodWithCategrory" :key="`car${index}`">
               <td>
-                <button type="button" class="btn btn-danger me-2" title="Étel törlése">
+                <button type="button" class="btn btn-danger me-2" title="Étel törlése"
+                @click="onClickDelete(food.id)">
                   <i class="bi bi-trash"></i>
                 </button>
-                <button type="button" class="btn btn-success" title="Étel módosítása">
+                <button type="button" class="btn btn-success" title="Étel módosítása"
+                @click="onClickShowIngredient()">
                   <i class="bi bi-gear"></i>
                 </button>
               </td>

@@ -66,7 +66,7 @@
         <div class="card">
           <img
             :src="'../../public/' + food.foodName + '.jpg'"
-            class="card-img-top"
+            class="card-img-top my-img"
             :alt="`${food.foodName}`"
             :title="`${food.foodName}`"
           />
@@ -323,9 +323,10 @@ export default {
 .bigLEtter::first-letter {
   text-transform: capitalize;
 }
-img {
-  max-width: 600px;
-  max-height: 350px;
+.my-img {
+  width: 100%;
+    height: 15vw;
+    object-fit: cover;
 }
 table {
   margin-left: auto;
