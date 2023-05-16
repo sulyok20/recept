@@ -7,7 +7,12 @@
       <!-- taxi táblázat -->
       <div class="col-md-5">
         <h2>Receptek</h2>
-        <button type="button" class="btn btn-primary ms-5 mb-2" title="Új étel hozzáadása">
+        <button
+          type="button"
+          class="btn btn-primary ms-5 mb-2"
+          title="Új étel hozzáadása"
+          @click="onClickNewFood()"
+        >
           <i class="bi bi-plus-lg"></i>
         </button>
 
@@ -22,12 +27,20 @@
           <tbody>
             <tr v-for="(food, index) in foodWithCategrory" :key="`car${index}`">
               <td>
-                <button type="button" class="btn btn-danger me-2" title="Étel törlése"
-                @click="onClickDelete(food.id)">
+                <button
+                  type="button"
+                  class="btn btn-danger me-2"
+                  title="Étel törlése"
+                  @click="onClickDelete(food.id)"
+                >
                   <i class="bi bi-trash"></i>
                 </button>
-                <button type="button" class="btn btn-success" title="Étel módosítása"
-                @click="onClickShowIngredient()">
+                <button
+                  type="button"
+                  class="btn btn-success"
+                  title="Étel módosítása"
+                  @click="onClickShowIngredient()"
+                >
                   <i class="bi bi-gear"></i>
                 </button>
               </td>
@@ -37,6 +50,147 @@
         </table>
         <!--#endregion táblázat -->
       </div>
+
+      <!--#region Modal  -->
+      <div
+        class="modal fade"
+        id="ActionFoodModal"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">
+                {{ stateTitle }}
+              </h1>
+              <!-- jobb fölső x -->
+              <button
+                type="button"
+                class="btn-close"
+                @click="onClickCancel()"
+                aria-label="Close"
+              ></button>
+            </div>
+            <!-- Content -->
+            <div class="modal-body">
+              <form class="row g-3 needs-validation" novalidate>
+                <!-- name -->
+                <div class="mb-3 col-md-12">
+                  <label for="foodName" class="form-label">Étel neve</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="foodName"
+                    required
+                    v-model="editableFood.foodName"
+                  />
+                  <div class="invalid-feedback">Az autó kitöltése kötelező</div>
+                </div>
+                <!-- licenceNumber -->
+                <div class="mb-3 col-md-6">
+                  <label for="categoryID" class="form-label">Kategória</label>
+
+                  <select
+                  class="form-select" 
+                  v-model="editableFood.categoryName"
+                  >
+                  <option 
+                  v-for="(category, index) in category"
+                  :key="`category${index}`"
+                  >
+                  {{category.categoryName}}
+
+                  </option>
+
+
+                  </select>
+
+                  <!-- <input
+                    type="text"
+                    class="form-control"
+                    id="categoryID"
+                    required
+                    v-model="editableFood.categoryName"
+                  /> -->
+                  <div class="invalid-feedback">
+                    Az rendszám kitöltése kötelező
+                  </div>
+                </div>
+                <!-- hourlyRate -->
+                <div class="mb-3 col-md-6">
+                  <label for="hourlyRate" class="form-label">Óradíj</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="hourlyRate"
+                    required
+                    v-model="editableFood.descriptionDate"
+                  />
+                  <div class="invalid-feedback">
+                    Az óradíj kitöltése kötelező
+                  </div>
+                </div>
+                <div class="d-flex align-items-center">
+                  <!-- outOfTraffic -->
+                  <div class="col-4">
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        value=""
+                        id="outOfTraffic"
+                        v-model="editableFood.firstDate"
+                      />
+                      <label class="form-check-label" for="outOfTraffic">
+                        Forgalmon kívül
+                      </label>
+                    </div>
+                  </div>
+                  <!-- drivers  -->
+                  <!-- <div class="col-md-8 d-flex align-items-center">
+                    <label for="driverId" class="form-label m-0">Sofőr:</label>
+                    <select
+                      class="form-select ms-2"
+                      id="driverId"
+                      v-model="editableCar.driverId"
+                      required
+                    >
+                      <option :value="null">Nincs sofőr</option>
+                      <option
+                        v-for="(driver, index) in driversAbc"
+                        :key="`driver${index}`"
+                        :value="driver.id"
+                      >
+                        {{ driver.driverName }}
+                      </option>
+                    </select>
+                  </div> -->
+                </div>
+              </form>
+            </div>
+
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                @click="onClickCancel()"
+              >
+                Close
+              </button>
+              <button
+                type="button"
+                class="btn btn-primary"
+                @click="onClickSave()"
+              >
+                Mentés
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--#endregion Modal  -->
 
       <!-- taxi fuvarjai -->
       <!-- <div class="col-md-7">
@@ -96,7 +250,7 @@
           </ul>
         </div>
       </div>-->
-    </div> 
+    </div>
 
     <!-- delete modal component -->
     <Menu></Menu>
@@ -119,11 +273,27 @@ import Menu from "../components/Menu.vue";
 const storeUrl = useUrlStore();
 const storeLogin = useLoginStore();
 
-class Trip {
-  constructor(numberOfMinits = null, date = null, carId = null) {
-    this.numberOfMinits = numberOfMinits;
-    this.date = date;
-    this.carId = carId;
+class Food {
+  constructor(
+    id = 0,
+    foodName = null,
+    categoryID = 0,
+    descriptionDate = null,
+    firstDate = null,
+    categoryName = null,
+    ingredientName = null,
+    quantity = null,
+    unit = null
+  ) {
+    (this.id = id),
+      (this.foodName = foodName),
+      (this.categoryID = categoryID),
+      (this.descriptionDate = descriptionDate),
+      (this.firstDate = firstDate),
+      (this.categoryName = categoryName),
+      (this.ingredientName = ingredientName),
+      (this.quantity = quantity),
+      (this.unit = unit);
   }
 }
 
@@ -133,22 +303,27 @@ export default {
       storeUrl,
       storeLogin,
       cars: [],
-      currentCarId: null,
-      currentTripId: null,
       tripsByCarId: [],
-      newTrip: new Trip(),
       yesNoShow: false,
       foodWithCategrory: [],
+      state: "view",
+      currentId: null,
+      editableFood: new Food(),
+      modal: null,
+      category: null,
+      form: null,
     };
   },
   mounted() {
     this.getfoodWithCategrory();
     // this.getCarsWithDriversReal();
+    this.modal = new bootstrap.Modal(document.getElementById("foodModal"), {
+      keyboard: false,
+    });
     this.form = document.querySelector(".needs-validation");
   },
   methods: {
     async getfoodWithCategrory() {
-      this.keresoSzo = null;
       let url = this.storeUrl.urlfoodWithCategrory;
       const config = {
         method: "GET",
@@ -173,7 +348,7 @@ export default {
       const data = await response.json();
       this.cars = data.data;
     },
-    async getTripsByCarId() {
+    async getfoodWithEveritingById() {
       let url = `${this.storeUrl.urlTripsByCarId}/${this.currentCarId}`;
       const config = {
         method: "GET",
@@ -184,7 +359,19 @@ export default {
       const response = await fetch(url, config);
       const data = await response.json();
       this.tripsByCarId = data.data;
-      this.newTrip = new Trip();
+      this.newTrip = new Food();
+    },
+    async getCategory() {
+      let url = `${this.storeUrl.urlCategory}`;
+      const config = {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${this.storeLogin.accessToken}`,
+        },
+      };
+      const response = await fetch(url, config);
+      const data = await response.json();
+      this.category = data.data;
     },
     async postTrip() {
       let url = this.storeUrl.urlTrips;
@@ -214,14 +401,26 @@ export default {
         body: body,
       };
       const response = await fetch(url, config);
-      this.getTripsByCarId();
+      this.getfoodWithEveritingById();
+    },
+    async getfoodWithEverithingById(id) {
+      let url = `${this.storeUrl.urlfoodWithEverithingById}/${id}`;
+      const config = {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${this.storeLogin.accessToken}`,
+        },
+      };
+      const response = await fetch(url, config);
+      const data = await response.json();
+      this.foodWithEverithingById = data.data;
     },
     currentRowBackground(id) {
-      return this.currentCarId == id ? "my-bg-current-row" : "";
+      return this.currentId == id ? "my-bg-current-row" : "";
     },
     onClikRow(id) {
-      this.currentCarId = id;
-      this.getTripsByCarId();
+      this.currentId = id;
+      this.getfoodWithEveritingById(id);
       // this.$refs.date.focus();
       // this.$refs.date.showPicker();
     },
@@ -239,8 +438,29 @@ export default {
     onClickDeleteCancel() {
       this.yesNoShow = false;
     },
+    onClickNewFood() {
+      this.getCategory();
+      this.modal.show();
+      this.state = "new";
+      this.currentId = null;
+      this.editableFood = new Food();
+    },
+    onClickCancel(){
+      this.modal.hide();
+
+    },
   },
   components: { YesNo, Menu },
+
+   computed: {
+      stateTitle() {
+        if (this.state === "new") {
+          return "Új étel bevitele";
+        } else if (this.state === "edit") {
+          return "Étel módosítás";
+        }
+      },
+    },
 };
 </script>
 

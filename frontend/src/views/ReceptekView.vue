@@ -176,6 +176,31 @@ const storeUrl = useUrlStore();
 const storeLogin = useLoginStore();
 const storeKeres = useKeresStore();
 const { keresoSzo } = storeToRefs(storeKeres);
+
+class Food {
+  constructor(
+    id = 0,
+    foodName = null,
+    categoryID = 0,
+    descriptionDate = null,
+    firstDate = null,
+    categoryName = null,
+    ingredientName = null,
+    quantity = null,
+    unit = null
+  ) {
+    (this.id = id),
+      (this.foodName = foodName),
+      (this.categoryID = categoryID),
+      (this.descriptionDate = descriptionDate),
+      (this.firstDate = firstDate),
+      (this.categoryName = categoryName),
+      (this.ingredientName = ingredientName),
+      (this.quantity = quantity),
+      (this.unit = unit);
+  }
+}
+
 export default {
   data() {
     return {
@@ -193,6 +218,9 @@ export default {
       foodWithCategroryFilter: [],
       urlfoodWithCategroryBySearch: [],
       categoryNameTitle: "Összes",
+      editableFood: new Food(),
+      state: "view",
+      currentId: null,
     };
   },
   mounted() {
@@ -298,6 +326,13 @@ export default {
     onClickCancel() {
       this.modal.hide();
     },
+    onClickNewFood() {
+      this.getCategory();
+      this.modal.show();
+      this.state = "new";
+      this.currentId = null;
+      this.editableFood = new Food();
+    },
     getImgUrl(pic) {
       if (pic !== "undefined") {
         return `../../public/${pic}.jpg`;
@@ -316,7 +351,18 @@ export default {
         return text;
       }
     },
+
   },
+
+  computed: {
+      stateTitle() {
+        if (this.state === "new") {
+          return "Új étel bevitele";
+        } else if (this.state === "edit") {
+          return "Étel módosítás";
+        }
+      },
+    },
 };
 </script>
 <style>
@@ -325,8 +371,8 @@ export default {
 }
 .my-img {
   width: 100%;
-    height: 15vw;
-    object-fit: cover;
+  height: 15vw;
+  object-fit: cover;
 }
 table {
   margin-left: auto;

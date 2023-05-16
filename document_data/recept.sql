@@ -176,6 +176,18 @@ DELETE from used
     WHERE f.id = 1
     ;
 
+
+  #get osszes tabla 
+
+     select f.id, f.foodName, f.categoryID, 
+  DATE_FORMAT(f.descriptionDate, '%Y.%m.%d') descriptionDate,
+  DATE_FORMAT(f.firstDate, '%Y.%m.%d') firstDate, c.categoryName, i.ingredientName from food f
+    INNER JOIN category c on c.id = f.categoryID
+    INNER JOIN used u on u.foodID = f.id 
+    INNER join ingredient i on i.id = u.ingredientID
+    ORDER by f.id
+    ;
+
   #get foodWithCategroryById
 
      select f.id, f.foodName, f.categoryID, 
@@ -189,7 +201,7 @@ DELETE from used
     select c.id "kategoria id", c.categoryName, f.id, f.foodName, DATE_FORMAT(f.descriptionDate, '%Y.%m.%d') descriptionDate, DATE_FORMAT(f.firstDate, '%Y.%m.%d') firstDate from category c 
       INNER JOIN food f on c.id = f.categoryID;
 
-    #kategoriankent kajak byID
+#kategoriankent kajak byID
       select c.id "kategoria id", c.categoryName, f.id, f.foodName, DATE_FORMAT(f.descriptionDate, '%Y.%m.%d') descriptionDate,
         DATE_FORMAT(f.firstDate, '%Y.%m.%d') firstDate from category c 
       INNER JOIN food f on c.id = f.categoryID
