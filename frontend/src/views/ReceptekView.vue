@@ -8,7 +8,7 @@
         <input
           class="form-control me-2"
           type="search"
-          placeholder="Search"
+          placeholder="Étel keresése"
           aria-label="Search"
           v-model="keresoSzo"
         />
@@ -17,7 +17,7 @@
           @click="onClickSearch()"
           type="button"
         >
-          Search
+          Keresés
         </button>
       </form>
       <!-- dropdown -->
@@ -84,12 +84,33 @@
                 {{ food.categoryName }}
               </span>
             </p>
-            <button
-              @click="onClickShowIngredient(food.id)"
-              class="btn btn-primary"
-            >
-              Alapanyagok
-            </button>
+            <div class="d-flex align-items-center">
+              <button
+                @click="onClickShowIngredient(food.id)"
+                class="btn btn-primary"
+              >
+                Alapanyagok
+              </button>
+
+              <button
+                type="button"
+                class="btn btn-danger ms-3"
+                title="Étel törlése"
+                @click="onClickDelete(food.id)"
+                v-if="storeLogin.loginSuccess"
+              >
+                <i class="bi bi-trash"></i>
+              </button>
+              <button
+                type="button"
+                class="btn btn-success ms-3"
+                title="Étel módosítása"
+                @click="onClickUpdateFood(food.id)"
+                v-if="storeLogin.loginSuccess"
+              >
+                <i class="bi bi-gear"></i>
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -306,7 +327,8 @@ export default {
     },
 
     onClickSearch() {
-      if (this.keresoSzo.trim()) {
+      this.categoryNameTitle = "Összes";
+      if (this.keresoSzo) {
         this.getfoodWithCategroryBySearch();
       } else {
         this.getfoodWithCategrory();
@@ -351,18 +373,17 @@ export default {
         return text;
       }
     },
-
   },
 
   computed: {
-      stateTitle() {
-        if (this.state === "new") {
-          return "Új étel bevitele";
-        } else if (this.state === "edit") {
-          return "Étel módosítás";
-        }
-      },
+    stateTitle() {
+      if (this.state === "new") {
+        return "Új étel bevitele";
+      } else if (this.state === "edit") {
+        return "Étel módosítás";
+      }
     },
+  },
 };
 </script>
 <style>

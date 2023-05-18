@@ -25,7 +25,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(food, index) in foodWithCategrory" :key="`car${index}`">
+            <tr v-for="(food, index) in foodWithCategrory" :key="`food${index}`">
               <td>
                 <button
                   type="button"
