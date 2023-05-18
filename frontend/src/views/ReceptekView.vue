@@ -168,6 +168,44 @@
                 </tr>
               </tbody>
             </table>
+
+            <div class="row" v-if="storeLogin.loginSuccess">
+              <button
+                type="button"
+                class="btn btn-primary rounded-circle col-1 me-3"
+              >
+                <i class="bi bi-plus-square"></i>
+              </button>
+
+              <select
+                class="form-select col ms-4"
+                aria-label="Default select example"
+              >
+                <option selected>Alapanyag</option>
+                <option></option>
+              </select>
+
+              <div class="col">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Mennyiség"
+                  aria-label="Mennyiség"
+                  aria-describedby="basic-addon1"
+                />
+              </div>
+
+              <select
+              @click="getUsed()"
+                class="form-select col me-5 pe-3"
+                aria-label="Default select example"
+                v-for="(used, index) in used"
+                :key="`used${index}`"
+              >
+                <option selected>Egység</option>
+                <option></option>
+              </select>
+            </div>
           </div>
           <!--#endregion Modal body -->
 
@@ -242,6 +280,7 @@ export default {
       editableFood: new Food(),
       state: "view",
       currentId: null,
+      used:[],
     };
   },
   mounted() {
@@ -325,7 +364,18 @@ export default {
       const data = await response.json();
       this.foodWithCategrory = data.data;
     },
-
+    async getUsed() {
+      let url = `${this.storeUrl.urlUsed}`;
+      const config = {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${this.storeLogin.accessToken}`,
+        },
+      };
+      const response = await fetch(url, config);
+      const data = await response.json();
+      this.used = data.data;
+    },
     onClickSearch() {
       this.categoryNameTitle = "Összes";
       if (this.keresoSzo) {
