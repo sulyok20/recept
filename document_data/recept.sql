@@ -229,3 +229,7 @@ DELETE from used
   where c.categoryName = 'leves'
   ;
 
+
+    DELETE FROM users;
+
+
