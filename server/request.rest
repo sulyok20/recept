@@ -192,6 +192,9 @@ get http://localhost:3000/ingredient
 ### get used
 get http://localhost:3000/used
 
+
+### get units
+get http://localhost:3000/units
 ###--------Adat id alapján------------
 
 ### get food by id
@@ -325,5 +328,7 @@ get http://localhost:3000/categoryWithFood
 
 ### get food with category iiner join by id
 get http://localhost:3000/categoryWithFood/1
+
+
 
 

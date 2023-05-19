@@ -67,5 +67,11 @@ export const useUrlStore = defineStore({
     urlUsed(){
       return `${this.urlData}/used`
     },
+    urlUnits(){
+      return `${this.urlData}/units`
+    },
+    urlIngredient(){
+      return `${this.urlData}/ingredient`
+    },
   },
 });

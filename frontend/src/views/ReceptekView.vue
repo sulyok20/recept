@@ -168,8 +168,8 @@
                 </tr>
               </tbody>
             </table>
-
-            <div class="row" v-if="storeLogin.loginSuccess">
+            <!-- v-if="storeLogin.loginSuccess" -->
+            <div class="row">
               <button
                 type="button"
                 class="btn btn-primary rounded-circle col-1 me-3"
@@ -182,28 +182,38 @@
                 aria-label="Default select example"
               >
                 <option selected>Alapanyag</option>
-                <option></option>
+                <option
+                  v-for="(ingredient, index) in ingredient"
+                  :key="`ingredient${index}`"
+                  :value="ingredient.ingredientID"
+                >
+                  {{ ingredient.ingredientName }}
+                </option>
               </select>
 
               <div class="col">
                 <input
-                  type="text"
+                  type="number"
                   class="form-control"
                   placeholder="Mennyiség"
                   aria-label="Mennyiség"
                   aria-describedby="basic-addon1"
+                  v-model="usedRow.quantity"
                 />
               </div>
 
               <select
-              @click="getUsed()"
                 class="form-select col me-5 pe-3"
                 aria-label="Default select example"
-                v-for="(used, index) in used"
-                :key="`used${index}`"
               >
                 <option selected>Egység</option>
-                <option></option>
+                <option
+                  v-for="(unit, index) in units"
+                  :key="`unit${index}`"
+                  :value="unit.unit"
+                >
+                  {{ unit.unit }}
+                </option>
               </select>
             </div>
           </div>
@@ -235,6 +245,17 @@ const storeUrl = useUrlStore();
 const storeLogin = useLoginStore();
 const storeKeres = useKeresStore();
 const { keresoSzo } = storeToRefs(storeKeres);
+
+
+class Used{
+  constructor(){
+    this.id =null;
+    this.quantity = null;
+    this.unit = null;
+    this.foodID = null;
+    this.ingredientID = null;
+  }
+}
 
 class Food {
   constructor(
@@ -281,6 +302,10 @@ export default {
       state: "view",
       currentId: null,
       used:[],
+      ingedient:[],
+      units: [],
+      usedRow: new Used(),
+
     };
   },
   mounted() {
@@ -290,6 +315,7 @@ export default {
       keyboard: false,
     });
     this.form = document.querySelector(".needs-validation");
+    this.getUnits();
   },
   watch: {
     // keresoSzo(){
@@ -376,6 +402,32 @@ export default {
       const data = await response.json();
       this.used = data.data;
     },
+    async getUnits() {
+      let url = `${this.storeUrl.urlUnits}`;
+      const config = {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${this.storeLogin.accessToken}`,
+        },
+      };
+      const response = await fetch(url, config);
+      const data = await response.json();
+      this.units = data.data;
+    },
+
+    async getIngredient() {
+      let url = `${this.storeUrl.urlIngredient}`;
+      const config = {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${this.storeLogin.accessToken}`,
+        },
+      };
+      const response = await fetch(url, config);
+      const data = await response.json();
+      this.ingedient = data.data;
+    },
+    
     onClickSearch() {
       this.categoryNameTitle = "Összes";
       if (this.keresoSzo) {

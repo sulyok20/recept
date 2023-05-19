@@ -16,7 +16,7 @@ SELECT * from ingredient;
 ### get used
 #get http://localhost:3000/used
 
-SELECT * from used;
+SELECT DISTINCT unit from used;
 
 ### get food by id
 #get http://localhost:3000/food/117
@@ -230,6 +230,54 @@ DELETE from used
   ;
 
 
-    DELETE FROM users;
+ select  u.unit, i.ingredientName from used u
+  inner join ingredient i on i.id = u.ingredientID;
+
+select DISTINCT unit from used
+where unit is not null
+;
 
 
+
+#units tabla feltoltese
+
+INSERT INTO units
+  (unit)
+  VALUES
+  ('vizes'),
+('teáskanál'),
+('szem'),
+('szelet'),
+('szál'),
+('pohár'),
+('pár'),
+('nagyobb'),
+('nagy'),
+('mokkáskanál'),
+('marék'),
+('liter'),
+('levél'),
+('l'),
+('kis'),
+('kg'),
+('kávéskanál'),
+('karika'),
+('kanál'),
+('húsos'),
+('gerezd'),
+('fej'),
+('evõkanál'),
+('ek.'),
+('ek'),
+('dl'),
+('dkg'),
+('db'),
+('darab'),
+('csokor'),
+('csipet'),
+('csemege'),
+('bögre');
+
+  select * from units
+  ORDER by unit 
+  ;

@@ -895,8 +895,6 @@ app.put("/food/:id", (req, res) => {
 //#endregion food
 
 
-
-
 //#region category ---
 app.get("/categoryWithFood", (req, res) => {
   let sql =
@@ -1188,8 +1186,9 @@ app.put("/ingredient/:id", (req, res) => {
 //#endregion ingredient
 
 //#region used ---
-app.get("/used", (req, res) => {
-  let sql = `SELECT * FROM used`;
+app.get("/units", (req, res) => {
+  let sql = `select * from units
+  ORDER by unit `;
 
   pool.getConnection(function (error, connection) {
     if (error) {
@@ -1203,6 +1202,20 @@ app.get("/used", (req, res) => {
   });
 });
 
+app.get("/used", (req, res) => {
+  let sql = `SELECT *from used`;
+
+  pool.getConnection(function (error, connection) {
+    if (error) {
+      sendingGetError(res, "Server connecting error!");
+      return;
+    }
+    connection.query(sql, async function (error, results, fields) {
+      sendingGet(res, error, results);
+    });
+    connection.release();
+  });
+});
 
 //Egy used rekord
 app.get("/used/:id", (req, res) => {
