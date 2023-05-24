@@ -316,7 +316,7 @@ get http://localhost:3000/foodSearchByCategory/leves
 get http://localhost:3000/foodWithCategroryBySearch/kör
 
 ### get food with category iiner join by id
-get http://localhost:3000/foodWithCategroryById/5
+get http://localhost:3000/foodWithCategroryById/117
 
 ### get food with category iiner join by id
 get http://localhost:3000/foodWithEverithingById/11

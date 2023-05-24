@@ -283,7 +283,7 @@ class Food {
   }
 }
 
-export default {
+export default { 
   data() {
     return {
       storeUrl,
@@ -430,6 +430,19 @@ export default {
       this.ingredients = data.data;
     },
     
+    async deleteFood(id) {
+      let url = `${this.storeUrl.urlfoodWithCategroryById}/${id}`;
+      const config = {
+        method: "DELETE",
+        headers: {
+          "content-type": "application/json",
+          Authorization: `Bearer ${this.storeLogin.accessToken}`,
+        },
+      };
+      const response = await fetch(url, config);
+      this.getfoodWithCategrory();
+    },
+
     onClickSearch() {
       this.categoryNameTitle = "Összes";
       if (this.keresoSzo) {
@@ -458,6 +471,11 @@ export default {
       this.state = "new";
       this.currentId = null;
       this.editableFood = new Food();
+    },
+    onClickDelete(id){
+      this.state = "delete";
+      this.currentId = id;
+      this.deleteFood(id);
     },
     getImgUrl(pic) {
       if (pic !== "undefined") {
