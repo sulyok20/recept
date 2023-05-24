@@ -180,10 +180,11 @@
               <select
                 class="form-select col ms-4"
                 aria-label="Default select example"
+                v-model="usedRow.ingredientID"
               >
                 <option selected>Alapanyag</option>
                 <option
-                  v-for="(ingredient, index) in ingredient"
+                  v-for="(ingredient, index) in ingredients"
                   :key="`ingredient${index}`"
                   :value="ingredient.ingredientID"
                 >
@@ -205,6 +206,7 @@
               <select
                 class="form-select col me-5 pe-3"
                 aria-label="Default select example"
+                v-model="usedRow.unit"
               >
                 <option selected>Egység</option>
                 <option
@@ -302,7 +304,7 @@ export default {
       state: "view",
       currentId: null,
       used:[],
-      ingedient:[],
+      ingredients:[],
       units: [],
       usedRow: new Used(),
 
@@ -425,7 +427,7 @@ export default {
       };
       const response = await fetch(url, config);
       const data = await response.json();
-      this.ingedient = data.data;
+      this.ingredients = data.data;
     },
     
     onClickSearch() {
