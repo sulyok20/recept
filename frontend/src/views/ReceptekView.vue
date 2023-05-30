@@ -96,7 +96,7 @@
                 type="button"
                 class="btn btn-danger ms-3"
                 title="Étel törlése"
-                @click="onClickDelete(food.id)"
+                @click="onClickDeleteFood(food.id)"
                 v-if="storeLogin.loginSuccess"
               >
                 <i class="bi bi-trash"></i>
@@ -152,6 +152,7 @@
             <table class="table table-bordered table-hover w-auto">
               <thead>
                 <tr>
+                  <th></th>
                   <th>Alapanyag</th>
                   <th>Mennyiség</th>
                   <th>Egység</th>
@@ -162,6 +163,16 @@
                   v-for="(food, index) in foodWithEverithingById"
                   :key="`food${index}`"
                 >
+                  <td><button
+                type="button"
+                class="btn btn-danger ms-3"
+                title="Hozzávaló törlése"
+                @click="onClickDeleteIngrdedient(usedRow.id)"
+                
+              >
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
                   <td>{{ food.ingredientName }}</td>
                   <td>{{ food.quantity }}</td>
                   <td>{{ food.unit }}</td>
@@ -461,6 +472,18 @@ export default {
       this.usedRow.unit = null;
       this.usedRow.quantity = null;
     },
+    async deleteUsed(id) {
+      let url = `${this.storeUrl.urlUsed}/${id}`;
+      const config = {
+        method: "DELETE",
+        headers: {
+          "content-type": "application/json",
+          Authorization: `Bearer ${this.storeLogin.accessToken}`,
+        },
+      };
+      const response = await fetch(url, config);
+      this.getfoodWithEverithingById(this.usedRow.foodID);
+    },
 
     onClickSearch() {
       this.categoryNameTitle = "Összes";
@@ -484,6 +507,9 @@ export default {
     },
     onClickCancel() {
       this.modal.hide();
+      this.usedRow.ingredientID = null;
+      this.usedRow.unit = null;
+      this.usedRow.quantity = null;
     },
     onClickNewFood() {
       this.getCategory();
@@ -492,7 +518,7 @@ export default {
       this.currentId = null;
       this.editableFood = new Food();
     },
-    onClickDelete(id){
+    onClickDeleteFood(id){
       this.state = "delete";
       this.currentId = id;
       this.deleteFood(id);
@@ -500,6 +526,12 @@ export default {
     onClickNewUsed(){
       this.postUsedRow();
     },
+    onClickDeleteIngrdedient(id){
+      this.state = "delete";
+      this.currentId = id;
+      this.deleteUsed(id);
+    },
+
     getImgUrl(pic) {
       if (pic !== "undefined") {
         return `../../public/${pic}.jpg`;
