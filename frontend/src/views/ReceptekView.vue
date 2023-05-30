@@ -171,22 +171,24 @@
             <!-- v-if="storeLogin.loginSuccess" -->
             <div class="row">
               <button
+                @click="onClickNewUsed()"
                 type="button"
                 class="btn btn-primary rounded-circle col-1 me-3"
               >
                 <i class="bi bi-plus-square"></i>
               </button>
 
+              
               <select
                 class="form-select col ms-4"
                 aria-label="Default select example"
                 v-model="usedRow.ingredientID"
               >
-                <option selected>Alapanyag</option>
+                
                 <option
                   v-for="(ingredient, index) in ingredients"
                   :key="`ingredient${index}`"
-                  :value="ingredient.ingredientID"
+                  :value="ingredient.id"
                 >
                   {{ ingredient.ingredientName }}
                 </option>
@@ -208,7 +210,6 @@
                 aria-label="Default select example"
                 v-model="usedRow.unit"
               >
-                <option selected>Egység</option>
                 <option
                   v-for="(unit, index) in units"
                   :key="`unit${index}`"
@@ -318,6 +319,7 @@ export default {
     });
     this.form = document.querySelector(".needs-validation");
     this.getUnits();
+    this.getIngredient();
   },
   watch: {
     // keresoSzo(){
@@ -442,6 +444,23 @@ export default {
       const response = await fetch(url, config);
       this.getfoodWithCategrory();
     },
+    async postUsedRow(){
+      let url = this.storeUrl.urlUsed;
+      const body = JSON.stringify(this.usedRow);
+      const config = {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          Authorization: `Bearer ${this.storeLogin.accessToken}`,
+        },
+        body: body,
+      };
+      const response = await fetch(url, config);
+      this.getfoodWithEverithingById(this.usedRow.foodID);
+      this.usedRow.ingredientID = null;
+      this.usedRow.unit = null;
+      this.usedRow.quantity = null;
+    },
 
     onClickSearch() {
       this.categoryNameTitle = "Összes";
@@ -455,6 +474,7 @@ export default {
     onClickShowIngredient(id) {
       this.modal.show();
       this.currentId = null;
+      this.usedRow.foodID = id;
       this.getfoodWithEverithingById(id);
       this.getfoodWithCategroryById(id);
     },
@@ -476,6 +496,9 @@ export default {
       this.state = "delete";
       this.currentId = id;
       this.deleteFood(id);
+    },
+    onClickNewUsed(){
+      this.postUsedRow();
     },
     getImgUrl(pic) {
       if (pic !== "undefined") {

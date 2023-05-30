@@ -1064,7 +1064,9 @@ app.put("/category/:id", (req, res) => {
 
 //#region ingredient ---
 app.get("/ingredient", (req, res) => {
-  let sql = `SELECT * FROM ingredient`;
+  let sql = `SELECT * FROM ingredient 
+  order by ingredientName
+  `;
 
   pool.getConnection(function (error, connection) {
     if (error) {

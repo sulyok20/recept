@@ -247,7 +247,7 @@ Content-Type: application/json
 {
     "quantity": "2",
     "unit": "szelet",
-    "foodID": 117,
+    "foodID": 11,
     "ingredientID": 75
 }
 
