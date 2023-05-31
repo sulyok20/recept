@@ -163,16 +163,25 @@
                   v-for="(food, index) in foodWithEverithingById"
                   :key="`food${index}`"
                 >
-                  <td><button
-                type="button"
-                class="btn btn-danger ms-3"
-                title="Hozzávaló törlése"
-                @click="onClickDeleteIngrdedient(usedRow.id)"
-                
-              >
-                <i class="bi bi-trash"></i>
-              </button>
-            </td>
+                  <td>
+                    <button
+                      type="button"
+                      class="btn btn-danger"
+                      title="Hozzávaló törlése"
+                      @click="onClickDeleteIngrdedient(food.id)"
+                    >
+                      <i class="bi bi-trash"></i>
+                    </button>
+
+                    <button
+                      type="button"
+                      class="btn btn-success ms-3"
+                      title="Hozzávaló módosítása"
+                      @click="onClickUpdateIngrdedient(food.id)"
+                    >
+                      <i class="bi bi-gear"></i>
+                    </button>
+                  </td>
                   <td>{{ food.ingredientName }}</td>
                   <td>{{ food.quantity }}</td>
                   <td>{{ food.unit }}</td>
@@ -182,20 +191,18 @@
             <!-- v-if="storeLogin.loginSuccess" -->
             <div class="row">
               <button
-                @click="onClickNewUsed()"
+                @click="onClicNewIngredient()"
                 type="button"
-                class="btn btn-primary rounded-circle col-1 me-3"
+                class="btn btn-primary rounded-circle col-1"
               >
                 <i class="bi bi-plus-square"></i>
               </button>
 
-              
               <select
                 class="form-select col ms-4"
                 aria-label="Default select example"
                 v-model="usedRow.ingredientID"
               >
-                
                 <option
                   v-for="(ingredient, index) in ingredients"
                   :key="`ingredient${index}`"
@@ -260,10 +267,9 @@ const storeLogin = useLoginStore();
 const storeKeres = useKeresStore();
 const { keresoSzo } = storeToRefs(storeKeres);
 
-
-class Used{
-  constructor(){
-    this.id =null;
+class Used {
+  constructor() {
+    this.id = null;
     this.quantity = null;
     this.unit = null;
     this.foodID = null;
@@ -295,7 +301,7 @@ class Food {
   }
 }
 
-export default { 
+export default {
   data() {
     return {
       storeUrl,
@@ -315,11 +321,11 @@ export default {
       editableFood: new Food(),
       state: "view",
       currentId: null,
-      used:[],
-      ingredients:[],
+      used: [],
+      ingredients: [],
       units: [],
       usedRow: new Used(),
-
+      yesNoShow: false,
     };
   },
   mounted() {
@@ -442,7 +448,7 @@ export default {
       const data = await response.json();
       this.ingredients = data.data;
     },
-    
+
     async deleteFood(id) {
       let url = `${this.storeUrl.urlfoodWithCategroryById}/${id}`;
       const config = {
@@ -455,7 +461,7 @@ export default {
       const response = await fetch(url, config);
       this.getfoodWithCategrory();
     },
-    async postUsedRow(){
+    async postUsedRow() {
       let url = this.storeUrl.urlUsed;
       const body = JSON.stringify(this.usedRow);
       const config = {
@@ -484,6 +490,22 @@ export default {
       const response = await fetch(url, config);
       this.getfoodWithEverithingById(this.usedRow.foodID);
     },
+    async putUsedRow() {
+        const id = this.foodWithCategroryById.id;
+        let url = `${this.storeUrl.urlfoodWithEverithingById}/${id}`;
+        const body = JSON.stringify(this.used);
+        const config = {
+          method: "PUT",
+          headers: {
+            "content-type": "application/json",
+            Authorization: `Bearer ${this.storeLogin.accessToken}`,
+          },
+          body: body,
+        };
+        const response = await fetch(url, config);
+        this.getfoodWithEverithingById(this.usedRow.foodID);
+
+      },
 
     onClickSearch() {
       this.categoryNameTitle = "Összes";
@@ -518,18 +540,26 @@ export default {
       this.currentId = null;
       this.editableFood = new Food();
     },
-    onClickDeleteFood(id){
+    onClickDeleteFood(id) {
       this.state = "delete";
       this.currentId = id;
       this.deleteFood(id);
     },
-    onClickNewUsed(){
+    onClicNewIngredient() {
       this.postUsedRow();
     },
-    onClickDeleteIngrdedient(id){
+    onClickUpdateIngrdedient(id) {
+      this.currentId = id;
+      console.log(this.currentId);
+      this.putUsedRow(this.currentId);
+    },
+    onClickDeleteIngrdedient(id) {
+      if (confirm("Biztosan törölni akarja?")) {
+        this.deleteUsed(id);
+      }
+      console.log(id);
       this.state = "delete";
       this.currentId = id;
-      this.deleteUsed(id);
     },
 
     getImgUrl(pic) {
@@ -551,7 +581,6 @@ export default {
       }
     },
   },
-
   computed: {
     stateTitle() {
       if (this.state === "new") {

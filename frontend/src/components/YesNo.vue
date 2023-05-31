@@ -30,7 +30,7 @@
         </section>
 
         <footer class="modal-footer">
-          <slot name="footer"> This is the default footer! </slot>
+          <slot name="footer"></slot>
           <div class="d-flex">
             <!-- No -->
             <button

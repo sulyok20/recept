@@ -61,33 +61,6 @@
               </li>
             </ul>
           </li>
-          <li class="nav-item dropdown">
-            <a
-              class="nav-link dropdown-toggle"
-              href="#"
-              role="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
-              Counter
-            </a>
-            <ul class="dropdown-menu">
-              <li>
-                <router-link class="dropdown-item" to="/count1"
-                  :class="{active: menuState === 5}"
-                  @click="onClickMenu(5)"
-                  >Counter1</router-link
-                >
-              </li>
-              <li>
-                <router-link class="dropdown-item" to="/count2"
-                  :class="{active: menuState === 6}"
-                  @click="onClickMenu(6)"
-                  >Counter2</router-link
-                >
-              </li>
-            </ul>
-          </li>
           <li class="nav-item" v-if="!storeLogin.loginSuccess">
             <router-link class="nav-link" to="/login">Login</router-link>
           </li>
