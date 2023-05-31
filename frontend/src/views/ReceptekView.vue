@@ -133,7 +133,7 @@
           <div class="modal-header">
             <h1
               class="modal-title fs-5 bigLEtter"
-              id="exampleModalLabel"
+              id="modalFoodModalLabel"
               v-for="(food, index) in foodWithCategroryById"
               :key="`food${index}`"
             >
@@ -168,7 +168,7 @@
                       type="button"
                       class="btn btn-danger"
                       title="Hozzávaló törlése"
-                      @click="onClickDeleteIngrdedient(food.id)"
+                      @click="onClickDeleteIngredient(food.id)"
                     >
                       <i class="bi bi-trash"></i>
                     </button>
@@ -177,7 +177,7 @@
                       type="button"
                       class="btn btn-success ms-3"
                       title="Hozzávaló módosítása"
-                      @click="onClickUpdateIngrdedient(food.id)"
+                      @click="onClickUpdateIngredient(food.id)"
                     >
                       <i class="bi bi-gear"></i>
                     </button>
@@ -189,15 +189,65 @@
               </tbody>
             </table>
             <!-- v-if="storeLogin.loginSuccess" -->
-            <div class="row">
+            <div>
               <button
                 @click="onClicNewIngredient()"
                 type="button"
-                class="btn btn-primary rounded-circle col-1"
+                class="btn btn-primary"
               >
-                <i class="bi bi-plus-square"></i>
+                Új alapanyag hozzáadása
               </button>
+            </div>
+              
+            
+          </div>
+          <!--#endregion Modal body -->
 
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              @click="onClickCancel()"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--#endregion Modal -->
+
+    <!-- Button trigger modal -->
+    <!-- <button
+      type="button"
+      class="btn btn-primary"
+      data-bs-toggle="modalIngredient"
+      data-bs-target="#exampleModalIngredient"
+    >
+      Launch demo modal
+    </button> -->
+
+    <!-- modalIngredient -->
+    <div
+      class="modal fade"
+      id="modalIngredient"
+      tabindex="-1"
+      aria-labelledby="exampleModalIngredient"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalIngredient">{{stateTitleIngredient}}</h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
               <select
                 class="form-select col ms-4"
                 aria-label="Default select example"
@@ -238,21 +288,23 @@
               </select>
             </div>
           </div>
-          <!--#endregion Modal body -->
-
           <div class="modal-footer">
             <button
               type="button"
               class="btn btn-secondary"
-              @click="onClickCancel()"
+              data-bs-dismiss="modal"
             >
               Close
             </button>
+            <button type="button" class="btn btn-primary"
+            @click="onClickSave()"
+            >Mentés</button>
           </div>
         </div>
       </div>
     </div>
-    <!--#endregion Modal -->
+        <!--#endregion modalIngredient -->
+
   </div>
 </template>
 
@@ -331,7 +383,10 @@ export default {
   mounted() {
     this.getfoodWithCategrory();
     this.getCategory();
-    this.modal = new bootstrap.Modal(document.getElementById("modalFood"), {
+    this.modalFood = new bootstrap.Modal(document.getElementById("modalFood"), {
+      keyboard: false,
+    });
+    this.modalIngredient = new bootstrap.Modal(document.getElementById("modalIngredient"), {
       keyboard: false,
     });
     this.form = document.querySelector(".needs-validation");
@@ -491,21 +546,20 @@ export default {
       this.getfoodWithEverithingById(this.usedRow.foodID);
     },
     async putUsedRow() {
-        const id = this.foodWithCategroryById.id;
-        let url = `${this.storeUrl.urlfoodWithEverithingById}/${id}`;
-        const body = JSON.stringify(this.used);
-        const config = {
-          method: "PUT",
-          headers: {
-            "content-type": "application/json",
-            Authorization: `Bearer ${this.storeLogin.accessToken}`,
-          },
-          body: body,
-        };
-        const response = await fetch(url, config);
-        this.getfoodWithEverithingById(this.usedRow.foodID);
-
-      },
+      const id = this.foodWithCategroryById.foodID;
+      let url = `${this.storeUrl.urlfoodWithEverithingById}/${id}`;
+      const body = JSON.stringify(this.usedRow);
+      const config = {
+        method: "PUT",
+        headers: {
+          "content-type": "application/json",
+          Authorization: `Bearer ${this.storeLogin.accessToken}`,
+        },
+        body: body,
+      };
+      const response = await fetch(url, config);
+      this.getfoodWithEverithingById(this.usedRow.foodID);
+    },
 
     onClickSearch() {
       this.categoryNameTitle = "Összes";
@@ -517,7 +571,7 @@ export default {
     },
 
     onClickShowIngredient(id) {
-      this.modal.show();
+      this.modalFood.show();
       this.currentId = null;
       this.usedRow.foodID = id;
       this.getfoodWithEverithingById(id);
@@ -528,14 +582,14 @@ export default {
       this.categoryNameTitle = categoryName;
     },
     onClickCancel() {
-      this.modal.hide();
+      this.modalFood.hide();
       this.usedRow.ingredientID = null;
       this.usedRow.unit = null;
       this.usedRow.quantity = null;
     },
     onClickNewFood() {
       this.getCategory();
-      this.modal.show();
+      this.modalFood.show();
       this.state = "new";
       this.currentId = null;
       this.editableFood = new Food();
@@ -546,20 +600,36 @@ export default {
       this.deleteFood(id);
     },
     onClicNewIngredient() {
+      this.state = "new";
+      this.modalIngredient.show();
       this.postUsedRow();
     },
-    onClickUpdateIngrdedient(id) {
+    onClickUpdateIngredient(id) {
+      this.state = "edit"
+      this.modalIngredient.show();
       this.currentId = id;
+      this.getfoodWithCategroryById(id);
       console.log(this.currentId);
-      this.putUsedRow(this.currentId);
+      
     },
-    onClickDeleteIngrdedient(id) {
+    onClickDeleteIngredient(id) {
       if (confirm("Biztosan törölni akarja?")) {
         this.deleteUsed(id);
       }
       console.log(id);
       this.state = "delete";
       this.currentId = id;
+    },
+    onClickSave() {
+      // this.form.classList.add("was-validated");
+      // if (this.form.checkValidity()) {
+        if (this.state == "new") {
+          this.postUsedRow();
+        } else if (this.state == "edit") {
+          this.putUsedRow();
+        }
+        this.modalIngredient.hide();
+      // }
     },
 
     getImgUrl(pic) {
@@ -582,7 +652,14 @@ export default {
     },
   },
   computed: {
-    stateTitle() {
+    stateTitleIngredient() {
+      if (this.state === "new") {
+        return "Új hozzávaló bevitele";
+      } else if (this.state === "edit") {
+        return "Hozzávaló módosítás";
+      }
+    },
+    stateTitleFood() {
       if (this.state === "new") {
         return "Új étel bevitele";
       } else if (this.state === "edit") {
