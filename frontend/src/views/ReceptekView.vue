@@ -209,7 +209,7 @@
               class="btn btn-secondary"
               @click="onClickCancel()"
             >
-              Bezár
+              Close
             </button>
           </div>
         </div>
