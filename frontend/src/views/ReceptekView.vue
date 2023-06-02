@@ -94,7 +94,7 @@
 
               <button
                 type="button"
-                class="btn btn-danger ms-3"
+                class="btn btn-danger ms-5"
                 title="Étel törlése"
                 @click="onClickDeleteFood(food.id)"
                 v-if="storeLogin.loginSuccess"
@@ -215,17 +215,8 @@
     </div>
     <!--#endregion Modal -->
 
-    <!-- Button trigger modal -->
-    <!-- <button
-      type="button"
-      class="btn btn-primary"
-      data-bs-toggle="modalIngredient"
-      data-bs-target="#exampleModalIngredient"
-    >
-      Launch demo modal
-    </button> -->
+    <!-- #region modalIngredient -->
 
-    <!-- modalIngredient -->
     <div
       class="modal fade"
       id="modalIngredient"
@@ -299,7 +290,7 @@
             <button
               type="button"
               class="btn btn-primary"
-              @click="onClickSave()"
+              @click="onClickSaveIngredient()"
             >
               Mentés
             </button>
@@ -308,6 +299,52 @@
       </div>
     </div>
     <!--#endregion modalIngredient -->
+
+    <!-- Button trigger modal -->
+    <button
+      type="button"
+      class="btn btn-primary"
+      data-bs-toggle="modal"
+      data-bs-target="#exampleModal"
+    >
+      Launch demo modal
+    </button>
+
+    <!-- #region Modal -->
+    <div
+      class="modal fade"
+      id="modal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">...</div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- #endregion Modal -->
+
   </div>
 </template>
 
@@ -329,13 +366,13 @@ class Used {
     unit = null,
     foodID = null,
     ingredientID = null
-  ){
+  ) {
     (this.id = id),
-    (this.quantity = quantity),
-    (this.unit = unit),
-    (this.foodID = foodID),
-    (this.ingredientID = ingredientID)
-}
+      (this.quantity = quantity),
+      (this.unit = unit),
+      (this.foodID = foodID),
+      (this.ingredientID = ingredientID);
+  }
 }
 
 class Food {
@@ -395,9 +432,12 @@ export default {
     this.modalFood = new bootstrap.Modal(document.getElementById("modalFood"), {
       keyboard: false,
     });
-    this.modalIngredient = new bootstrap.Modal(document.getElementById("modalIngredient"), {
-      keyboard: false,
-    });
+    this.modalIngredient = new bootstrap.Modal(
+      document.getElementById("modalIngredient"),
+      {
+        keyboard: false,
+      }
+    );
     this.form = document.querySelector(".needs-validation");
     this.getUnits();
     this.getIngredient();
@@ -617,12 +657,11 @@ export default {
       this.postUsedRow();
     },
     onClickUpdateIngredient(id) {
-      this.state = "edit"
+      this.state = "edit";
       this.modalIngredient.show();
       this.currentId = id;
       this.getfoodWithCategroryById(id);
       console.log(this.currentId);
-      
     },
     onClickDeleteIngredient(id) {
       if (confirm("Biztosan törölni akarja?")) {
@@ -632,16 +671,30 @@ export default {
       this.state = "delete";
       this.currentId = id;
     },
-    onClickSave() {
+    onClickSaveIngredient() {
       // this.form.classList.add("was-validated");
       // if (this.form.checkValidity()) {
-        if (this.state == "new") {
-          this.postUsedRow();
-        } else if (this.state == "edit") {
-          this.putUsedRow(this.currentId);
-        }
-        this.modalIngredient.hide();
+      if (this.state == "new") {
+        this.postUsedRow();
+      } else if (this.state == "edit") {
+        this.putUsedRow(this.currentId);
+      }
+      this.modalIngredient.hide();
       // }
+    },
+    onClickSaveFood() {
+      if (this.state == "new") {
+        this.postUsedRow();
+      } else if (this.state == "edit") {
+        this.putUsedRow(this.currentId);
+      }
+      this.modalIngredient.hide();
+    },
+    onClickUpdateFood() {
+      this.state = "edit";
+    },
+    onClicNewFood() {
+      this.state = "new";
     },
 
     getImgUrl(pic) {
