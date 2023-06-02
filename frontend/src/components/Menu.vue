@@ -54,11 +54,6 @@
                   >Recept kezelés</router-link
                 >
               </li>
-              <li>
-                <router-link class="dropdown-item" to="/fuvarBevitel"
-                  >Fuvar bevitel</router-link
-                >
-              </li>
             </ul>
           </li>
           <li class="nav-item" v-if="!storeLogin.loginSuccess">

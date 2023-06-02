@@ -198,8 +198,6 @@
                 Új alapanyag hozzáadása
               </button>
             </div>
-              
-            
           </div>
           <!--#endregion Modal body -->
 
@@ -238,7 +236,9 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalIngredient">{{stateTitleIngredient}}</h1>
+            <h1 class="modal-title fs-5" id="exampleModalIngredient">
+              {{ stateTitleIngredient }}
+            </h1>
             <button
               type="button"
               class="btn-close"
@@ -296,15 +296,18 @@
             >
               Close
             </button>
-            <button type="button" class="btn btn-primary"
-            @click="onClickSave()"
-            >Mentés</button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              @click="onClickSave()"
+            >
+              Mentés
+            </button>
           </div>
         </div>
       </div>
     </div>
-        <!--#endregion modalIngredient -->
-
+    <!--#endregion modalIngredient -->
   </div>
 </template>
 
@@ -320,13 +323,19 @@ const storeKeres = useKeresStore();
 const { keresoSzo } = storeToRefs(storeKeres);
 
 class Used {
-  constructor() {
-    this.id = null;
-    this.quantity = null;
-    this.unit = null;
-    this.foodID = null;
-    this.ingredientID = null;
-  }
+  constructor(
+    id = 0,
+    quantity = null,
+    unit = null,
+    foodID = null,
+    ingredientID = null
+  ){
+    (this.id = id),
+    (this.quantity = quantity),
+    (this.unit = unit),
+    (this.foodID = foodID),
+    (this.ingredientID = ingredientID)
+}
 }
 
 class Food {
@@ -545,9 +554,9 @@ export default {
       const response = await fetch(url, config);
       this.getfoodWithEverithingById(this.usedRow.foodID);
     },
-    async putUsedRow() {
-      const id = this.foodWithCategroryById.foodID;
-      let url = `${this.storeUrl.urlfoodWithEverithingById}/${id}`;
+    async putUsedRow(currentId) {
+      const id = this.usedRow.id;
+      let url = `${this.storeUrl.urlUsed}/${id}`;
       const body = JSON.stringify(this.usedRow);
       const config = {
         method: "PUT",
@@ -559,6 +568,9 @@ export default {
       };
       const response = await fetch(url, config);
       this.getfoodWithEverithingById(this.usedRow.foodID);
+      this.usedRow.ingredientID = this.usedRow.ingredientID;
+      this.usedRow.unit = this.usedRow.unit;
+      this.usedRow.quantity = this.usedRow.quantity;
     },
 
     onClickSearch() {
@@ -626,7 +638,7 @@ export default {
         if (this.state == "new") {
           this.postUsedRow();
         } else if (this.state == "edit") {
-          this.putUsedRow();
+          this.putUsedRow(this.currentId);
         }
         this.modalIngredient.hide();
       // }

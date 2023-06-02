@@ -44,15 +44,6 @@ const router = createRouter({
       },
     },
     {
-      path: "/fuvarBevitel",
-      name: "fuvarBevitel",
-      component: () => import("../views/FuvarBevitel.vue"),
-      meta: {
-        requiresAuth: false,
-        title: "Fuvar bevitel / Szakácskönyv",
-      },
-    },
-    {
       path: "/count1",
       name: "count1",
       component: () => import("../views/Count1View.vue"),
