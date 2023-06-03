@@ -300,28 +300,19 @@
     </div>
     <!--#endregion modalIngredient -->
 
-    <!-- Button trigger modal -->
-    <button
-      type="button"
-      class="btn btn-primary"
-      data-bs-toggle="modal"
-      data-bs-target="#exampleModal"
-    >
-      Launch demo modal
-    </button>
 
     <!-- #region Modal -->
     <div
       class="modal fade"
-      id="modal"
+      id="modalFoodEU"
       tabindex="-1"
-      aria-labelledby="exampleModalLabel"
+      aria-labelledby="exampleModalFoodEU"
       aria-hidden="true"
     >
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+            <h1 class="modal-title fs-5" id="exampleModalLabel">{{stateTitleFood}}</h1>
             <button
               type="button"
               class="btn-close"
@@ -344,7 +335,6 @@
       </div>
     </div>
     <!-- #endregion Modal -->
-
   </div>
 </template>
 
@@ -438,6 +428,9 @@ export default {
         keyboard: false,
       }
     );
+    this.modalFoodEU = new bootstrap.Modal(document.getElementById("modalFoodEU"), {
+      keyboard: false,
+    });
     this.form = document.querySelector(".needs-validation");
     this.getUnits();
     this.getIngredient();
@@ -641,7 +634,7 @@ export default {
     },
     onClickNewFood() {
       this.getCategory();
-      this.modalFood.show();
+      this.modalFoodEU.show();
       this.state = "new";
       this.currentId = null;
       this.editableFood = new Food();
@@ -649,7 +642,9 @@ export default {
     onClickDeleteFood(id) {
       this.state = "delete";
       this.currentId = id;
-      this.deleteFood(id);
+      if (confirm("Biztosan törölni akarja?")) {
+        this.deleteFood(id);
+      }
     },
     onClicNewIngredient() {
       this.state = "new";
@@ -692,9 +687,7 @@ export default {
     },
     onClickUpdateFood() {
       this.state = "edit";
-    },
-    onClicNewFood() {
-      this.state = "new";
+      this.modalFoodEU.show();
     },
 
     getImgUrl(pic) {
