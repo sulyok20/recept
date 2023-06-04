@@ -57,6 +57,27 @@
       </div>
     </div>
 
+    <div class="d-flex align-items-center p-3">
+      <button
+        type="button"
+        class="btn btn-primary"
+        title="Étel törlése"
+        @click="onClickNewFood()"
+        v-if="storeLogin.loginSuccess"
+      >
+        Új étel hozzáadása
+      </button>
+      <button
+        type="button"
+        class="btn btn-primary ms-2"
+        title="Étel törlése"
+        @click="onClickNewIngredient()"
+        v-if="storeLogin.loginSuccess"
+      >
+        Új hozzávaló hozzáadása
+      </button>
+    </div>
+
     <div class="row row-cols-1 row-cols-md-3 g-4 my-cards">
       <div
         class="col"
@@ -168,7 +189,7 @@
                       type="button"
                       class="btn btn-danger"
                       title="Hozzávaló törlése"
-                      @click="onClickDeleteIngredient(food.id)"
+                      @click="onClickDeleteUsed(food.id)"
                     >
                       <i class="bi bi-trash"></i>
                     </button>
@@ -177,7 +198,7 @@
                       type="button"
                       class="btn btn-success ms-3"
                       title="Hozzávaló módosítása"
-                      @click="onClickUpdateIngredient(food.id)"
+                      @click="onClickUpdateUsed(food.id)"
                     >
                       <i class="bi bi-gear"></i>
                     </button>
@@ -191,7 +212,7 @@
             <!-- v-if="storeLogin.loginSuccess" -->
             <div>
               <button
-                @click="onClicNewIngredient()"
+                @click="onClicNewUsed()"
                 type="button"
                 class="btn btn-primary"
               >
@@ -290,7 +311,7 @@
             <button
               type="button"
               class="btn btn-primary"
-              @click="onClickSaveIngredient()"
+              @click="onClickSaveUsed()"
             >
               Mentés
             </button>
@@ -299,7 +320,6 @@
       </div>
     </div>
     <!--#endregion modalIngredient -->
-
 
     <!-- #region Modal -->
     <div
@@ -312,7 +332,9 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalLabel">{{stateTitleFood}}</h1>
+            <h1 class="modal-title fs-5" id="exampleModalLabel">
+              {{ stateTitleFood }}
+            </h1>
             <button
               type="button"
               class="btn-close"
@@ -320,7 +342,56 @@
               aria-label="Close"
             ></button>
           </div>
-          <div class="modal-body">...</div>
+          <div class="modal-body">
+            <label for="meeting-time">Étel neve</label>
+            <input
+              class="form-control"
+              id="KajaNev"
+              type="text"
+              placeholder=""
+              aria-label="default input example"
+              v-model="editableFood.foodName"
+            />
+
+            <label for="meeting-time">Első elkészítésének dátuma</label>
+
+            <input
+              type="date"
+              id="start"
+              name="trip-start"
+              min="1900-01-01"
+              max="2023-12-31"
+              v-model="editableFood.firstDate"
+            />
+
+            <label for="meeting-time">Első felírás dátuma: </label>
+
+            <input
+              type="date"
+              id="start"
+              name="trip-start"
+              min="1900-01-01"
+              max="2023-12-31"
+              v-model="editableFood.descriptionDate"
+            />
+
+            <label for="meeting-time">Kategória</label>
+
+            <select
+              class="form-select"
+              id="kategoriaSelect"
+              aria-label="Default select example"
+              v-model="editableFood.categoryID"
+            >
+              <option
+                v-for="(category, index) in category"
+                :key="`category${index}`"
+                :value="category.id"
+              >
+                {{ category.categoryName }}
+              </option>
+            </select>
+          </div>
           <div class="modal-footer">
             <button
               type="button"
@@ -329,7 +400,13 @@
             >
               Close
             </button>
-            <button type="button" class="btn btn-primary">Save changes</button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              @click="onClickSaveFood()"
+            >
+              Mentés
+            </button>
           </div>
         </div>
       </div>
@@ -371,21 +448,13 @@ class Food {
     foodName = null,
     categoryID = 0,
     descriptionDate = null,
-    firstDate = null,
-    categoryName = null,
-    ingredientName = null,
-    quantity = null,
-    unit = null
+    firstDate = null
   ) {
     (this.id = id),
       (this.foodName = foodName),
       (this.categoryID = categoryID),
       (this.descriptionDate = descriptionDate),
-      (this.firstDate = firstDate),
-      (this.categoryName = categoryName),
-      (this.ingredientName = ingredientName),
-      (this.quantity = quantity),
-      (this.unit = unit);
+      (this.firstDate = firstDate);
   }
 }
 
@@ -428,9 +497,12 @@ export default {
         keyboard: false,
       }
     );
-    this.modalFoodEU = new bootstrap.Modal(document.getElementById("modalFoodEU"), {
-      keyboard: false,
-    });
+    this.modalFoodEU = new bootstrap.Modal(
+      document.getElementById("modalFoodEU"),
+      {
+        keyboard: false,
+      }
+    );
     this.form = document.querySelector(".needs-validation");
     this.getUnits();
     this.getIngredient();
@@ -605,7 +677,24 @@ export default {
       this.usedRow.unit = this.usedRow.unit;
       this.usedRow.quantity = this.usedRow.quantity;
     },
-
+    async postFood() {
+      let url = this.storeUrl.urlFood;
+      const body = JSON.stringify(this.editableFood);
+      const config = {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          Authorization: `Bearer ${this.storeLogin.accessToken}`,
+        },
+        body: body,
+      };
+      const response = await fetch(url, config);
+      this.getfoodWithEverithingById();
+      this.editableFood.foodName = null;
+      this.editableFood.firstDate = null;
+      this.editableFood.descriptionDate = null;
+      this.editableFood.categoryID = null;
+    },
     onClickSearch() {
       this.categoryNameTitle = "Összes";
       if (this.keresoSzo) {
@@ -646,19 +735,19 @@ export default {
         this.deleteFood(id);
       }
     },
-    onClicNewIngredient() {
+    onClicNewUsed() {
       this.state = "new";
       this.modalIngredient.show();
       this.postUsedRow();
     },
-    onClickUpdateIngredient(id) {
+    onClickUpdateUsed(id) {
       this.state = "edit";
       this.modalIngredient.show();
       this.currentId = id;
       this.getfoodWithCategroryById(id);
       console.log(this.currentId);
     },
-    onClickDeleteIngredient(id) {
+    onClickDeleteUsed(id) {
       if (confirm("Biztosan törölni akarja?")) {
         this.deleteUsed(id);
       }
@@ -666,7 +755,7 @@ export default {
       this.state = "delete";
       this.currentId = id;
     },
-    onClickSaveIngredient() {
+    onClickSaveUsed() {
       // this.form.classList.add("was-validated");
       // if (this.form.checkValidity()) {
       if (this.state == "new") {
@@ -754,5 +843,20 @@ table {
 }
 .my-cards {
   position: relative;
+}
+label {
+  display: block;
+  font: 1rem "Fira Sans", sans-serif;
+}
+
+input,
+label {
+  margin: 0.4rem 0;
+}
+#KajaNev {
+  margin: 0.4rem 0;
+}
+#kategoriaSelect {
+  margin: 0.4rem 0;
 }
 </style>
